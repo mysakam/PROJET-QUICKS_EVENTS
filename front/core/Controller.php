@@ -7,6 +7,6 @@ class Controller{
 
     require __DIR__ . '/../views/' .$view . '.php';
     $content = ob_get_clean();
-    require __DIR__ .'/../views/layout.php';
+    require __DIR__ .'/../views/layouts/main.php';
 }
 }

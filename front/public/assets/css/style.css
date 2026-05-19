@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+  scroll-behavior: smooth;
+}
+
+p {
+  font-weight: 300;
+  color: black;
+}
+header {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  width: 100%;
+  background-color: #93bde0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  z-index: 1;
+  transition: 0.5s;
+}
+
+.logo {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2e0d8a;
+  text-decoration: none;
+}
+.logo span {
+  color: #0f6ad1;
+}
+
+.navbar {
+  display: flex;
+  position: relative;
+}
+
+.navbar li {
+  list-style: none;
+}
+.navbar a {
+  color: rgb(22, 78, 182);
+  text-decoration: none;
+  margin-left: 30px;
+  font-weight: 700;
+}
+.btn {
+  background-color: #b7cee7;
+  padding: 10px 20px;
+  border-radius: 30px;
+  margin-top: -10px;
+  opacity: 0.6;
+}
+.btn-transcription {
+  background-color: #b7cee7;
+  padding: 10px 20px;
+  border-radius: 30px;
+  margin-top: -10px;
+  margin-right: 20px;
+}
+.btn-transcription:hover {
+  background-color: #a5b4b9;
+  color: white;
+  transition: ease-out 0.2s;
+}
+
+header .navbar li a:hover {
+  color: #014b75;
+  border-bottom: rgb(17, 62, 83) 2px solid;
+  transition: ease-out 0.2s;
+}
+
+.banniere {
+  position: relative;
+  width: 100%;
+  height: 80vh;
+  background-image: url("/assets/css/images/Conch-Shell-Decor.webp");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+      to bottom,
+      rgba(226, 228, 230, 0.5),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("/assets/css/images/Conch-Shell-Decor.webp");
+  background-size: cover;
+  background-position: center;
+}

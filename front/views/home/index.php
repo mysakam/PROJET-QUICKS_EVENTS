@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="front/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
     <title>QUICK'EVENTS</title>
 </head>
 
@@ -40,7 +39,7 @@
             </div>
             <div class="col50">
                 <div class="img">
-                    <img src="front/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif"
+                    <img src="/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif"
                         alt="image">
                 </div>
             </div>
@@ -61,7 +60,7 @@
             <div class="card">
                 <h3>Mariage</h3>
                 <div>
-                    <img src="front/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
+                    <img src="/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
                         alt="image">
                 </div>
                 <div class="card-text">Organisez votre mariage de rêve avec nos prestataires et sites évènementiels de
@@ -70,7 +69,7 @@
             <div class="card">
                 <h3>Anniversaire</h3>
                 <div>
-                    <img src="front/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg" alt="image">
+                    <img src="/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg" alt="image">
                 </div>
                 <div class="card-text">Célébrez votre anniversaire de manière inoubliable avec nos prestataires et sites
                     évènementiels adaptés à vos besoins.</div>
@@ -78,7 +77,7 @@
             <div class="card">
                 <h3>Soirée à thème</h3>
                 <div>
-                    <img src="front/assets/css/images/image-45-768x768.jpeg" alt="image">
+                    <img src="/assets/css/images/image-45-768x768.jpeg" alt="image">
                 </div>
                 <div class="card-text">Organisez une soirée mémorable avec nos prestataires et sites évènementiels
                     spécialisés dans les événements festifs.</div>
@@ -86,7 +85,7 @@
             <div class="card">
                 <h3>Repas Séminaire</h3>
                 <div>
-                    <img src="front/assets/css/images/catering-alicante-eventos-corporativos.webp" alt="image">
+                    <img src="/assets/css/images/catering-alicante-eventos-corporativos.webp" alt="image">
                 </div>
                 <div class="card-text">Organisez une conférence professionnelle réussie avec nos prestataires et sites
                     évènementiels spécialisés dans les événements d'entreprise.</div>
