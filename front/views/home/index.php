@@ -85,7 +85,7 @@
             <div class="card">
                 <h3>Repas Séminaire</h3>
                 <div>
-                    <img src="/assets/css/images/catering-alicante-eventos-corporativos.webp" alt="image">
+                    <img src="/assets/css/images/front/public/assets/images/tiki-bar-ideas.webp" alt="image">
                 </div>
                 <div class="card-text">Organisez une conférence professionnelle réussie avec nos prestataires et sites
                     évènementiels spécialisés dans les événements d'entreprise.</div>
