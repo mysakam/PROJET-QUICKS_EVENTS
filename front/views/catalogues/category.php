@@ -1,5 +1,6 @@
+<?php require_once __DIR__ . '/../../helpers/view.php'; ?>
 <h1>Catégorie : <?= e($slug) ?></h1>
-// Ce fichier est obsolète. Utiliser le dossier catalogues/.
+
 <?php
 if (!isset($slug)) $slug = '';
 if (!isset($prestations)) $prestations = [];

@@ -1,5 +1,9 @@
 <h1>Demande envoyée</h1>
 
+<?php
+if (!isset($devis)) $devis = ['reference' => '', 'status' => '', 'total_amount' => '', 'created_at' => '', 'id' => ''];
+?>
+
 <p>Votre devis a bien été créé.</p>
 <p>Référence : <?= e($devis['reference']) ?></p>
 <p>Statut : <?= e($devis['status']) ?></p>

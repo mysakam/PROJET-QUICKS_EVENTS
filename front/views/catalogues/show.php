@@ -1,5 +1,6 @@
+<?php require_once __DIR__ . '/../../helpers/view.php'; ?>
 <h1><?= e($prestation['name']) ?></h1>
-// Ce fichier est obsolète. Utiliser le dossier catalogues/.
+
 <?php
 if (!isset($prestation)) $prestation = ['name' => '', 'category' => '', 'price' => '', 'description' => '', 'id' => ''];
 ?>

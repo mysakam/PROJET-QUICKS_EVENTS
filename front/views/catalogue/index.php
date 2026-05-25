@@ -1,4 +1,8 @@
 <h1>Catalogues</h1>
+// Ce fichier est obsolète. Utiliser le dossier catalogues/.
+<?php
+if (!isset($categories)) $categories = [];
+?>
 
 <?php if (empty($categories)): ?>
 <p>Aucune catégorie disponible.</p>

@@ -59,9 +59,17 @@ class DevisController extends Controller
         ];
 
         $_SESSION['last_devis'] = $devis;
-        $this->saveCart([]);
 
+        $this->saveCart([]);
         $this->redirectTo(route('devis_success', ['id' => $devis['id']]));
+    }
+
+    /**
+     * Vide ou met à jour le panier dans la session
+     */
+    private function saveCart(array $cart): void
+    {
+        $_SESSION['cart'] = $cart;
     }
 
     public function success(int $id): void

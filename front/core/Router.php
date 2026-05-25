@@ -48,7 +48,7 @@ class Router
             array_shift($matches);
 
             foreach ($route['middleware'] as $mw) {
-                require __DIR__ . '/../middlewares/' . $mw . '.php';
+                require_once __DIR__ . '/../middlewares/' . $mw . '.php';
                 if (!(new $mw())->handle()) return;
             }
 

@@ -1,0 +1,1 @@
+// Ce fichier est obsolète. Utiliser le dossier catalogues/.

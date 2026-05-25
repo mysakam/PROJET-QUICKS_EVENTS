@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUICKS EVENTS</title>
+    <title>QUICK'EVENTS</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
-<body>
-    <?php require __DIR__ .'/../partials/header.php'; ?>
-    <?= $content ?? '' ?>
-</body>
 
+<?php require_once __DIR__ . '/../../helpers/view.php'; ?>
+
+<body>
+
+    <?php
+    $headerPath = __DIR__ . '/../partials/header.php';
+    if (file_exists($headerPath)) {
+        require $headerPath;
+    }
+    ?>
+
+
+    <main>
+        <?= isset($content) ? $content : '' ?>
+    </main>
+
+</body>
 
 </html>

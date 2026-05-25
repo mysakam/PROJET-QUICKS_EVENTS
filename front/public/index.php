@@ -1,11 +1,15 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 
 require __DIR__ . '/../core/Controller.php';
 require __DIR__ . '/../core/Router.php';
 require __DIR__ . '/../helpers/url.php';
 require __DIR__ . '/../helpers/view.php';
-require __DIR__ . '/../middlewares/AuthMiddleware.php';
+require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
 
 $router = new Router();
 
@@ -27,10 +31,10 @@ $router->post('/panier/supprimer/{id}', ['PanierController', 'remove'], [], 'pan
 $router->post('/panier/vider', ['PanierController', 'clear'], [], 'panier_clear');
 
 /* Devis */
-$router->get('/devis', ['DevisController', 'checkout'], ['AuthMiddleware'], 'devis_checkout');
-$router->post('/devis', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
-$router->get('/devis/succes/{id}', ['DevisController', 'success'], ['AuthMiddleware'], 'devis_success');
-$router->get('/mes-devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
-$router->get('/mes-devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
+$router->get('/devis', ['DevisController', 'checkout'], [], 'devis_checkout');
+$router->post('/devis', ['DevisController', 'store'], [], 'devis_store');
+$router->get('/devis/succes/{id}', ['DevisController', 'success'], [], 'devis_success');
+$router->get('/mes-devis', ['DevisController', 'index'], [], 'devis_index');
+$router->get('/mes-devis/{id}', ['DevisController', 'show'], [], 'devis_show');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
