@@ -4,6 +4,13 @@ COLLATE utf8mb4_unicode_ci;
 
 USE quickevents;
 
+DROP TABLE IF EXISTS devis_lignes;
+DROP TABLE IF EXISTS devis;
+DROP TABLE IF EXISTS prestations;
+DROP TABLE IF EXISTS prestataires;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS clients;
+
 CREATE TABLE clients (
     id_client INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
