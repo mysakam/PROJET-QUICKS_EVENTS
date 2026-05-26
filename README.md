@@ -1,6 +1,6 @@
 mis en place de l'environnement
 
-## 1. Principess
+## 1. Principe
 
 Le projet est séparé en deux zones :
 
