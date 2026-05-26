@@ -1,9 +1,6 @@
 mis en place de l'environnement
 
-
-
-
-## 1. Principe
+## 1. Principess
 
 Le projet est séparé en deux zones :
 
@@ -34,127 +31,125 @@ La partie front gère l’accueil, l’authentification, la navigation client, l
 
 front/
 ├── public/
-│   ├── index.php
-│   └── .htaccess
+│ ├── index.php
+│ └── .htaccess
 ├── assets/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   └── main.js
-│   └── images/
+│ ├── css/
+│ │ └── style.css
+│ ├── js/
+│ │ └── main.js
+│ └── images/
 ├── config/
-│   ├── app.php
-│   └── database.php
+│ ├── app.php
+│ └── database.php
 ├── core/
-│   ├── Controller.php
-│   ├── Router.php
-│   ├── Database.php
-│   ├── Auth.php
-│   └── Session.php
+│ ├── Controller.php
+│ ├── Router.php
+│ ├── Database.php
+│ ├── Auth.php
+│ └── Session.php
 ├── controllers/
-│   ├── HomeController.php
-│   ├── AuthController.php
-│   ├── CatalogueController.php
-|   |── EventControler.php
-│   ├── PanierController.php
-│   ├── DevisController.php
-│   ├── ClientController.php
-│   └── PrestataireController.php
+│ ├── HomeController.php
+│ ├── AuthController.php
+│ ├── CatalogueController.php
+| |── EventControler.php
+│ ├── PanierController.php
+│ ├── DevisController.php
+│ ├── ClientController.php
+│ └── PrestataireController.php
 ├── models/
-│   ├── User.php
-│   ├── Prestation.php
-│   ├── Panier.php
-│   └── DemandeDevis.php
-│   ├── Devis.php
-│   ├── Event.php
-│   └── Package.php
-
+│ ├── User.php
+│ ├── Prestation.php
+│ ├── Panier.php
+│ └── DemandeDevis.php
+│ ├── Devis.php
+│ ├── Event.php
+│ └── Package.php
 
 ├── middleware/
-│   ├── AuthMiddleware.php
-│   └── GuestMiddleware.php
+│ ├── AuthMiddleware.php
+│ └── GuestMiddleware.php
 ├── routes/
-│   └── web.php
+│ └── web.php
 └── views/
-    ├── event/
-    │   ├── create.php
-    ├── home/
-    │   └── index.php
-    ├── auth/
-    │   ├── login.php
-    │   ├── register.php
-    ├── catalogue/
-    │   ├── index.php
-    │   └── packages.php
-    |   ├── prestations.php
-    ├── panier/
-    │   └── index.php
-    ├── devis/
-    │   ├── create.php
-    │   └── show.php
-    ├── client/
-    │   └── dashboard.php
-    └── prestataire/
-        └── dashboard.php
-
+├── event/
+│ ├── create.php
+├── home/
+│ └── index.php
+├── auth/
+│ ├── login.php
+│ ├── register.php
+├── catalogue/
+│ ├── index.php
+│ └── packages.php
+| ├── prestations.php
+├── panier/
+│ └── index.php
+├── devis/
+│ ├── create.php
+│ └── show.php
+├── client/
+│ └── dashboard.php
+└── prestataire/
+└── dashboard.php
 
 ## 4. Partie Back
 
 La partie back gère l’administration générale, les utilisateurs, les prestataires, les prestations, les catégories et les devis.
 back/
 ├── public/
-│   ├── index.php
-│   └── .htaccess
+│ ├── index.php
+│ └── .htaccess
 ├── assets/
-│   ├── css/
-│   │   └── admin.css
-│   └── js/
-│       └── admin.js
+│ ├── css/
+│ │ └── admin.css
+│ └── js/
+│ └── admin.js
 ├── config/
-│   ├── app.php
-│   └── database.php
+│ ├── app.php
+│ └── database.php
 ├── core/
-│   ├── Controller.php
-│   ├── Router.php
-│   ├── Database.php
-│   ├── Auth.php
-│   └── Session.php
+│ ├── Controller.php
+│ ├── Router.php
+│ ├── Database.php
+│ ├── Auth.php
+│ └── Session.php
 ├── controllers/
-│   ├── DashboardController.php
-│   ├── UsersController.php
-│   ├── PrestationsController.php
-│   ├── CategoriesController.php
-│   └── DevisController.php
+│ ├── DashboardController.php
+│ ├── UsersController.php
+│ ├── PrestationsController.php
+│ ├── CategoriesController.php
+│ └── DevisController.php
 ├── models/
-│   ├── User.php
-│   ├── Prestation.php
-│   ├── Categorie.php
-│   ├── DemandeDevis.php
-│   └── Devis.php
-|   └── Media.php
+│ ├── User.php
+│ ├── Prestation.php
+│ ├── Categorie.php
+│ ├── DemandeDevis.php
+│ └── Devis.php
+| └── Media.php
 ├── middleware/
-│   ├── AuthMiddleware.php
-│   └── AdminMiddleware.php
+│ ├── AuthMiddleware.php
+│ └── AdminMiddleware.php
 ├── routes/
-│   └── web.php
+│ └── web.php
 └── views/
-    ├── auth/
-    │   └── login.php
-    ├── dashboard/
-    │   └── index.php
-    ├── users/
-    │   ├── index.php
-    ├── prestations/
-    │   ├── index.php
-    ├── categories/
-    │   ├── index.php
-    └── devis/
-    |   ├── index.php
-        └── show.php
-    ├── media/
-│       ├── index.php
-│       ├── create.php
-│       ├── edit.php    
+├── auth/
+│ └── login.php
+├── dashboard/
+│ └── index.php
+├── users/
+│ ├── index.php
+├── prestations/
+│ ├── index.php
+├── categories/
+│ ├── index.php
+└── devis/
+| ├── index.php
+└── show.php
+├── media/
+│ ├── index.php
+│ ├── create.php
+│ ├── edit.php
 
 ---
 
@@ -164,12 +159,12 @@ Le dossier `shared/` contient les éléments communs aux deux environnements pou
 
 shared/
 ├── helpers/
-│   ├── url.php
-│   └── view.php
+│ ├── url.php
+│ └── view.php
 ├── validation/
-│   └── rules.php
+│ └── rules.php
 └── mail/
-    └── mailer.php
+└── mailer.php
 
 ---
 
@@ -194,7 +189,6 @@ database/
 
 Cette séparation rend le projet plus lisible et limite les collisions entre l’interface publique et l’interface admin.
 
-
 ## 8. Rôle de chaque contrôleur
 
 HomeController.php : affiche la home page.
@@ -212,7 +206,6 @@ DevisController.php : transforme le panier et l’événement en demande de devi
 ClientController.php : gère l’espace client.
 
 PrestataireController.php : gère l’espace prestataire minimal.
-
 
 ## 9. Rôle des vues front
 
@@ -240,7 +233,6 @@ client/dashboard.php : tableau de bord client.
 
 prestataire/dashboard.php : tableau de bord prestataire.
 
-
 ## 10. Rôle de chaque contrôleur back
 
 DashboardController.php : vue d’ensemble admin.
@@ -254,7 +246,6 @@ CategoriesController.php : gestion des catégories.
 DevisController.php : gestion des demandes et devis.
 
 MediaController.php : publication, suppression et gestion des images/vidéos.
-
 
 ## 11. Rôle des vues back
 
@@ -306,6 +297,7 @@ Le système permet aussi à l'admin de :
 ### 2.1 Entités
 
 #### UTILISATEUR
+
 - id_utilisateur
 - role_utilisateur
 - prenom
@@ -318,6 +310,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### PRESTATAIRE
+
 - id_prestataire
 - id_utilisateur
 - nom_commercial
@@ -334,6 +327,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### CATEGORIE_PRESTATION
+
 - id_categorie
 - nom_categorie
 - description
@@ -341,6 +335,7 @@ Le système permet aussi à l'admin de :
 - ordre_affichage
 
 #### PRESTATION
+
 - id_prestation
 - id_prestataire
 - id_categorie
@@ -356,6 +351,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### MEDIA
+
 - id_media
 - id_prestation
 - type_media
@@ -367,6 +363,7 @@ Le système permet aussi à l'admin de :
 - date_creation
 
 #### PANIER
+
 - id_panier
 - id_utilisateur
 - statut_panier
@@ -374,6 +371,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### LIGNE_PANIER
+
 - id_ligne_panier
 - id_panier
 - id_prestation
@@ -384,6 +382,7 @@ Le système permet aussi à l'admin de :
 - sous_total_ligne
 
 #### DEMANDE_EVENEMENT
+
 - id_demande_evenement
 - id_utilisateur
 - id_panier
@@ -400,6 +399,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### DEVIS
+
 - id_devis
 - id_demande_evenement
 - reference_devis
@@ -412,6 +412,7 @@ Le système permet aussi à l'admin de :
 - date_modification
 
 #### LIGNE_DEVIS
+
 - id_ligne_devis
 - id_devis
 - id_prestation
@@ -422,6 +423,7 @@ Le système permet aussi à l'admin de :
 - commentaire_ligne
 
 #### HISTORIQUE_STATUT
+
 - id_historique_statut
 - type_objet
 - id_objet
@@ -436,54 +438,67 @@ Le système permet aussi à l'admin de :
 ### 2.2 Associations et cardinalités
 
 #### UTILISATEUR — POSSEDE — PRESTATAIRE
+
 - 0,1 utilisateur possède 0,1 fiche prestataire.
 - 1 prestataire appartient à 1 seul utilisateur.
 
 #### PRESTATAIRE — PROPOSE — PRESTATION
+
 - 1 prestataire propose 0,n prestations.
 - 1 prestation appartient à 1 seul prestataire.
 
 #### CATEGORIE_PRESTATION — CLASSE — PRESTATION
+
 - 1 catégorie classe 0,n prestations.
 - 1 prestation appartient à 1 seule catégorie.
 
 #### PRESTATION — CONTIENT — MEDIA
+
 - 1 prestation contient 0,n médias.
 - 1 média appartient à 1 seule prestation.
 
 #### UTILISATEUR — POSSEDE — PANIER
+
 - 1 utilisateur possède 0,n paniers.
 - 1 panier appartient à 1 seul utilisateur.
 
 #### PANIER — CONTIENT — LIGNE_PANIER
+
 - 1 panier contient 1,n lignes panier.
 - 1 ligne panier appartient à 1 seul panier.
 
 #### PRESTATION — FIGURE_DANS — LIGNE_PANIER
+
 - 1 prestation peut figurer dans 0,n lignes panier.
 - 1 ligne panier référence 1 seule prestation.
 
 #### UTILISATEUR — CREE — DEMANDE_EVENEMENT
+
 - 1 utilisateur crée 0,n demandes événement.
 - 1 demande événement appartient à 1 seul utilisateur.
 
 #### PANIER — DONNE_LIEU_A — DEMANDE_EVENEMENT
+
 - 1 panier donne lieu à 0,1 demande événement.
 - 1 demande événement provient d’1 seul panier.
 
 #### DEMANDE_EVENEMENT — GENERE — DEVIS
+
 - 1 demande événement génère 0,1 devis.
 - 1 devis appartient à 1 seule demande.
 
 #### DEVIS — DETAILLE — LIGNE_DEVIS
+
 - 1 devis détaille 1,n lignes devis.
 - 1 ligne devis appartient à 1 seul devis.
 
 #### PRESTATION — APPARAIT_DANS — LIGNE_DEVIS
+
 - 1 prestation peut apparaître dans 0,n lignes devis.
 - 1 ligne devis référence 1 seule prestation.
 
 #### UTILISATEUR — PRODUIT — HISTORIQUE_STATUT
+
 - 1 utilisateur admin produit 0,n historiques.
 - 1 historique est créé par 0,1 utilisateur.
 
@@ -492,6 +507,7 @@ Le système permet aussi à l'admin de :
 ## 3. MLD — Modèle Logique de Données
 
 ### UTILISATEUR
+
 ```text
 UTILISATEUR(
   id_utilisateur PK,
@@ -508,6 +524,7 @@ UTILISATEUR(
 ```
 
 ### PRESTATAIRE
+
 ```text
 PRESTATAIRE(
   id_prestataire PK,
@@ -528,6 +545,7 @@ PRESTATAIRE(
 ```
 
 ### CATEGORIE_PRESTATION
+
 ```text
 CATEGORIE_PRESTATION(
   id_categorie PK,
@@ -539,6 +557,7 @@ CATEGORIE_PRESTATION(
 ```
 
 ### PRESTATION
+
 ```text
 PRESTATION(
   id_prestation PK,
@@ -558,6 +577,7 @@ PRESTATION(
 ```
 
 ### MEDIA
+
 ```text
 MEDIA(
   id_media PK,
@@ -573,6 +593,7 @@ MEDIA(
 ```
 
 ### PANIER
+
 ```text
 PANIER(
   id_panier PK,
@@ -584,6 +605,7 @@ PANIER(
 ```
 
 ### LIGNE_PANIER
+
 ```text
 LIGNE_PANIER(
   id_ligne_panier PK,
@@ -598,6 +620,7 @@ LIGNE_PANIER(
 ```
 
 ### DEMANDE_EVENEMENT
+
 ```text
 DEMANDE_EVENEMENT(
   id_demande_evenement PK,
@@ -618,6 +641,7 @@ DEMANDE_EVENEMENT(
 ```
 
 ### DEVIS
+
 ```text
 DEVIS(
   id_devis PK,
@@ -634,6 +658,7 @@ DEVIS(
 ```
 
 ### LIGNE_DEVIS
+
 ```text
 LIGNE_DEVIS(
   id_ligne_devis PK,
@@ -648,6 +673,7 @@ LIGNE_DEVIS(
 ```
 
 ### HISTORIQUE_STATUT
+
 ```text
 HISTORIQUE_STATUT(
   id_historique_statut PK,
@@ -666,6 +692,7 @@ HISTORIQUE_STATUT(
 ## 4. MPD — Modèle Physique de Données MySQL
 
 ### 4.1 Conventions
+
 - PK en `BIGINT UNSIGNED AUTO_INCREMENT`.
 - `VARCHAR(190)` pour les emails, références et champs courts.
 - `TEXT` pour les descriptions.
@@ -677,6 +704,7 @@ HISTORIQUE_STATUT(
 ### 4.2 Tables MySQL
 
 #### utilisateurs
+
 ```sql
 CREATE TABLE utilisateurs (
   id_utilisateur BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -693,6 +721,7 @@ CREATE TABLE utilisateurs (
 ```
 
 #### prestataires
+
 ```sql
 CREATE TABLE prestataires (
   id_prestataire BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -716,6 +745,7 @@ CREATE TABLE prestataires (
 ```
 
 #### categories_prestations
+
 ```sql
 CREATE TABLE categories_prestations (
   id_categorie BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -727,6 +757,7 @@ CREATE TABLE categories_prestations (
 ```
 
 #### prestations
+
 ```sql
 CREATE TABLE prestations (
   id_prestation BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -752,6 +783,7 @@ CREATE TABLE prestations (
 ```
 
 #### media
+
 ```sql
 CREATE TABLE media (
   id_media BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -770,6 +802,7 @@ CREATE TABLE media (
 ```
 
 #### panier
+
 ```sql
 CREATE TABLE panier (
   id_panier BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -784,6 +817,7 @@ CREATE TABLE panier (
 ```
 
 #### ligne_panier
+
 ```sql
 CREATE TABLE ligne_panier (
   id_ligne_panier BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -804,6 +838,7 @@ CREATE TABLE ligne_panier (
 ```
 
 #### demande_evenement
+
 ```sql
 CREATE TABLE demande_evenement (
   id_demande_evenement BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -830,6 +865,7 @@ CREATE TABLE demande_evenement (
 ```
 
 #### devis
+
 ```sql
 CREATE TABLE devis (
   id_devis BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -849,6 +885,7 @@ CREATE TABLE devis (
 ```
 
 #### ligne_devis
+
 ```sql
 CREATE TABLE ligne_devis (
   id_ligne_devis BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -869,6 +906,7 @@ CREATE TABLE ligne_devis (
 ```
 
 #### historique_statut
+
 ```sql
 CREATE TABLE historique_statut (
   id_historique_statut BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -910,4 +948,3 @@ CREATE TABLE historique_statut (
 - le devis est global, il contient plusieurs lignes issues du panier ;
 - les médias sont gérés par l’admin et rattachés aux prestations ;
 - la structure est prête pour le MVC front/back minimaliste.
-
