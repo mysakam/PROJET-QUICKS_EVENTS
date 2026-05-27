@@ -23,29 +23,18 @@ class DevisController extends Controller
         unset($_SESSION['cart']);
     }
 
-    private function generateReference(): string
-    {
-        return 'DEV-' . date('YmdHis');
-    }
-
     public function checkout(): void
     {
         $cart = $this->getCart();
 
         if (empty($cart)) {
             redirect(route('panier'));
+            return;
         }
 
-        $total = 0;
+        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-
-        $this->render('devis/checkout', [
-            'cart' => $cart,
-            'total' => $total
-        ]);
+        $this->render('devis/checkout', compact('cart', 'total'));
     }
 
     public function store(): void
@@ -54,19 +43,14 @@ class DevisController extends Controller
 
         if (empty($cart)) {
             redirect(route('panier'));
+            return;
         }
 
+        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        $idClient = 1;
+        $reference = 'DEV-' . date('YmdHis');
         $dateEvenement = $_POST['date_evenement'] ?? null;
         $messageClient = trim($_POST['message_client'] ?? '');
-
-        $total = 0;
-
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-
-        $idClient = 1;
-        $reference = $this->generateReference();
 
         try {
             $this->pdo->beginTransaction();
@@ -91,10 +75,9 @@ class DevisController extends Controller
             }
 
             $this->pdo->commit();
-
             $this->clearCart();
-
             redirect(route('devis_success', ['id' => $idDevis]));
+            return;
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
@@ -117,10 +100,7 @@ class DevisController extends Controller
 
         $lignes = $this->devisLigneModel->findByDevisId($id);
 
-        $this->render('devis/success', [
-            'devis' => $devis,
-            'lignes' => $lignes
-        ]);
+        $this->render('devis/success', compact('devis', 'lignes'));
     }
 
     public function index(): void
@@ -128,9 +108,7 @@ class DevisController extends Controller
         $idClient = 1;
         $devisList = $this->devisModel->findByClientId($idClient);
 
-        $this->render('devis/index', [
-            'devisList' => $devisList
-        ]);
+        $this->render('devis/index', compact('devisList'));
     }
 
     public function show(int $id): void
@@ -145,9 +123,6 @@ class DevisController extends Controller
 
         $lignes = $this->devisLigneModel->findByDevisId($id);
 
-        $this->render('devis/show', [
-            'devis' => $devis,
-            'lignes' => $lignes
-        ]);
+        $this->render('devis/show', compact('devis', 'lignes'));
     }
 }
