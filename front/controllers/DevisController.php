@@ -76,6 +76,7 @@ class DevisController extends Controller
 
             $this->pdo->commit();
             $this->clearCart();
+
             redirect(route('devis_success', ['id' => $idDevis]));
             return;
         } catch (Throwable $e) {

@@ -9,22 +9,21 @@ if (!isset($total)) $total = 0;
 <p>Votre panier est vide.</p>
 <?php else: ?>
 <ul>
-    <?php foreach ($cart as $item): ?>
+    <?php foreach ($cart as $id => $item): ?>
     <li>
         <strong><?= e($item['name']) ?></strong>
         - <?= e($item['category']) ?>
-        - <?= e($item['price']) ?> €
-        - Quantité : <?= e($item['quantity']) ?>
+        - <?= number_format((float) $item['price'], 2, ',', ' ') ?> €
+        - Quantité : <?= (int) $item['quantity'] ?>
 
-        <form action="<?= route('panier_remove', ['id' => $item['prestation_id']]) ?>" method="post"
-            style="display:inline;">
+        <form action="<?= route('panier_remove', ['id' => $id]) ?>" method="post" style="display:inline;">
             <button type="submit">Supprimer</button>
         </form>
     </li>
     <?php endforeach; ?>
 </ul>
 
-<p><strong>Total :</strong> <?= e($total) ?> €</p>
+<p><strong>Total :</strong> <?= number_format((float) $total, 2, ',', ' ') ?> €</p>
 
 <form action="<?= route('panier_clear') ?>" method="post">
     <button type="submit">Vider le panier</button>

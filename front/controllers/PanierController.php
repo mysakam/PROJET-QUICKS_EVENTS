@@ -12,24 +12,12 @@ class PanierController extends Controller
         $_SESSION['cart'] = $cart;
     }
 
-    private function redirectTo(string $routeName): void
-    {
-        redirect(route($routeName));
-    }
-
     public function index(): void
     {
         $cart = $this->getCart();
-        $total = 0;
+        $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-
-        $this->render('panier/index', [
-            'cart' => $cart,
-            'total' => $total
-        ]);
+        $this->render('panier/index', compact('cart', 'total'));
     }
 
     public function add(int $id): void
@@ -38,7 +26,8 @@ class PanierController extends Controller
         $prestation = $prestationModel->findById($id);
 
         if (!$prestation) {
-            $this->redirectTo('catalogues');
+            redirect(route('catalogues'));
+            return;
         }
 
         $cart = $this->getCart();
@@ -56,7 +45,7 @@ class PanierController extends Controller
         }
 
         $this->saveCart($cart);
-        $this->redirectTo('panier');
+        redirect(route('panier'));
     }
 
     public function remove(int $id): void
@@ -68,12 +57,12 @@ class PanierController extends Controller
         }
 
         $this->saveCart($cart);
-        $this->redirectTo('panier');
+        redirect(route('panier'));
     }
 
     public function clear(): void
     {
         unset($_SESSION['cart']);
-        $this->redirectTo('panier');
+        redirect(route('panier'));
     }
 }
