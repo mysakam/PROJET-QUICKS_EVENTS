@@ -15,6 +15,8 @@ require __DIR__ . '/../core/Database.php';
 
 require __DIR__ . '/../models/CategoryModel.php';
 require __DIR__ . '/../models/PrestationModel.php';
+require __DIR__ . '/../models/DevisModel.php';
+require __DIR__ . '/../models/DevisLigneModel.php';
 
 $router = new Router();
 
