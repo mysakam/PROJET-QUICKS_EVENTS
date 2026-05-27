@@ -1,3 +1,4 @@
+die('INDEX OK');
 <?php
 
 ini_set('display_errors', 1);
@@ -10,6 +11,10 @@ require __DIR__ . '/../core/Router.php';
 require __DIR__ . '/../helpers/url.php';
 require __DIR__ . '/../helpers/view.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
+require __DIR__ . '/../core/Database.php';
+
+require __DIR__ . '/../models/CategoryModel.php';
+require __DIR__ . '/../models/PrestationModel.php';
 
 $router = new Router();
 
