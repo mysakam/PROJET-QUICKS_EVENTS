@@ -53,8 +53,7 @@ class Router
             }
 
             [$controllerName, $action] = $route['handler'];
-            require __DIR__ . '/../controllers/' . $controllerName . '.php';
-            $controller = new $controllerName();
+            require_once __DIR__ . '/../controllers/' . $controllerName . '.php';            $controller = new $controllerName();
             $controller->$action(...$matches);
             return;
         }

@@ -1,4 +1,3 @@
-die('INDEX OK');
 <?php
 
 ini_set('display_errors', 1);
@@ -38,10 +37,10 @@ $router->post('/panier/supprimer/{id}', ['PanierController', 'remove'], [], 'pan
 $router->post('/panier/vider', ['PanierController', 'clear'], [], 'panier_clear');
 
 /* Devis */
-$router->get('/devis', ['DevisController', 'checkout'], [], 'devis_checkout');
-$router->post('/devis', ['DevisController', 'store'], [], 'devis_store');
-$router->get('/devis/succes/{id}', ['DevisController', 'success'], [], 'devis_success');
-$router->get('/mes-devis', ['DevisController', 'index'], [], 'devis_index');
-$router->get('/mes-devis/{id}', ['DevisController', 'show'], [], 'devis_show');
+$router->get('/devis/checkout', ['DevisController', 'checkout'], [], 'devis_checkout');
+$router->post('/devis/store', ['DevisController', 'store'], [], 'devis_store');
+$router->get('/devis/success/{id}', ['DevisController', 'success'], [], 'devis_success');
+$router->get('/devis', ['DevisController', 'index'], [], 'devis_index');
+$router->get('/devis/{id}', ['DevisController', 'show'], [], 'devis_show');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
