@@ -14,8 +14,7 @@ class PanierController extends Controller
 
     private function redirectTo(string $routeName): void
     {
-        header('Location: ' . route($routeName));
-        exit;
+        redirect(route($routeName));
     }
 
     public function index(): void
@@ -35,14 +34,10 @@ class PanierController extends Controller
 
     public function add(int $id): void
     {
-        $prestations = [
-            1 => ['id' => 1, 'name' => 'Eden Park', 'category' => 'Mariage', 'price' => 8000],
-            2 => ['id' => 2, 'name' => 'Wedding’s Life', 'category' => 'Mariage', 'price' => 6500],
-            3 => ['id' => 3, 'name' => 'Happy Time', 'category' => 'Anniversaire', 'price' => 3000],
-            4 => ['id' => 4, 'name' => 'Your Hero', 'category' => 'Séminaire', 'price' => 9000],
-        ];
+        $prestationModel = new PrestationModel();
+        $prestation = $prestationModel->findById($id);
 
-        if (!isset($prestations[$id])) {
+        if (!$prestation) {
             $this->redirectTo('catalogues');
         }
 
@@ -52,10 +47,10 @@ class PanierController extends Controller
             $cart[$id]['quantity']++;
         } else {
             $cart[$id] = [
-                'prestataire_id' => $prestations[$id]['id'],
-                'name' => $prestations[$id]['name'],
-                'category' => $prestations[$id]['category'],
-                'price' => $prestations[$id]['price'],
+                'prestation_id' => $prestation['id_prestation'],
+                'name' => $prestation['nom'],
+                'category' => $prestation['category_name'],
+                'price' => $prestation['prix_unitaire'],
                 'quantity' => 1
             ];
         }
@@ -78,7 +73,7 @@ class PanierController extends Controller
 
     public function clear(): void
     {
-        $this->saveCart([]);
+        unset($_SESSION['cart']);
         $this->redirectTo('panier');
     }
 }

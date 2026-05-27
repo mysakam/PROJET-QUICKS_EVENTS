@@ -2,13 +2,18 @@
 
 class CatalogueController extends Controller
 {
+    private CategoryModel $categoryModel;
+    private PrestationModel $prestationModel;
+
+    public function __construct()
+    {
+        $this->categoryModel = new CategoryModel();
+        $this->prestationModel = new PrestationModel();
+    }
+
     public function index(): void
     {
-        $categories = [
-            ['name' => 'Mariage', 'slug' => 'mariage'],
-            ['name' => 'Anniversaire', 'slug' => 'anniversaire'],
-            ['name' => 'Séminaire', 'slug' => 'seminaire'],
-        ];
+        $categories = $this->categoryModel->findAll();
 
         $this->render('catalogues/index', [
             'categories' => $categories
@@ -17,37 +22,26 @@ class CatalogueController extends Controller
 
     public function showCategory(string $slug): void
     {
-        $prestations = [
-            'mariage' => [
-                ['id' => 1, 'name' => 'Eden Park', 'category' => 'Mariage', 'price' => 8000],
-                ['id' => 2, 'name' => 'Wedding’s Life', 'category' => 'Mariage', 'price' => 6500],
-            ],
-            'anniversaire' => [
-                ['id' => 3, 'name' => 'Happy Time', 'category' => 'Anniversaire', 'price' => 3000],
-            ],
-            'seminaire' => [
-                ['id' => 4, 'name' => 'Your Hero', 'category' => 'Séminaire', 'price' => 9000],
-            ],
-        ];
+        $category = $this->categoryModel->findBySlug($slug);
 
-        $items = $prestations[$slug] ?? [];
+        if (!$category) {
+            http_response_code(404);
+            echo 'Catégorie introuvable';
+            return;
+        }
+
+        $prestations = $this->prestationModel->findByCategorySlug($slug);
 
         $this->render('catalogues/category', [
+            'category' => $category,
             'slug' => $slug,
-            'prestations' => $items
+            'prestations' => $prestations
         ]);
     }
 
     public function showPrestation(int $id): void
     {
-        $prestations = [
-            1 => ['id' => 1, 'name' => 'Eden Park', 'category' => 'Mariage', 'price' => 8000, 'description' => 'Prestation mariage complète.'],
-            2 => ['id' => 2, 'name' => 'Wedding’s Life', 'category' => 'Mariage', 'price' => 6500, 'description' => 'Décoration et mobilier mariage.'],
-            3 => ['id' => 3, 'name' => 'Happy Time', 'category' => 'Anniversaire', 'price' => 3000, 'description' => 'Organisation anniversaire.'],
-            4 => ['id' => 4, 'name' => 'Your Hero', 'category' => 'Séminaire', 'price' => 9000, 'description' => 'Pack séminaire entreprise.'],
-        ];
-
-        $prestation = $prestations[$id] ?? null;
+        $prestation = $this->prestationModel->findById($id);
 
         if (!$prestation) {
             http_response_code(404);
