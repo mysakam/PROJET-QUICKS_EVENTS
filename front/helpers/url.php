@@ -27,39 +27,11 @@ if (!function_exists('asset')) {
 if (!function_exists('route')) {
     function route(string $name, array $params = []): string
     {
-        $routes = [
-            'home' => '/',
-            'login' => '/login',
-            'register' => '/register',
-            'dashboard' => '/dashboard',
-
-            'catalogues' => '/catalogues',
-            'catalogues_category' => '/catalogues/{slug}',
-            'prestations_show' => '/prestations/{id}',
-
-            'panier' => '/panier',
-            'panier_add' => '/panier/ajouter/{id}',
-            'panier_remove' => '/panier/supprimer/{id}',
-            'panier_clear' => '/panier/vider',
-
-            'devis_checkout' => '/devis',
-            'devis_store' => '/devis',
-            'devis_success' => '/devis/succes/{id}',
-            'devis_index' => '/mes-devis',
-            'devis_show' => '/mes-devis/{id}',
-        ];
-
-        if (!isset($routes[$name])) {
+        if (!Router::$instance) {
             return '#';
         }
 
-        $uri = $routes[$name];
-
-        foreach ($params as $key => $value) {
-            $uri = str_replace('{' . $key . '}', urlencode((string) $value), $uri);
-        }
-
-        return url($uri);
+        return url(ltrim(Router::$instance->url($name, $params), '/'));
     }
 }
 
