@@ -60,7 +60,7 @@ INSERT INTO
 VALUES (
         1,
         'Eden Decor',
-        '[email protected]',
+        'eden.decor@test.com',
         '0600000002',
         '12 rue des Fleurs, Marseille',
         'Spécialiste décoration événementielle'
@@ -68,7 +68,7 @@ VALUES (
     (
         2,
         'Mobilier Pro Events',
-        '[email protected]',
+        'mobilier.pro@test.com',
         '0600000003',
         '8 avenue Prado, Marseille',
         'Location de mobilier pour événements'
@@ -76,7 +76,7 @@ VALUES (
     (
         3,
         'Saveurs Prestige',
-        '[email protected]',
+        'saveurs.prestige@test.com',
         '0600000004',
         '25 quai du Port, Marseille',
         'Service traiteur premium'
@@ -84,7 +84,7 @@ VALUES (
     (
         4,
         'Secure Night',
-        '[email protected]',
+        'secure.night@test.com',
         '0600000005',
         '4 boulevard National, Marseille',
         'Sécurité pour soirées et événements'
@@ -92,7 +92,7 @@ VALUES (
     (
         5,
         'Light & Sound Concept',
-        '[email protected]',
+        'light.sound@test.com',
         '0600000006',
         '18 rue Sainte, Marseille',
         'Sonorisation et éclairage professionnel'

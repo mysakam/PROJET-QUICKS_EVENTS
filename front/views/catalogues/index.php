@@ -12,7 +12,7 @@ if (!isset($categories)) $categories = [];
         <?php foreach ($categories as $category): ?>
             <li>
                 <a href="<?= route('catalogues_category', ['slug' => $category['slug']]) ?>">
-                    <?= e($category['name']) ?>
+                    <?= e($category['nom']) ?>
                 </a>
             </li>
         <?php endforeach; ?>
