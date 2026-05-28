@@ -12,10 +12,10 @@ if (!isset($prestations)) $prestations = [];
     <ul>
         <?php foreach ($prestations as $prestation): ?>
             <li>
-                <strong><?= e($prestation['name']) ?></strong>
-                - <?= e($prestation['category']) ?>
-                - <?= e($prestation['price']) ?> €
-                <a href="<?= route('prestations_show', ['id' => $prestation['id']]) ?>">
+                <strong><?= e($prestation['nom']) ?></strong>
+                - <?= e($prestation['category_name']) ?>
+                - <?= e($prestation['prix_unitaire']) ?> €
+                <a href="<?= route('prestations_show', ['id' => $prestation['id_prestation']]) ?>">
                     Voir
                 </a>
             </li>

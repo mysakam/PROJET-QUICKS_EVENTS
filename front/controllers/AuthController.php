@@ -1,18 +1,86 @@
 <?php
 
-class AuthController
+class AuthController extends Controller
 {
-    public function login()
+    private ClientModel $clientModel;
+
+    public function __construct()
     {
-        // Affiche la vue de connexion
-        require_once __DIR__ . '/../helpers/view.php';
-        view('auth/login');
+        $this->clientModel = new ClientModel();
     }
 
-    public function register()
+    public function login(): void
     {
-        // Affiche la vue d'inscription
-        require_once __DIR__ . '/../helpers/view.php';
-        view('auth/register');
+        $this->render('auth/login');
+    }
+
+    public function register(): void
+    {
+        $this->render('auth/register');
+    }
+
+    public function authenticate(): void
+    {
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        $client = $this->clientModel->findByEmail($email);
+
+        if (!$client || !password_verify($password, $client['mot_de_passe'])) {
+            $_SESSION['error'] = 'Identifiants invalides';
+            redirect(route('login'));
+        }
+
+        $_SESSION['client'] = [
+            'id' => $client['id_client'],
+            'nom' => $client['nom'],
+            'email' => $client['email']
+        ];
+
+        redirect(route('account'));
+    }
+
+    public function store(): void
+    {
+        $nom = trim($_POST['nom'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = $_POST['password'] ?? '';
+
+        if ($nom === '' || $email === '' || $password === '') {
+            $_SESSION['error'] = 'Tous les champs sont obligatoires';
+            redirect(route('register'));
+        }
+
+        if ($this->clientModel->findByEmail($email)) {
+            $_SESSION['error'] = 'Email déjà utilisé';
+            redirect(route('register'));
+        }
+
+        $id = $this->clientModel->create($nom, $email, $password);
+
+        $_SESSION['client'] = [
+            'id' => $id,
+            'nom' => $nom,
+            'email' => $email
+        ];
+
+        redirect(route('account'));
+    }
+
+    public function logout(): void
+    {
+        unset($_SESSION['client']);
+        redirect(route('login'));
+    }
+
+    public function account(): void
+    {
+        $client = $_SESSION['client'] ?? null;
+
+        if (!$client) {
+            redirect(route('login'));
+        }
+
+        $this->render('client/account', compact('client'));
     }
 }

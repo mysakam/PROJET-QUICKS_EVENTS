@@ -1,5 +1,6 @@
 -- Partie 1 : Vider les tables (à exécuter seule si besoin)
 USE quickevents;
+SET NAMES utf8mb4;
 
 SET FOREIGN_KEY_CHECKS = 0;
 

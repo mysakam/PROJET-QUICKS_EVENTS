@@ -7,24 +7,14 @@ class Database
     public static function getPdo(): PDO
     {
         if (self::$pdo === null) {
-            $config = require __DIR__ . '/../../back/config/database.php';
-
-            $dsn = sprintf(
-                'mysql:host=%s;port=%s;dbname=%s;charset=%s',
-                $config['host'],
-                $config['port'],
-                $config['dbname'],
-                $config['charset']
-            );
-
             self::$pdo = new PDO(
-                $dsn,
-                $config['user'],
-                $config['password'],
+                'mysql:host=localhost;dbname=quickevents;charset=utf8mb4',
+                'root',
+                '',
                 [
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8mb4'"
+                    PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
                 ]
             );
         }

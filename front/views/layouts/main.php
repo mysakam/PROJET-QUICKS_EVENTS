@@ -1,3 +1,9 @@
+<?php
+// Forcer l'encodage UTF-8 côté navigateur
+if (!headers_sent()) {
+    header('Content-Type: text/html; charset=utf-8');
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 
