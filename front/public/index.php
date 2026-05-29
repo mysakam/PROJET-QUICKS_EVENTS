@@ -57,4 +57,15 @@ $router->get('/devis/checkout', ['DevisController', 'checkout'], ['AuthMiddlewar
 $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
+
+$router->get('/login', ['AuthController', 'login'], [], 'login');
+$router->post('/login', ['AuthController', 'authenticate'], [], 'login_post');
+
+$router->get('/register', ['AuthController', 'register'], [], 'register');
+$router->post('/register', ['AuthController', 'store'], [], 'register_post');
+
+$router->get('/logout', ['AuthController', 'logout'], [], 'logout');
+
+$router->get('/mon-compte', ['AuthController', 'account'], ['AuthMiddleware'], 'account');
+
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
