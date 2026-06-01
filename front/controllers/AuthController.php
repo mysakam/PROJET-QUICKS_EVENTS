@@ -43,15 +43,22 @@ class AuthController extends Controller
         return;
     }
 
-    public function account(): void
-{
-    $client = $_SESSION['client'] ?? null;
-
-    if (!$client) {
+    public function logout(): void
+    {
+        unset($_SESSION['client']);
         redirect(route('login'));
         return;
     }
 
-    $this->render('client/account', compact('client'));
-}
+    public function account(): void
+    {
+        $client = $_SESSION['client'] ?? null;
+
+        if (!$client) {
+            redirect(route('login'));
+            return;
+        }
+
+        $this->render('client/account', compact('client'));
+    }
 }
