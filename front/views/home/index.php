@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -14,8 +14,8 @@
         <ul class="navbar">
             <li><a href="#" class="btn">A PROPOS</a></li>
             <li><a href="#" class="btn">ÉVÉNEMENTS</a></li>
-            <li><a href="#" class="btn">CONNEXION</a></li>
-            <li><a href="#" class="btn">INSCRIPTION</a></li>
+            <li><a href="<?= route('login') ?>" class="btn">CONNEXION</a></li>
+            <li><a href="<?= route('register') ?>" class="btn">INSCRIPTION</a></li>
             <a href="#" class="btn-transcription">FR/EN</a>
         </ul>
     </header>
@@ -94,7 +94,7 @@
         <div class="action">
             <h3>Prêt à les épater...</h3>
             <div>
-                <a href="#" class="btn">Découvrir les catalogues</a>
+                <a href="<?= route('catalogues') ?>" class="btn">Découvrir les catalogues</a>
             </div>
         </div>
     </section>

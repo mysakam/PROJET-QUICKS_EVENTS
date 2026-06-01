@@ -1,30 +1,41 @@
-<h1>Mes devis</h1>
-
 <?php if (empty($devisList)): ?>
-<p>Vous n'avez encore aucun devis.</p>
+    <div class="empty-box">
+        <p>Aucun devis trouvé.</p>
+    </div>
 <?php else: ?>
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Référence</th>
-            <th>Statut</th>
-            <th>Date événement</th>
-            <th>Montant</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
+    <section class="devis-index-list">
         <?php foreach ($devisList as $devis): ?>
-        <tr>
-            <td><?= htmlspecialchars($devis['reference']) ?></td>
-            <td><?= htmlspecialchars($devis['statut']) ?></td>
-            <td><?= htmlspecialchars($devis['date_evenement'] ?? '') ?></td>
-            <td><?= number_format($devis['montant_total'], 2, ',', ' ') ?> €</td>
-            <td>
-                <a href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">Voir</a>
-            </td>
-        </tr>
+            <article class="devis-card">
+                <div class="devis-card-top">
+                    <div>
+                        <span class="devis-card-label">Référence</span>
+                        <div class="devis-card-value"><?= e($devis['reference'] ?? '') ?></div>
+                    </div>
+
+                    <div>
+                        <span class="devis-card-label">Statut</span>
+                        <div class="devis-card-value"><?= e($devis['statut'] ?? '') ?></div>
+                    </div>
+
+                    <div>
+                        <span class="devis-card-label">Date</span>
+                        <div class="devis-card-value">
+                            <?= !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : '-' ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="devis-card-label">Total</span>
+                        <div class="devis-card-value">
+                            <?= number_format((float)($devis['montant_total'] ?? 0), 2, ',', ' ') ?> €
+                        </div>
+                    </div>
+                </div>
+
+                <div class="devis-card-actions">
+                    <a class="pill-link" href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">VOIR LE DEVIS</a>
+                </div>
+            </article>
         <?php endforeach; ?>
-    </tbody>
-</table>
+    </section>
 <?php endif; ?>

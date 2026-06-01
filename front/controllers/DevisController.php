@@ -23,11 +23,6 @@ class DevisController extends Controller
         unset($_SESSION['cart']);
     }
 
-    private function getClientId(): ?int
-    {
-        return $_SESSION['client']['id_client'] ?? null;
-    }
-
     public function checkout(): void
     {
         $cart = $this->getCart();
@@ -39,18 +34,18 @@ class DevisController extends Controller
 
         $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
-        $this->render('devis/checkout', compact('cart', 'total'));
+        $this->render('devis/checkout', [
+            'cart' => $cart,
+            'total' => $total,
+            'pageTitle' => 'DEVIS',
+            'pageCss' => 'devis-checkout.css',
+            'backUrl' => route('panier'),
+        ], 'devis');
     }
 
     public function store(): void
     {
         $cart = $this->getCart();
-        $idClient = $this->getClientId();
-
-        if (!$idClient) {
-            redirect(route('login'));
-            return;
-        }
 
         if (empty($cart)) {
             redirect(route('panier'));
@@ -58,6 +53,7 @@ class DevisController extends Controller
         }
 
         $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        $idClient = 1;
         $reference = 'DEV-' . date('YmdHis');
         $dateEvenement = $_POST['date_evenement'] ?? null;
         $messageClient = trim($_POST['message_client'] ?? '');
@@ -102,40 +98,54 @@ class DevisController extends Controller
     {
         $devis = $this->devisModel->findById($id);
 
-        if (!$devis || (int)$devis['id_client'] !== (int)$this->getClientId()) {
+        if (!$devis) {
             http_response_code(404);
             echo 'Devis introuvable';
             return;
         }
 
         $lignes = $this->devisLigneModel->findByDevisId($id);
-        $this->render('devis/success', compact('devis', 'lignes'));
+
+        $this->render('devis/success', [
+            'devis' => $devis,
+            'lignes' => $lignes,
+            'pageTitle' => 'DEVIS',
+            'pageCss' => 'devis-success.css',
+            'backUrl' => route('devis_index'),
+        ], 'devis');
     }
 
     public function index(): void
     {
-        $idClient = $this->getClientId();
-
-        if (!$idClient) {
-            redirect(route('login'));
-            return;
-        }
-
+        $idClient = 1;
         $devisList = $this->devisModel->findByClientId($idClient);
-        $this->render('devis/index', compact('devisList'));
+
+        $this->render('devis/index', [
+            'devisList' => $devisList,
+            'pageTitle' => 'MES DEVIS',
+            'pageCss' => 'devis-index.css',
+            'backUrl' => route('account'),
+        ], 'devis');
     }
 
     public function show(int $id): void
     {
         $devis = $this->devisModel->findById($id);
 
-        if (!$devis || (int)$devis['id_client'] !== (int)$this->getClientId()) {
+        if (!$devis) {
             http_response_code(404);
             echo 'Devis introuvable';
             return;
         }
 
         $lignes = $this->devisLigneModel->findByDevisId($id);
-        $this->render('devis/show', compact('devis', 'lignes'));
+
+        $this->render('devis/show', [
+            'devis' => $devis,
+            'lignes' => $lignes,
+            'pageTitle' => 'DEVIS',
+            'pageCss' => 'devis-show.css',
+            'backUrl' => route('devis_index'),
+        ], 'devis');
     }
 }

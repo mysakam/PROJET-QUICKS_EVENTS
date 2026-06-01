@@ -1,44 +1,52 @@
-<h1>Demande de devis</h1>
-
 <?php if (empty($cart)): ?>
-<p>Votre panier est vide.</p>
+    <div class="empty-box">
+        <p>Votre panier est vide.</p>
+    </div>
 <?php else: ?>
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Prestation</th>
-            <th>Catégorie</th>
-            <th>Prix unitaire</th>
-            <th>Quantité</th>
-            <th>Total ligne</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($cart as $item): ?>
-        <tr>
-            <td><?= htmlspecialchars($item['name']) ?></td>
-            <td><?= htmlspecialchars($item['category']) ?></td>
-            <td><?= number_format($item['price'], 2, ',', ' ') ?> €</td>
-            <td><?= (int) $item['quantity'] ?></td>
-            <td><?= number_format($item['price'] * $item['quantity'], 2, ',', ' ') ?> €</td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
+    <div class="checkout-box">
+        <div class="checkout-grid">
+            <section class="checkout-card">
+                <h2>Récapitulatif</h2>
 
-<p><strong>Total :</strong> <?= number_format($total, 2, ',', ' ') ?> €</p>
+                <div class="cart-list">
+                    <?php foreach ($cart as $item): ?>
+                        <div class="cart-item">
+                            <div class="cart-item-title"><?= e($item['name'] ?? 'Prestation') ?></div>
+                            <div class="cart-item-meta">
+                                Quantité : <?= (int)($item['quantity'] ?? 0) ?><br>
+                                Prix unitaire : <?= number_format((float)($item['price'] ?? 0), 2, ',', ' ') ?> €<br>
+                                Montant :
+                                <?= number_format((float)(($item['price'] ?? 0) * ($item['quantity'] ?? 0)), 2, ',', ' ') ?> €
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </section>
 
-<form action="<?= route('devis_store') ?>" method="post">
-    <div>
-        <label for="date_evenement">Date de l'événement</label>
-        <input type="date" name="date_evenement" id="date_evenement">
+            <section class="checkout-card">
+                <h2>Finaliser le devis</h2>
+
+                <form method="POST" action="<?= route('devis_store') ?>">
+                    <div class="form-group">
+                        <label for="date_evenement">Date de l'événement</label>
+                        <input class="form-control" type="date" name="date_evenement" id="date_evenement">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message_client">Message</label>
+                        <textarea class="form-control" name="message_client" id="message_client"></textarea>
+                    </div>
+
+                    <div class="total-box">
+                        TOTAL : <?= number_format((float)$total, 2, ',', ' ') ?> €
+                    </div>
+
+                    <div class="checkout-actions">
+                        <a class="pill-link" href="<?= route('panier') ?>">MODIFIER</a>
+                        <button class="pill-btn" type="submit">ENREGISTRER</button>
+                    </div>
+                </form>
+            </section>
+        </div>
     </div>
-
-    <div>
-        <label for="message_client">Message</label>
-        <textarea name="message_client" id="message_client" rows="5"></textarea>
-    </div>
-
-    <button type="submit">Valider la demande de devis</button>
-</form>
 <?php endif; ?>

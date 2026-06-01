@@ -24,7 +24,7 @@ if (!headers_sent()) {
     ?>
 
     <main>
-        <?= $content ?? '' ?>
+        <?php if (isset($viewPath) && file_exists($viewPath)) require $viewPath; ?>
     </main>
 
 </body>
