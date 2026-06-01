@@ -20,28 +20,31 @@ class AuthController extends Controller
         $this->render('auth/register');
     }
     public function authenticate(): void
-    {
-        $email = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
+{
+    $email = trim($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
 
-        $client = $this->clientModel->findByEmail($email);
+    $client = $this->clientModel->findByEmail($email);
 
-        if (!$client || !password_verify($password, $client['mot_de_passe'])) {
-            $_SESSION['error'] = 'Identifiants invalides';
-            redirect(route('login'));
-            return;
-        }
-
-        $_SESSION['client'] = [
-            'id_client' => $client['id_client'],
-            'nom' => $client['nom'],
-            'prenom' => $client['prenom'],
-            'email' => $client['email'],
-        ];
-
-        redirect(route('catalogues'));
+    if (!$client || !password_verify($password, $client['mot_de_passe'])) {
+        $_SESSION['error'] = 'Identifiants invalides';
+        redirect(route('login'));
         return;
     }
+
+    session_regenerate_id(true);
+
+    $_SESSION['client'] = [
+        'id_client' => $client['id_client'],
+        'nom' => $client['nom'],
+        'prenom' => $client['prenom'],
+        'email' => $client['email'],
+    ];
+
+    redirect(route('catalogues'));
+    return;
+}
+    
 
     public function logout(): void
     {
