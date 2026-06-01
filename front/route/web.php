@@ -1,0 +1,1 @@
+$router->get('/catalogues', 'CatalogueController@index', 'catalogues');

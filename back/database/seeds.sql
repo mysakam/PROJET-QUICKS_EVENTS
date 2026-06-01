@@ -1,5 +1,6 @@
 -- Partie 1 : Vider les tables (à exécuter seule si besoin)
 USE quickevents;
+
 SET NAMES utf8mb4;
 
 SET FOREIGN_KEY_CHECKS = 0;
@@ -33,7 +34,7 @@ VALUES (
         'Akam',
         'Samy',
         'samy@test.com',
-        '$2y$10$abcdefghijklmnopqrstuv',
+        '$2y$10$ZZgidpiGw91yBWtrTFZAyeylNrgAN/RSCZZGRczpLzjE4fbAS9u2e',
         '0600000001'
     );
 

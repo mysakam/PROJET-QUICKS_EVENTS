@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../models/ClientModel.php';
 
 class AuthController extends Controller
 {
@@ -18,7 +19,6 @@ class AuthController extends Controller
     {
         $this->render('auth/register');
     }
-
     public function authenticate(): void
     {
         $email = trim($_POST['email'] ?? '');
@@ -29,58 +29,29 @@ class AuthController extends Controller
         if (!$client || !password_verify($password, $client['mot_de_passe'])) {
             $_SESSION['error'] = 'Identifiants invalides';
             redirect(route('login'));
+            return;
         }
 
         $_SESSION['client'] = [
-            'id' => $client['id_client'],
+            'id_client' => $client['id_client'],
             'nom' => $client['nom'],
-            'email' => $client['email']
+            'prenom' => $client['prenom'],
+            'email' => $client['email'],
         ];
 
-        redirect(route('account'));
-    }
-
-    public function store(): void
-    {
-        $nom = trim($_POST['nom'] ?? '');
-        $email = trim($_POST['email'] ?? '');
-        $password = $_POST['password'] ?? '';
-
-        if ($nom === '' || $email === '' || $password === '') {
-            $_SESSION['error'] = 'Tous les champs sont obligatoires';
-            redirect(route('register'));
-        }
-
-        if ($this->clientModel->findByEmail($email)) {
-            $_SESSION['error'] = 'Email déjà utilisé';
-            redirect(route('register'));
-        }
-
-        $id = $this->clientModel->create($nom, $email, $password);
-
-        $_SESSION['client'] = [
-            'id' => $id,
-            'nom' => $nom,
-            'email' => $email
-        ];
-
-        redirect(route('account'));
-    }
-
-    public function logout(): void
-    {
-        unset($_SESSION['client']);
-        redirect(route('login'));
+        redirect(route('catalogues'));
+        return;
     }
 
     public function account(): void
-    {
-        $client = $_SESSION['client'] ?? null;
+{
+    $client = $_SESSION['client'] ?? null;
 
-        if (!$client) {
-            redirect(route('login'));
-        }
-
-        $this->render('client/account', compact('client'));
+    if (!$client) {
+        redirect(route('login'));
+        return;
     }
+
+    $this->render('client/account', compact('client'));
+}
 }

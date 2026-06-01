@@ -1,0 +1,115 @@
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => 1234
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => 1234
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+LOGIN FAILED
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => 1234
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => 1234
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+LOGIN FAILED
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => test
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => $2y$10$wH8QwQwQwQwQwQwQwQwQeOQwQwQwQwQwQwQwQwQwQwQwQwQwQwQ
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+LOGIN FAILED
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => test
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => $2y$10$wH8QwQwQwQwQwQwQwQwQeOQwQwQwQwQwQwQwQwQwQwQwQwQwQwQ
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+LOGIN FAILED
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => test
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => $2y$10$wH8QwQwQwQwQwQwQwQwQeOQwQwQwQwQwQwQwQwQwQwQwQwQwQwQ
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+LOGIN FAILED
+AUTH START
+Array
+(
+    [email] => samy@test.com
+    [password] => test123
+)
+CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+    [mot_de_passe] => $2y$10$ZZgidpiGw91yBWtrTFZAyeylNrgAN/RSCZZGRczpLzjE4fbAS9u2e
+    [telephone] => 0600000001
+    [created_at] => 2026-05-28 14:52:38
+)
+SESSION CLIENT:
+Array
+(
+    [id_client] => 1
+    [nom] => Akam
+    [prenom] => Samy
+    [email] => samy@test.com
+)

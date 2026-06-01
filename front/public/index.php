@@ -7,23 +7,30 @@ session_start();
 
 require __DIR__ . '/../core/Controller.php';
 require __DIR__ . '/../core/Router.php';
+require __DIR__ . '/../core/Database.php';
 require __DIR__ . '/../helpers/url.php';
 require __DIR__ . '/../helpers/view.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
-require __DIR__ . '/../core/Database.php';
 
 require __DIR__ . '/../models/CategoryModel.php';
 require __DIR__ . '/../models/PrestationModel.php';
 require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
+require __DIR__ . '/../models/ClientModel.php';
 
 $router = new Router();
 
-/* Pages déjà existantes */
+/* Pages */
 $router->get('/', ['HomeController', 'index'], [], 'home');
-$router->get('/login', ['AuthController', 'login'], [], 'login');
-$router->get('/register', ['AuthController', 'register'], [], 'register');
-$router->get('/dashboard', ['DashboardController', 'index'], ['AuthMiddleware'], 'dashboard');
+$router->get('/dashboard', ['DashboardController', 'index'], [AuthMiddleware::class], 'dashboard');
+
+/* Auth */
+$router->get('/login', ['AuthController', 'login'], [GuestMiddleware::class], 'login');
+$router->post('/login', ['AuthController', 'authenticate'], [GuestMiddleware::class], 'login_post');
+$router->get('/register', ['AuthController', 'register'], [GuestMiddleware::class], 'register');
+$router->post('/register', ['AuthController', 'store'], [GuestMiddleware::class], 'register_post');
+$router->get('/logout', ['AuthController', 'logout'], [], 'logout');
+$router->get('/mon-compte', ['AuthController', 'account'], [AuthMiddleware::class], 'account');
 
 /* Catalogue */
 $router->get('/catalogues', ['CatalogueController', 'index'], [], 'catalogues');
@@ -36,36 +43,11 @@ $router->post('/panier/ajouter/{id}', ['PanierController', 'add'], [], 'panier_a
 $router->post('/panier/supprimer/{id}', ['PanierController', 'remove'], [], 'panier_remove');
 $router->post('/panier/vider', ['PanierController', 'clear'], [], 'panier_clear');
 
-/* Devis */
-$router->get('/devis/checkout', ['DevisController', 'checkout'], [], 'devis_checkout');
-$router->post('/devis/store', ['DevisController', 'store'], [], 'devis_store');
-$router->get('/devis/success/{id}', ['DevisController', 'success'], [], 'devis_success');
-$router->get('/devis', ['DevisController', 'index'], [], 'devis_index');
-$router->get('/devis/{id}', ['DevisController', 'show'], [], 'devis_show');
-
-$router->get('/login', ['AuthController', 'login'], [], 'login');
-$router->post('/login', ['AuthController', 'authenticate'], [], 'login_post');
-
-$router->get('/register', ['AuthController', 'register'], [], 'register');
-$router->post('/register', ['AuthController', 'store'], [], 'register_post');
-
-$router->get('/logout', ['AuthController', 'logout'], [], 'logout');
-
-$router->get('/mon-compte', ['AuthController', 'account'], ['AuthMiddleware'], 'account');
-
-$router->get('/devis/checkout', ['DevisController', 'checkout'], ['AuthMiddleware'], 'devis_checkout');
-$router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
-$router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
-$router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
-
-$router->get('/login', ['AuthController', 'login'], [], 'login');
-$router->post('/login', ['AuthController', 'authenticate'], [], 'login_post');
-
-$router->get('/register', ['AuthController', 'register'], [], 'register');
-$router->post('/register', ['AuthController', 'store'], [], 'register_post');
-
-$router->get('/logout', ['AuthController', 'logout'], [], 'logout');
-
-$router->get('/mon-compte', ['AuthController', 'account'], ['AuthMiddleware'], 'account');
+/* Devis protégés */
+$router->get('/devis/checkout', ['DevisController', 'checkout'], [AuthMiddleware::class], 'devis_checkout');
+$router->post('/devis/store', ['DevisController', 'store'], [AuthMiddleware::class], 'devis_store');
+$router->get('/devis/success/{id}', ['DevisController', 'success'], [AuthMiddleware::class], 'devis_success');
+$router->get('/devis', ['DevisController', 'index'], [AuthMiddleware::class], 'devis_index');
+$router->get('/devis/{id}', ['DevisController', 'show'], [AuthMiddleware::class], 'devis_show');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
