@@ -1,48 +1,87 @@
-<h1>Devis enregistré</h1>
+<?php
+$client = $_SESSION['client'] ?? [];
+$clientNom = trim(($client['prenom'] ?? '') . ' ' . ($client['nom'] ?? ''));
+$dateDevis = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : date('d/m/Y');
+$total = (float)($devis['montant_total'] ?? 0);
 
-<p>Votre demande de devis a bien été envoyée.</p>
-<p><strong>Référence :</strong> <?= htmlspecialchars($devis['reference']) ?></p>
-<p><strong>Statut :</strong> <?= htmlspecialchars($devis['statut']) ?></p>
-<p><strong>Montant total :</strong> <?= number_format($devis['montant_total'], 2, ',', ' ') ?> €</p>
+function e(?string $value): string
+{
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+?>
 
-<?php if (!empty($devis['date_evenement'])): ?>
-<p><strong>Date de l'événement :</strong> <?= htmlspecialchars($devis['date_evenement']) ?></p>
-<?php endif; ?>
+<link rel="stylesheet" href="/assets/css/devis-success.css">
 
-<?php if (!empty($devis['message_client'])): ?>
-<p><strong>Message :</strong> <?= nl2br(htmlspecialchars($devis['message_client'])) ?></p>
-<?php endif; ?>
+<div class="success-page">
+    <header class="success-header">
+        <div class="success-header-inner">
+            <div class="brand">
+                <img src="/assets/images/logo.png" alt="Quick'Events">
+                <div class="brand-name">QUICK'EVENTS</div>
+            </div>
 
-<h2>Prestations</h2>
+            <h1 class="success-title">DEVIS</h1>
 
-<?php if (empty($lignes)): ?>
-<p>Aucune ligne trouvée.</p>
-<?php else: ?>
-<table border="1" cellpadding="8" cellspacing="0">
-    <thead>
-        <tr>
-            <th>Prestation</th>
-            <th>Quantité</th>
-            <th>Prix unitaire</th>
-            <th>Montant ligne</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($lignes as $ligne): ?>
-        <tr>
-            <td><?= htmlspecialchars($ligne['nom']) ?></td>
-            <td><?= (int) $ligne['quantite'] ?></td>
-            <td><?= number_format($ligne['prix_unitaire'], 2, ',', ' ') ?> €</td>
-            <td><?= number_format($ligne['montant_ligne'], 2, ',', ' ') ?> €</td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
-<?php endif; ?>
+            <div class="back-btn">
+                <a href="<?= route('devis_index') ?>">RETOUR &rsaquo;</a>
+            </div>
+        </div>
+    </header>
 
-<p>
-    <a href="<?= route('devis_index') ?>">Voir mes devis</a>
-</p>
-<p>
-    <a href="<?= route('catalogues') ?>">Retour au catalogue</a>
-</p>
+    <main class="success-main">
+        <div class="success-box">
+            <div class="success-message">Votre devis a bien été enregistré</div>
+
+            <section class="success-meta">
+                <p><strong>Référence :</strong> <?= e($devis['reference'] ?? $devis['id_devis'] ?? '') ?></p>
+                <p><strong>Client :</strong> <?= e($clientNom ?: 'CLIENT') ?></p>
+                <p><strong>Date :</strong> <?= e($dateDevis) ?></p>
+                <p><strong>Statut :</strong> <?= e($devis['statut'] ?? 'en_attente') ?></p>
+            </section>
+
+            <section class="success-lines">
+                <p><strong>Détail du devis :</strong></p>
+                <ul>
+                    <?php foreach ($lignes as $ligne): ?>
+                    <li>
+                        PRESTATION #<?= (int)($ligne['id_prestation'] ?? 0) ?>
+                        — Qté <?= (int)($ligne['quantite'] ?? 0) ?>
+                        — <?= number_format((float)($ligne['montant_ligne'] ?? 0), 2, ',', ' ') ?> €
+                    </li>
+                    <?php endforeach; ?>
+                </ul>
+            </section>
+
+            <?php if (!empty($devis['message_client'])): ?>
+            <section class="success-meta">
+                <p><strong>Message client :</strong></p>
+                <p><?= nl2br(e($devis['message_client'])) ?></p>
+            </section>
+            <?php endif; ?>
+
+            <section class="success-total">
+                <p><strong>Total devis :</strong> <?= number_format($total, 2, ',', ' ') ?> €</p>
+            </section>
+
+            <section class="success-actions">
+                <div class="action-center">
+                    <a class="pill-link" href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">VOIR LE
+                        DEVIS</a>
+                </div>
+
+                <div class="action-center">
+                    <a class="pill-link" href="<?= route('devis_index') ?>">MES DEVIS</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="success-footer">
+        <div class="success-footer-top">
+            <div>CONTACTS</div>
+            <div>CVG</div>
+            <div>FOLLOW US</div>
+            <div>Mentions légales</div>
+        </div>
+    </footer>
+</div>

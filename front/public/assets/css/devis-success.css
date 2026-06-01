@@ -1,0 +1,200 @@
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #111;
+    background: #fff;
+}
+
+.success-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.success-header,
+.success-footer {
+    background: linear-gradient(90deg, #9fd0f2 0%, #b9d9eb 50%, #9fc9e7 100%);
+}
+
+.success-header {
+    padding: 18px 32px;
+}
+
+.success-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 220px;
+}
+
+.brand img {
+    width: 74px;
+    height: 74px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.brand-name {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.success-title {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 800;
+}
+
+.back-btn {
+    min-width: 150px;
+    text-align: center;
+}
+
+.back-btn a,
+.pill-link {
+    display: inline-block;
+    min-width: 150px;
+    padding: 10px 22px;
+    border: 1px solid rgba(255,255,255,0.7);
+    border-radius: 999px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: #111;
+    background: linear-gradient(180deg, #edf7fc 0%, #d4edf8 100%);
+    box-shadow: 0 10px 28px rgba(170, 190, 210, 0.45);
+}
+
+.success-main {
+    flex: 1;
+    padding: 28px 42px 40px;
+}
+
+.success-box {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.success-message {
+    margin-bottom: 34px;
+    font-size: 24px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.success-meta,
+.success-lines {
+    margin-bottom: 30px;
+}
+
+.success-meta p,
+.success-lines li,
+.success-total p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0 0 8px;
+}
+
+.success-lines ul {
+    margin: 10px 0 0;
+    padding-left: 22px;
+}
+
+.success-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    max-width: 500px;
+    margin: 70px auto 20px;
+}
+
+.action-center {
+    text-align: center;
+}
+
+.success-footer {
+    padding: 14px 24px 10px;
+}
+
+.success-footer-top {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    text-align: center;
+    font-size: 16px;
+}
+
+@media (max-width: 900px) {
+    .success-header {
+        padding: 14px 16px;
+    }
+
+    .success-header-inner {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "brand back"
+            "title title";
+        gap: 12px;
+    }
+
+    .brand { grid-area: brand; min-width: 0; }
+    .back-btn { grid-area: back; min-width: 0; }
+    .success-title {
+        grid-area: title;
+        font-size: 24px;
+        margin-top: 4px;
+    }
+
+    .brand img {
+        width: 58px;
+        height: 58px;
+    }
+
+    .brand-name {
+        font-size: 16px;
+    }
+
+    .back-btn a,
+    .pill-link {
+        min-width: 120px;
+        padding: 9px 16px;
+        font-size: 14px;
+    }
+
+    .success-main {
+        padding: 18px 22px 34px;
+    }
+
+    .success-message {
+        font-size: 20px;
+    }
+
+    .success-actions {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        margin-top: 50px;
+    }
+
+    .success-footer-top {
+        grid-template-columns: repeat(3, 1fr);
+        row-gap: 8px;
+        font-size: 14px;
+    }
+
+    .success-footer-top div:last-child {
+        grid-column: 1 / -1;
+    }
+}
