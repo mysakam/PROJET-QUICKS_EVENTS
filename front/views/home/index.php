@@ -27,6 +27,12 @@ $t = [
         ],
         'events_title' => 'NOTRE RUBRIQUE EVENEMENTS',
         'discover_label' => 'Voir le catalogue',
+        'event_links' => [
+            ['label' => 'Voir la page Mariage', 'route' => 'event_mariage'],
+            ['label' => 'Voir la page Anniversaire', 'route' => 'event_anniversaire'],
+            ['label' => 'Voir la page Soirée à thème', 'route' => 'event_soiree_theme'],
+            ['label' => 'Voir la page Repas séminaire', 'route' => 'event_repas_seminaire'],
+        ],
         'bottom_title' => 'Pret a les epater...',
         'bottom_cta' => 'Decouvrir les catalogues',
         'cards' => [
@@ -60,6 +66,12 @@ $t = [
         ],
         'events_title' => 'OUR EVENT CATEGORIES',
         'discover_label' => 'Browse catalogue',
+        'event_links' => [
+            ['label' => 'Open Wedding page', 'route' => 'event_mariage'],
+            ['label' => 'Open Birthday page', 'route' => 'event_anniversaire'],
+            ['label' => 'Open Theme party page', 'route' => 'event_soiree_theme'],
+            ['label' => 'Open Seminar meal page', 'route' => 'event_repas_seminaire'],
+        ],
         'bottom_title' => 'Ready to impress...',
         'bottom_cta' => 'Discover catalogues',
         'cards' => [
@@ -136,38 +148,38 @@ $catalogueUrl = route('catalogues') . $langQuery;
     <section class="evenements" id="evenements">
         <h2 class="titre-texte"><span><?= $txt['events_title'] ?></span></h2>
         <div class="row">
-            <div class="card">
+            <div class="polaroid">
                 <h3><?= $txt['cards'][0]['title'] ?></h3>
-                <div>
+                <div class="image">
                     <img src="/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
                         alt="<?= $txt['cards'][0]['title'] ?>">
                 </div>
                 <div class="card-text"><?= $txt['cards'][0]['text'] ?></div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['discover_label'] ?></a>
+                <a href="<?= route('event_mariage') . $langQuery ?>" class="btn"><?= $txt['event_links'][0]['label'] ?></a>
             </div>
-            <div class="card">
+            <div class="polaroid">
                 <h3><?= $txt['cards'][1]['title'] ?></h3>
-                <div>
+                <div class="image">
                     <img src="/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg" alt="<?= $txt['cards'][1]['title'] ?>">
                 </div>
                 <div class="card-text"><?= $txt['cards'][1]['text'] ?></div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['discover_label'] ?></a>
+                <a href="<?= route('event_anniversaire') . $langQuery ?>" class="btn"><?= $txt['event_links'][1]['label'] ?></a>
             </div>
-            <div class="card">
+            <div class="polaroid">
                 <h3><?= $txt['cards'][2]['title'] ?></h3>
-                <div>
+                <div class="image">
                     <img src="/assets/css/images/image-45-768x768.jpeg" alt="<?= $txt['cards'][2]['title'] ?>">
                 </div>
                 <div class="card-text"><?= $txt['cards'][2]['text'] ?></div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['discover_label'] ?></a>
+                <a href="<?= route('event_soiree_theme') . $langQuery ?>" class="btn"><?= $txt['event_links'][2]['label'] ?></a>
             </div>
-            <div class="card">
+            <div class="polaroid">
                 <h3><?= $txt['cards'][3]['title'] ?></h3>
-                <div>
+                <div class="image">
                     <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg" alt="<?= $txt['cards'][3]['title'] ?>">
                 </div>
                 <div class="card-text"><?= $txt['cards'][3]['text'] ?></div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['discover_label'] ?></a>
+                <a href="<?= route('event_repas_seminaire') . $langQuery ?>" class="btn"><?= $txt['event_links'][3]['label'] ?></a>
             </div>
         </div>
         <div class="action">

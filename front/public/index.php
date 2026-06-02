@@ -23,6 +23,10 @@ $router = new Router();
 /* Pages */
 $router->get('/', ['HomeController', 'index'], [], 'home');
 $router->get('/dashboard', ['DashboardController', 'index'], ['AuthMiddleware'], 'dashboard');
+$router->get('/mariage', ['EventPagesController', 'mariage'], [], 'event_mariage');
+$router->get('/anniversaire', ['EventPagesController', 'anniversaire'], [], 'event_anniversaire');
+$router->get('/soiree-theme', ['EventPagesController', 'soireeTheme'], [], 'event_soiree_theme');
+$router->get('/repas-seminaire', ['EventPagesController', 'repasSeminaire'], [], 'event_repas_seminaire');
 
 /* Auth */
 $router->get('/login', ['AuthController', 'login'], [], 'login');
