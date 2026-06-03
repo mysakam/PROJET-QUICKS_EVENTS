@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS prestataires;
 
 DROP TABLE IF EXISTS categories;
 
+DROP TABLE IF EXISTS event_medias;
+
 DROP TABLE IF EXISTS clients;
 
 CREATE TABLE clients (
@@ -54,6 +56,26 @@ CREATE TABLE prestations (
     CONSTRAINT fk_prestations_prestataires FOREIGN KEY (id_prestataire) REFERENCES prestataires (id_prestataire)
 ) ENGINE = InnoDB;
 
+CREATE TABLE event_medias (
+    id_media INT AUTO_INCREMENT PRIMARY KEY,
+    theme_slug VARCHAR(80) NOT NULL,
+    media_type ENUM('image', 'video') NOT NULL DEFAULT 'image',
+    media_url VARCHAR(255) NOT NULL,
+    title_fr VARCHAR(150) NOT NULL,
+    title_en VARCHAR(150) NOT NULL,
+    description_fr TEXT DEFAULT NULL,
+    description_en TEXT DEFAULT NULL,
+    position INT NOT NULL DEFAULT 1,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_event_medias_theme_active_pos (
+        theme_slug,
+        is_active,
+        position
+    )
+) ENGINE = InnoDB;
+
 CREATE TABLE devis (
     id_devis INT AUTO_INCREMENT PRIMARY KEY,
     id_client INT NOT NULL,
@@ -76,3 +98,23 @@ CREATE TABLE devis_lignes (
     CONSTRAINT fk_devis_lignes_devis FOREIGN KEY (id_devis) REFERENCES devis (id_devis) ON DELETE CASCADE,
     CONSTRAINT fk_devis_lignes_prestations FOREIGN KEY (id_prestation) REFERENCES prestations (id_prestation)
 ) ENGINE = InnoDB;
+
+CREATE TABLE IF NOT EXISTS event_medias (
+    id_media INT AUTO_INCREMENT PRIMARY KEY,
+    theme_slug VARCHAR(80) NOT NULL,
+    media_type ENUM('image', 'video') NOT NULL DEFAULT 'image',
+    media_url VARCHAR(255) NOT NULL,
+    title_fr VARCHAR(150) NOT NULL,
+    title_en VARCHAR(150) NOT NULL,
+    description_fr TEXT DEFAULT NULL,
+    description_en TEXT DEFAULT NULL,
+    position INT NOT NULL DEFAULT 1,
+    is_active TINYINT(1) NOT NULL DEFAULT 1,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_event_medias_theme_active_pos (
+        theme_slug,
+        is_active,
+        position
+    )
+) ENGINE=InnoDB;

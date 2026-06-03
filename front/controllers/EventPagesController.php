@@ -2,6 +2,8 @@
 
 class EventPagesController extends Controller
 {
+    private EventMediaModel $eventMediaModel;
+
     private array $pages = [
         'mariage' => [
             'title_fr' => 'Mariage',
@@ -60,7 +62,40 @@ class EventPagesController extends Controller
             ],
         ],
     ];
-    //
+
+    public function __construct()
+    {
+        $this->eventMediaModel = new EventMediaModel();
+    }
+
+    private function mapStaticPolaroids(array $staticPolaroids, string $lang): array
+    {
+        return array_map(static function (array $item) use ($lang): array {
+            return [
+                'title' => $item['title_' . $lang],
+                'mediaLabel' => $item['media_' . $lang],
+                'mediaType' => 'image',
+                'mediaSrc' => $item['media_src'] ?? null,
+                'description' => $item['description_' . $lang],
+            ];
+        }, $staticPolaroids);
+    }
+
+    private function mapDbPolaroids(array $dbPolaroids, string $lang): array
+    {
+        $defaultLabel = $lang === 'fr' ? 'Média événement' : 'Event media';
+
+        return array_map(static function (array $item) use ($defaultLabel): array {
+            return [
+                'title' => $item['title'] ?: $defaultLabel,
+                'mediaLabel' => $defaultLabel,
+                'mediaType' => $item['media_type'] ?? 'image',
+                'mediaSrc' => $item['media_url'] ?? null,
+                'description' => $item['description'] ?? '',
+            ];
+        }, $dbPolaroids);
+    }
+
     private function renderPage(string $slug): void
     {
         if (!isset($this->pages[$slug])) {
@@ -72,14 +107,17 @@ class EventPagesController extends Controller
         $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
         $page = $this->pages[$slug];
 
-        $polaroids = array_map(static function (array $item) use ($lang): array {
-            return [
-                'title' => $item['title_' . $lang],
-                'mediaLabel' => $item['media_' . $lang],
-                'mediaSrc' => $item['media_src'] ?? null,
-                'description' => $item['description_' . $lang],
-            ];
-        }, $page['polaroids']);
+        $polaroids = $this->mapStaticPolaroids($page['polaroids'], $lang);
+
+        try {
+            $dbPolaroids = $this->eventMediaModel->findByTheme($slug, $lang);
+
+            if (!empty($dbPolaroids)) {
+                $polaroids = $this->mapDbPolaroids($dbPolaroids, $lang);
+            }
+        } catch (Throwable $e) {
+            // Fallback: keep static polaroids when table is not yet deployed.
+        }
 
         $this->render('events/show', [
             'lang' => $lang,

@@ -17,6 +17,7 @@ require __DIR__ . '/../models/PrestationModel.php';
 require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
 require __DIR__ . '/../models/ClientModel.php';
+require __DIR__ . '/../models/EventMediaModel.php';
 
 $router = new Router();
 
@@ -53,5 +54,13 @@ $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 
 $router->get('/devis/success/{id}', ['DevisController', 'success'], ['AuthMiddleware'], 'devis_success');
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
+
+/* Admin medias evenements */
+$router->get('/admin/event-medias', ['EventMediaAdminController', 'index'], ['AuthMiddleware'], 'admin_event_medias');
+$router->get('/admin/event-medias/create', ['EventMediaAdminController', 'create'], ['AuthMiddleware'], 'admin_event_medias_create');
+$router->post('/admin/event-medias', ['EventMediaAdminController', 'store'], ['AuthMiddleware'], 'admin_event_medias_store');
+$router->get('/admin/event-medias/{id}/edit', ['EventMediaAdminController', 'edit'], ['AuthMiddleware'], 'admin_event_medias_edit');
+$router->post('/admin/event-medias/{id}/update', ['EventMediaAdminController', 'update'], ['AuthMiddleware'], 'admin_event_medias_update');
+$router->post('/admin/event-medias/{id}/delete', ['EventMediaAdminController', 'delete'], ['AuthMiddleware'], 'admin_event_medias_delete');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

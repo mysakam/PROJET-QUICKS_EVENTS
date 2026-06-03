@@ -22,7 +22,18 @@ $catalogueUrl = route('catalogues') . $langQuery;
                 <h3><?= e($polaroid['title']) ?></h3>
                 <div class="image event-media-slot">
                     <?php if (!empty($polaroid['mediaSrc'])): ?>
-                        <img src="<?= e($polaroid['mediaSrc']) ?>" alt="<?= e($polaroid['title']) ?>">
+                        <?php if (($polaroid['mediaType'] ?? 'image') === 'video'): ?>
+                            <video controls preload="metadata" playsinline style="max-width: 100%; height: auto;" aria-label="<?= e($polaroid['title']) ?>">
+                                <source src="<?= e($polaroid['mediaSrc']) ?>" type="video/mp4">
+                            </video>
+                            <p style="font-size: 0.9rem; margin-top: 8px;">
+                                <a href="<?= e($polaroid['mediaSrc']) ?>" target="_blank" rel="noopener noreferrer">
+                                    <?= ($lang ?? 'fr') === 'fr' ? 'Ouvrir la video dans un nouvel onglet' : 'Open video in a new tab' ?>
+                                </a>
+                            </p>
+                        <?php else: ?>
+                            <img src="<?= e($polaroid['mediaSrc']) ?>" alt="<?= e($polaroid['title']) ?>">
+                        <?php endif; ?>
                     <?php else: ?>
                         <span><?= e($polaroid['mediaLabel']) ?></span>
                     <?php endif; ?>
