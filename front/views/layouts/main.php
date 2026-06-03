@@ -5,12 +5,12 @@ if (!headers_sent()) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= e($lang ?? 'fr') ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUICK'EVENTS</title>
+    <title><?= e($pageTitle ?? "QUICK'EVENTS") ?></title>
     <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
 </head>
 
@@ -24,8 +24,17 @@ if (!headers_sent()) {
     ?>
 
     <main>
-        <?php if (isset($viewPath) && file_exists($viewPath)) require $viewPath; ?>
+        <?php if (isset($viewPath) && file_exists($viewPath)) {
+            require $viewPath;
+        } ?>
     </main>
+
+    <?php
+    $footerPath = __DIR__ . '/../partials/footer.php';
+    if (file_exists($footerPath)) {
+        require $footerPath;
+    }
+    ?>
 
 </body>
 

@@ -1,8 +1,6 @@
 <?php
-// Page d'accueil avec un design épuré, sans header ni footer, pour une expérience immersive dès l'arrivée sur le site. Le contenu est centré sur la présentation de l'entreprise et de ses services, avec des sections claires et visuellement attrayantes. Le layout 'none' est utilisé pour cette page afin de supprimer les éléments de navigation habituels et se concentrer sur l'essentiel.
 $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
-$toggleLang = $lang === 'fr' ? 'en' : 'fr';
-// Texte multilingue pour la page d'accueil// Le tableau $t contient les traductions pour le français et l'anglais, organisées par sections et éléments de contenu. Cela permet de facilement gérer les différentes langues et d'afficher le texte approprié en fonction de la langue sélectionnée par l'utilisateur.
+
 $t = [
     'fr' => [
         'about' => 'A PROPOS',
@@ -84,120 +82,95 @@ $t = [
         ],
     ],
 ];
-// Sélection du texte en fonction de la langue choisie// Le code ci-dessous sélectionne le texte approprié dans le tableau $t en fonction de la langue définie par l'utilisateur. Il prépare également les variables nécessaires pour les liens et les boutons de la page d'accueil.
 $txt = $t[$lang];
 $langQuery = '?lang=' . $lang;
 $catalogueUrl = route('catalogues') . $langQuery;
 ?>
-<!DOCTYPE html>
-<html lang="<?= $lang ?>">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <title>QUICK'EVENTS</title>
-</head>
+<section class="banniere" id="banniere">
+    <div class="contenu">
+        <h1><?= $txt['hero_title'] ?></h1>
+        <p><?= $txt['hero_text'] ?></p>
 
-<body>
-    <header>
-        <a href="<?= route('home') . $langQuery ?>" class="logo"><span> QUICK'EVENTS </span></a>
-        <ul class="navbar">
-            <li><a href="#apropos" class="btn"><?= $txt['about'] ?></a></li>
-            <li><a href="#evenements" class="btn"><?= $txt['events'] ?></a></li>
-            <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= $txt['login'] ?></a></li>
-            <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= $txt['register'] ?></a></li>
-            <a href="<?= route('home') . '?lang=' . $toggleLang ?>"
-                class="btn-transcription"><?= $txt['lang_toggle'] ?></a>
-        </ul>
-    </header>
-    <section class="banniere" id="banniere">
-        <div class="contenu">
-            <h1><?= $txt['hero_title'] ?></h1>
-            <p><?= $txt['hero_text'] ?></p>
-
-        </div>
-    </section>
-    <section class="apropos" id="apropos">
-        <div class="rowApropos">
-            <div class="col50">
-                <h2 class="titre-texte">
-                    <span><?= $lang === 'fr' ? 'Q' : 'W' ?></span><?= $lang === 'fr' ? 'ui sommes nous ?' : 'ho are we?' ?>
-                </h2>
-                <ul>
-                    <?php foreach ($txt['who_lines'] as $line): ?>
+    </div>
+</section>
+<section class="apropos" id="apropos">
+    <div class="rowApropos">
+        <div class="col50">
+            <h2 class="titre-texte">
+                <span><?= $lang === 'fr' ? 'Q' : 'W' ?></span><?= $lang === 'fr' ? 'ui sommes nous ?' : 'ho are we?' ?>
+            </h2>
+            <ul>
+                <?php foreach ($txt['who_lines'] as $line): ?>
                     <li><?= $line ?></li>
-                    <?php endforeach; ?>
-                </ul>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <div class="col50">
+            <div class="img">
+                <img src="/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif"
+                    alt="event image">
             </div>
-            <div class="col50">
-                <div class="img">
-                    <img src="/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif"
-                        alt="event image">
-                </div>
-            </div>
-            <div class="col50">
-                <h2 class="titre-texte">
-                    <span><?= $lang === 'fr' ? 'C' : 'H' ?></span><?= $lang === 'fr' ? 'omment ca marche ?' : 'ow does it work?' ?>
-                </h2>
-                <ol>
-                    <?php foreach ($txt['how_lines'] as $line): ?>
+        </div>
+        <div class="col50">
+            <h2 class="titre-texte">
+                <span><?= $lang === 'fr' ? 'C' : 'H' ?></span><?= $lang === 'fr' ? 'omment ca marche ?' : 'ow does it work?' ?>
+            </h2>
+            <ol>
+                <?php foreach ($txt['how_lines'] as $line): ?>
                     <li><?= $line ?></li>
-                    <?php endforeach; ?>
-                </ol>
-            </div>
+                <?php endforeach; ?>
+            </ol>
         </div>
-    </section>
-    <section class="evenements" id="evenements">
-        <h2 class="titre-texte"><span><?= $txt['events_title'] ?></span></h2>
-        <div class="row">
-            <div class="polaroid">
-                <h3><?= $txt['cards'][0]['title'] ?></h3>
-                <div class="image">
-                    <img src="/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
-                        alt="<?= $txt['cards'][0]['title'] ?>">
-                </div>
-                <div class="card-text"><?= $txt['cards'][0]['text'] ?></div>
-                <a href="<?= route('event_mariage') . $langQuery ?>"
-                    class="btn"><?= $txt['event_links'][0]['label'] ?></a>
+    </div>
+</section>
+<section class="evenements" id="evenements">
+    <h2 class="titre-texte"><span><?= $txt['events_title'] ?></span></h2>
+    <div class="row">
+        <div class="polaroid">
+            <h3><?= $txt['cards'][0]['title'] ?></h3>
+            <div class="image">
+                <img src="/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
+                    alt="<?= $txt['cards'][0]['title'] ?>">
             </div>
-            <div class="polaroid">
-                <h3><?= $txt['cards'][1]['title'] ?></h3>
-                <div class="image">
-                    <img src="/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg"
-                        alt="<?= $txt['cards'][1]['title'] ?>">
-                </div>
-                <div class="card-text"><?= $txt['cards'][1]['text'] ?></div>
-                <a href="<?= route('event_anniversaire') . $langQuery ?>"
-                    class="btn"><?= $txt['event_links'][1]['label'] ?></a>
-            </div>
-            <div class="polaroid">
-                <h3><?= $txt['cards'][2]['title'] ?></h3>
-                <div class="image">
-                    <img src="/assets/css/images/image-45-768x768.jpeg" alt="<?= $txt['cards'][2]['title'] ?>">
-                </div>
-                <div class="card-text"><?= $txt['cards'][2]['text'] ?></div>
-                <a href="<?= route('event_soiree_theme') . $langQuery ?>"
-                    class="btn"><?= $txt['event_links'][2]['label'] ?></a>
-            </div>
-            <div class="polaroid">
-                <h3><?= $txt['cards'][3]['title'] ?></h3>
-                <div class="image">
-                    <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg"
-                        alt="<?= $txt['cards'][3]['title'] ?>">
-                </div>
-                <div class="card-text"><?= $txt['cards'][3]['text'] ?></div>
-                <a href="<?= route('event_repas_seminaire') . $langQuery ?>"
-                    class="btn"><?= $txt['event_links'][3]['label'] ?></a>
-            </div>
+            <div class="card-text"><?= $txt['cards'][0]['text'] ?></div>
+            <a href="<?= route('event_mariage') . $langQuery ?>"
+                class="btn"><?= $txt['event_links'][0]['label'] ?></a>
         </div>
-        <div class="action">
-            <h3><?= $txt['bottom_title'] ?></h3>
-            <div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['bottom_cta'] ?></a>
+        <div class="polaroid">
+            <h3><?= $txt['cards'][1]['title'] ?></h3>
+            <div class="image">
+                <img src="/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg"
+                    alt="<?= $txt['cards'][1]['title'] ?>">
             </div>
+            <div class="card-text"><?= $txt['cards'][1]['text'] ?></div>
+            <a href="<?= route('event_anniversaire') . $langQuery ?>"
+                class="btn"><?= $txt['event_links'][1]['label'] ?></a>
         </div>
-    </section>
-</body>
-
-</html>
+        <div class="polaroid">
+            <h3><?= $txt['cards'][2]['title'] ?></h3>
+            <div class="image">
+                <img src="/assets/css/images/image-45-768x768.jpeg" alt="<?= $txt['cards'][2]['title'] ?>">
+            </div>
+            <div class="card-text"><?= $txt['cards'][2]['text'] ?></div>
+            <a href="<?= route('event_soiree_theme') . $langQuery ?>"
+                class="btn"><?= $txt['event_links'][2]['label'] ?></a>
+        </div>
+        <div class="polaroid">
+            <h3><?= $txt['cards'][3]['title'] ?></h3>
+            <div class="image">
+                <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg"
+                    alt="<?= $txt['cards'][3]['title'] ?>">
+            </div>
+            <div class="card-text"><?= $txt['cards'][3]['text'] ?></div>
+            <a href="<?= route('event_repas_seminaire') . $langQuery ?>"
+                class="btn"><?= $txt['event_links'][3]['label'] ?></a>
+        </div>
+    </div>
+    <div class="action">
+        <h3><?= $txt['bottom_title'] ?></h3>
+        <div>
+            <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['bottom_cta'] ?></a>
+        </div>
+    </div>
+</section>

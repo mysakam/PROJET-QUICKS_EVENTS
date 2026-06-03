@@ -60,7 +60,7 @@ class EventPagesController extends Controller
             ],
         ],
     ];
-       //
+    //
     private function renderPage(string $slug): void
     {
         if (!isset($this->pages[$slug])) {
@@ -87,7 +87,7 @@ class EventPagesController extends Controller
             'polaroids' => $polaroids,
             'slug' => $slug,
             'pageTitle' => $page['title_' . $lang],
-        ], 'none');
+        ], 'main');
     }
 
     public function mariage(): void

@@ -1,8 +1,8 @@
 <?php
-class HomeController extends Controller //utilise le layout none pour une page d'accueil épurée//
+class HomeController extends Controller
 {
     public function index(): void
     {
-        $this->render('home/index', [], 'none'); 
+        $this->render('home/index');
     }
 }
