@@ -60,7 +60,7 @@ class EventPagesController extends Controller
             ],
         ],
     ];
-
+       //
     private function renderPage(string $slug): void
     {
         if (!isset($this->pages[$slug])) {
