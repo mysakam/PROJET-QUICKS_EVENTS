@@ -1,6 +1,7 @@
 <?php
 $kpis = $kpis ?? [];
 $devisByStatut = $devisByStatut ?? [];
+$facturesByStatut = $facturesByStatut ?? [];
 $topClients = $topClients ?? [];
 $topPrestataires = $topPrestataires ?? [];
 $topPrestations = $topPrestations ?? [];
@@ -33,8 +34,16 @@ $topCategories = $topCategories ?? [];
                 <p class="card-text"><?= (int)($kpis['prestations'] ?? 0) ?></p>
             </article>
             <article class="polaroid event-polaroid">
+                <h3>Factures</h3>
+                <p class="card-text"><?= (int)($kpis['factures'] ?? 0) ?></p>
+            </article>
+            <article class="polaroid event-polaroid">
                 <h3>CA total</h3>
                 <p class="card-text"><?= number_format((float)($kpis['ca_total'] ?? 0), 2, ',', ' ') ?> EUR</p>
+            </article>
+            <article class="polaroid event-polaroid">
+                <h3>CA factures</h3>
+                <p class="card-text"><?= number_format((float)($kpis['ca_factures'] ?? 0), 2, ',', ' ') ?> EUR</p>
             </article>
         </div>
 
@@ -49,6 +58,26 @@ $topCategories = $topCategories ?? [];
                 </thead>
                 <tbody>
                     <?php foreach ($devisByStatut as $row): ?>
+                        <tr>
+                            <td><?= e($row['statut']) ?></td>
+                            <td><?= (int)$row['total'] ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Factures par statut</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table" style="min-width: 420px;">
+                <thead>
+                    <tr>
+                        <th>Statut</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($facturesByStatut as $row): ?>
                         <tr>
                             <td><?= e($row['statut']) ?></td>
                             <td><?= (int)$row['total'] ?></td>

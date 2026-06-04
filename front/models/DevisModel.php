@@ -67,4 +67,10 @@ class DevisModel
 
         return $stmt->fetchAll();
     }
+
+    public function updateStatus(int $idDevis, string $statut): void
+    {
+        $stmt = $this->pdo->prepare('UPDATE devis SET statut = ? WHERE id_devis = ?');
+        $stmt->execute([$statut, $idDevis]);
+    }
 }

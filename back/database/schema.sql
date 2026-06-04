@@ -4,6 +4,8 @@ USE quickevents;
 
 DROP TABLE IF EXISTS devis_lignes;
 
+DROP TABLE IF EXISTS factures;
+
 DROP TABLE IF EXISTS devis;
 
 DROP TABLE IF EXISTS prestations;
@@ -122,4 +124,20 @@ CREATE TABLE IF NOT EXISTS event_medias (
         is_active,
         position
     )
+) ENGINE = InnoDB;
+
+CREATE TABLE factures (
+    id_facture INT AUTO_INCREMENT PRIMARY KEY,
+    id_devis INT NOT NULL,
+    reference VARCHAR(50) NOT NULL UNIQUE,
+    statut VARCHAR(50) NOT NULL DEFAULT 'emise',
+    montant_ttc DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    date_emission DATE DEFAULT NULL,
+    date_echeance DATE DEFAULT NULL,
+    date_paiement DATE DEFAULT NULL,
+    date_envoi_mail DATETIME DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_factures_devis FOREIGN KEY (id_devis) REFERENCES devis (id_devis) ON DELETE CASCADE,
+    INDEX idx_factures_statut (statut),
+    INDEX idx_factures_created_at (created_at)
 ) ENGINE = InnoDB;

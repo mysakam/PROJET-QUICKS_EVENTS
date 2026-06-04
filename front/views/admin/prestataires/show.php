@@ -2,7 +2,9 @@
 $prestataire = $prestataire ?? [];
 $activitySummary = $activitySummary ?? ['total_devis' => 0, 'total_factures' => 0, 'montant_factures' => 0.0];
 $devisByStatus = $devisByStatus ?? [];
+$facturesByStatus = $facturesByStatus ?? [];
 $recentDevis = $recentDevis ?? [];
+$recentFactures = $recentFactures ?? [];
 ?>
 
 <section class="apropos">
@@ -102,6 +104,32 @@ $recentDevis = $recentDevis ?? [];
             </table>
         </div>
 
+        <h3>Statuts des factures</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Statut</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($facturesByStatus)): ?>
+                        <tr>
+                            <td colspan="2">Aucune facture liee a ce prestataire.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($facturesByStatus as $row): ?>
+                            <tr>
+                                <td><?= e($row['statut']) ?></td>
+                                <td><?= (int) $row['total'] ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
         <h3>Derniers devis</h3>
         <div class="admin-table-wrap">
             <table class="admin-table">
@@ -125,6 +153,40 @@ $recentDevis = $recentDevis ?? [];
                                 <td><?= e($devis['statut']) ?></td>
                                 <td><?= e(number_format((float) $devis['montant_prestataire'], 2, ',', ' ')) ?> EUR</td>
                                 <td><?= e($devis['created_at']) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Dernieres factures</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Statut</th>
+                        <th>Montant prestataire</th>
+                        <th>Date emission</th>
+                        <th>Date echeance</th>
+                        <th>Date paiement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($recentFactures)): ?>
+                        <tr>
+                            <td colspan="6">Aucune facture recente.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($recentFactures as $facture): ?>
+                            <tr>
+                                <td><?= e($facture['reference']) ?></td>
+                                <td><?= e($facture['statut']) ?></td>
+                                <td><?= e(number_format((float) $facture['montant_prestataire'], 2, ',', ' ')) ?> EUR</td>
+                                <td><?= e($facture['date_emission'] ?? '-') ?></td>
+                                <td><?= e($facture['date_echeance'] ?? '-') ?></td>
+                                <td><?= e($facture['date_paiement'] ?? '-') ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>

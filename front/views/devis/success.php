@@ -3,6 +3,7 @@ $client = $_SESSION['client'] ?? [];
 $clientNom = trim(($client['prenom'] ?? '') . ' ' . ($client['nom'] ?? ''));
 $dateDevis = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : date('d/m/Y');
 $total = (float)($devis['montant_total'] ?? 0);
+$facture = $facture ?? null;
 
 ?>
 
@@ -20,20 +21,29 @@ $total = (float)($devis['montant_total'] ?? 0);
         <p><strong>Détail du devis :</strong></p>
         <ul>
             <?php foreach ($lignes as $ligne): ?>
-            <li>
-                PRESTATION #<?= (int)($ligne['id_prestation'] ?? 0) ?>
-                — Qté <?= (int)($ligne['quantite'] ?? 0) ?>
-                — <?= number_format((float)($ligne['montant_ligne'] ?? 0), 2, ',', ' ') ?> €
-            </li>
+                <li>
+                    PRESTATION #<?= (int)($ligne['id_prestation'] ?? 0) ?>
+                    — Qté <?= (int)($ligne['quantite'] ?? 0) ?>
+                    — <?= number_format((float)($ligne['montant_ligne'] ?? 0), 2, ',', ' ') ?> €
+                </li>
             <?php endforeach; ?>
         </ul>
     </section>
 
     <?php if (!empty($devis['message_client'])): ?>
-    <section class="success-meta">
-        <p><strong>Message client :</strong></p>
-        <p><?= nl2br(e($devis['message_client'])) ?></p>
-    </section>
+        <section class="success-meta">
+            <p><strong>Message client :</strong></p>
+            <p><?= nl2br(e($devis['message_client'])) ?></p>
+        </section>
+    <?php endif; ?>
+
+    <?php if (!empty($facture)): ?>
+        <section class="success-meta">
+            <p><strong>Facture proposée :</strong> <?= e($facture['reference']) ?></p>
+            <p><strong>Statut :</strong> <?= e($facture['statut']) ?></p>
+            <p><strong>Montant TTC :</strong> <?= number_format((float) ($facture['montant_ttc'] ?? 0), 2, ',', ' ') ?> €</p>
+            <p>Elle sera vérifiée/modifiée par l'administration avant envoi par mail.</p>
+        </section>
     <?php endif; ?>
 
     <section class="success-total">

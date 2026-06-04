@@ -3,6 +3,7 @@ $client = $_SESSION['client'] ?? [];
 $clientNom = trim(($client['prenom'] ?? '') . ' ' . ($client['nom'] ?? ''));
 $dateDevis = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : date('d/m/Y');
 $total = (float)($devis['montant_total'] ?? 0);
+$facture = $facture ?? null;
 
 ?>
 
@@ -35,6 +36,20 @@ $total = (float)($devis['montant_total'] ?? 0);
                 </ul>
             </div>
         <?php endif; ?>
+
+        <?php if (!empty($facture)): ?>
+            <div class="bloc">
+                <h2 class="bloc-title">FACTURE PROPOSEE</h2>
+                <ul>
+                    <li>Reference : <?= e($facture['reference']) ?></li>
+                    <li>Statut : <?= e($facture['statut']) ?></li>
+                    <li>Montant TTC : <?= number_format((float)($facture['montant_ttc'] ?? 0), 2, ',', ' ') ?> €</li>
+                </ul>
+                <?php if (($facture['statut'] ?? '') === 'en_attente_validation'): ?>
+                    <p>La facture est en attente de validation par l'administration. Elle sera envoyee par mail une fois approuvee.</p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </div>
 
     <div class="totals">
@@ -58,7 +73,9 @@ $total = (float)($devis['montant_total'] ?? 0);
     </div>
 
     <div class="action-center">
-        <a class="pill-link" href="#" onclick="return false;">VALIDER</a>
+        <form method="POST" action="<?= route('devis_validate', ['id' => $devis['id_devis']]) ?>">
+            <button type="submit" class="pill-link">VALIDER ET DEMANDER LA FACTURE</button>
+        </form>
     </div>
 
     <div class="action-center">

@@ -82,7 +82,9 @@ class AdminPrestatairesController extends AdminBaseController
             'prestataire' => $prestataire,
             'activitySummary' => $this->prestataireModel->getActivitySummary($id),
             'devisByStatus' => $this->prestataireModel->getDevisByStatus($id),
+            'facturesByStatus' => $this->prestataireModel->getFacturesByStatus($id),
             'recentDevis' => $this->prestataireModel->getRecentDevis($id, 12),
+            'recentFactures' => $this->prestataireModel->getRecentFactures($id, 12),
             'pageTitle' => 'Fiche prestataire',
             'lang' => $this->getLang(),
         ]);

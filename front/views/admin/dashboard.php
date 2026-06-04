@@ -15,6 +15,11 @@
                 <a class="btn" href="<?= route('admin_prestataires_index') ?>">Ouvrir</a>
             </article>
             <article class="polaroid event-polaroid">
+                <h3>Factures</h3>
+                <p class="card-text">Gestion des factures liees aux devis et aux prestataires.</p>
+                <a class="btn" href="<?= route('admin_factures_index') ?>">Ouvrir</a>
+            </article>
+            <article class="polaroid event-polaroid">
                 <h3>Clients</h3>
                 <p class="card-text">CRUD des comptes clients.</p>
                 <a class="btn" href="<?= route('admin_clients_index') ?>">Ouvrir</a>

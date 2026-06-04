@@ -47,6 +47,26 @@ class PrestataireModel
         return ['valide', 'facture', 'facture_payee', 'payee'];
     }
 
+    private function ensureFacturesTable(): void
+    {
+        $this->pdo->exec(
+            "CREATE TABLE IF NOT EXISTS factures (
+                id_facture INT AUTO_INCREMENT PRIMARY KEY,
+                id_devis INT NOT NULL,
+                reference VARCHAR(50) NOT NULL UNIQUE,
+                statut VARCHAR(50) NOT NULL DEFAULT 'emise',
+                montant_ttc DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+                date_emission DATE DEFAULT NULL,
+                date_echeance DATE DEFAULT NULL,
+                date_paiement DATE DEFAULT NULL,
+                created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                CONSTRAINT fk_factures_devis FOREIGN KEY (id_devis) REFERENCES devis (id_devis) ON DELETE CASCADE,
+                INDEX idx_factures_statut (statut),
+                INDEX idx_factures_created_at (created_at)
+            ) ENGINE=InnoDB"
+        );
+    }
+
     public function findAll(): array
     {
         $this->ensureExtendedColumns();
@@ -131,20 +151,20 @@ class PrestataireModel
 
     public function getActivitySummary(int $idPrestataire): array
     {
-        $factureStatuts = $this->factureStatuts();
-        $statusPlaceholders = implode(',', array_fill(0, count($factureStatuts), '?'));
+        $this->ensureFacturesTable();
 
         $sql = "SELECT
                     COUNT(DISTINCT d.id_devis) AS total_devis,
-                    COUNT(DISTINCT CASE WHEN d.statut IN ($statusPlaceholders) THEN d.id_devis END) AS total_factures,
-                    COALESCE(SUM(CASE WHEN d.statut IN ($statusPlaceholders) THEN dl.montant_ligne ELSE 0 END), 0) AS montant_factures
+                    COUNT(DISTINCT f.id_facture) AS total_factures,
+                    COALESCE(SUM(CASE WHEN f.id_facture IS NOT NULL THEN dl.montant_ligne ELSE 0 END), 0) AS montant_factures
                 FROM prestations p
                 LEFT JOIN devis_lignes dl ON dl.id_prestation = p.id_prestation
                 LEFT JOIN devis d ON d.id_devis = dl.id_devis
+                LEFT JOIN factures f ON f.id_devis = d.id_devis
                 WHERE p.id_prestataire = ?";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(array_merge($factureStatuts, $factureStatuts, [$idPrestataire]));
+        $stmt->execute([$idPrestataire]);
         $summary = $stmt->fetch() ?: [];
 
         return [
@@ -170,6 +190,24 @@ class PrestataireModel
         return $stmt->fetchAll();
     }
 
+    public function getFacturesByStatus(int $idPrestataire): array
+    {
+        $this->ensureFacturesTable();
+
+        $sql = "SELECT f.statut, COUNT(DISTINCT f.id_facture) AS total
+                FROM prestations p
+                INNER JOIN devis_lignes dl ON dl.id_prestation = p.id_prestation
+                INNER JOIN factures f ON f.id_devis = dl.id_devis
+                WHERE p.id_prestataire = :id_prestataire
+                GROUP BY f.statut
+                ORDER BY total DESC, f.statut ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_prestataire' => $idPrestataire]);
+
+        return $stmt->fetchAll();
+    }
+
     public function getRecentDevis(int $idPrestataire, int $limit = 10): array
     {
         $limit = max(1, min(30, $limit));
@@ -186,6 +224,33 @@ class PrestataireModel
                 WHERE p.id_prestataire = :id_prestataire
                 GROUP BY d.id_devis, d.reference, d.statut, d.created_at
                 ORDER BY d.created_at DESC, d.id_devis DESC
+                LIMIT $limit";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_prestataire' => $idPrestataire]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getRecentFactures(int $idPrestataire, int $limit = 10): array
+    {
+        $this->ensureFacturesTable();
+        $limit = max(1, min(30, $limit));
+
+        $sql = "SELECT
+                    f.id_facture,
+                    f.reference,
+                    f.statut,
+                    f.date_emission,
+                    f.date_echeance,
+                    f.date_paiement,
+                    COALESCE(SUM(dl.montant_ligne), 0) AS montant_prestataire
+                FROM prestations p
+                INNER JOIN devis_lignes dl ON dl.id_prestation = p.id_prestation
+                INNER JOIN factures f ON f.id_devis = dl.id_devis
+                WHERE p.id_prestataire = :id_prestataire
+                GROUP BY f.id_facture, f.reference, f.statut, f.date_emission, f.date_echeance, f.date_paiement
+                ORDER BY f.created_at DESC, f.id_facture DESC
                 LIMIT $limit";
 
         $stmt = $this->pdo->prepare($sql);

@@ -10,12 +10,14 @@ require __DIR__ . '/../core/Router.php';
 require __DIR__ . '/../core/Database.php';
 require __DIR__ . '/../helpers/url.php';
 require __DIR__ . '/../helpers/view.php';
+require __DIR__ . '/../../shared/mail/mailer.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
 
 require __DIR__ . '/../models/CategoryModel.php';
 require __DIR__ . '/../models/PrestationModel.php';
 require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
+require __DIR__ . '/../models/FactureModel.php';
 require __DIR__ . '/../models/ClientModel.php';
 require __DIR__ . '/../models/PrestataireModel.php';
 require __DIR__ . '/../models/EventMediaModel.php';
@@ -23,6 +25,7 @@ require __DIR__ . '/../models/EventMediaModel.php';
 require __DIR__ . '/../controllers/AdminBaseController.php';
 require __DIR__ . '/../controllers/AdminDashboardController.php';
 require __DIR__ . '/../controllers/AdminPrestatairesController.php';
+require __DIR__ . '/../controllers/AdminFacturesController.php';
 require __DIR__ . '/../controllers/AdminClientsController.php';
 require __DIR__ . '/../controllers/AdminStatsController.php';
 
@@ -58,6 +61,7 @@ $router->post('/panier/vider', ['PanierController', 'clear'], ['AuthMiddleware']
 /* Devis */
 $router->get('/devis/checkout', ['DevisController', 'checkout'], ['AuthMiddleware'], 'devis_checkout');
 $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
+$router->post('/devis/{id}/valider', ['DevisController', 'validate'], ['AuthMiddleware'], 'devis_validate');
 $router->get('/devis/success/{id}', ['DevisController', 'success'], ['AuthMiddleware'], 'devis_success');
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
@@ -79,6 +83,15 @@ $router->post('/admin/prestataires', ['AdminPrestatairesController', 'store'], [
 $router->get('/admin/prestataires/{id}/edit', ['AdminPrestatairesController', 'edit'], ['AuthMiddleware'], 'admin_prestataires_edit');
 $router->post('/admin/prestataires/{id}/update', ['AdminPrestatairesController', 'update'], ['AuthMiddleware'], 'admin_prestataires_update');
 $router->post('/admin/prestataires/{id}/delete', ['AdminPrestatairesController', 'delete'], ['AuthMiddleware'], 'admin_prestataires_delete');
+
+$router->get('/admin/factures', ['AdminFacturesController', 'index'], ['AuthMiddleware'], 'admin_factures_index');
+$router->get('/admin/factures/create', ['AdminFacturesController', 'create'], ['AuthMiddleware'], 'admin_factures_create');
+$router->post('/admin/factures', ['AdminFacturesController', 'store'], ['AuthMiddleware'], 'admin_factures_store');
+$router->get('/admin/factures/{id}', ['AdminFacturesController', 'show'], ['AuthMiddleware'], 'admin_factures_show');
+$router->get('/admin/factures/{id}/edit', ['AdminFacturesController', 'edit'], ['AuthMiddleware'], 'admin_factures_edit');
+$router->post('/admin/factures/{id}/update', ['AdminFacturesController', 'update'], ['AuthMiddleware'], 'admin_factures_update');
+$router->post('/admin/factures/{id}/delete', ['AdminFacturesController', 'delete'], ['AuthMiddleware'], 'admin_factures_delete');
+$router->post('/admin/factures/{id}/send-mail', ['AdminFacturesController', 'sendMail'], ['AuthMiddleware'], 'admin_factures_send_mail');
 
 $router->get('/admin/clients', ['AdminClientsController', 'index'], ['AuthMiddleware'], 'admin_clients_index');
 $router->get('/admin/clients/create', ['AdminClientsController', 'create'], ['AuthMiddleware'], 'admin_clients_create');
