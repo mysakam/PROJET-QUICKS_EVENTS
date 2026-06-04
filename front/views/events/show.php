@@ -23,14 +23,9 @@ $catalogueUrl = route('catalogues') . $langQuery;
                 <div class="image event-media-slot">
                     <?php if (!empty($polaroid['mediaSrc'])): ?>
                         <?php if (($polaroid['mediaType'] ?? 'image') === 'video'): ?>
-                            <video controls preload="metadata" playsinline style="max-width: 100%; height: auto;" aria-label="<?= e($polaroid['title']) ?>">
+                            <video class="event-video" controls preload="metadata" playsinline aria-label="<?= e($polaroid['title']) ?>">
                                 <source src="<?= e($polaroid['mediaSrc']) ?>" type="video/mp4">
                             </video>
-                            <p style="font-size: 0.9rem; margin-top: 8px;">
-                                <a href="<?= e($polaroid['mediaSrc']) ?>" target="_blank" rel="noopener noreferrer">
-                                    <?= ($lang ?? 'fr') === 'fr' ? 'Ouvrir la video dans un nouvel onglet' : 'Open video in a new tab' ?>
-                                </a>
-                            </p>
                         <?php else: ?>
                             <img src="<?= e($polaroid['mediaSrc']) ?>" alt="<?= e($polaroid['title']) ?>">
                         <?php endif; ?>
@@ -39,7 +34,17 @@ $catalogueUrl = route('catalogues') . $langQuery;
                     <?php endif; ?>
                 </div>
                 <div class="card-text event-description"><?= e($polaroid['description']) ?></div>
-                <a href="<?= $catalogueUrl ?>" class="btn"><?= ($lang ?? 'fr') === 'fr' ? 'Voir le catalogue' : 'Browse catalogue' ?></a>
+                <?php if (!empty($polaroid['mediaSrc']) && (($polaroid['mediaType'] ?? 'image') !== 'video')): ?>
+                    <a class="btn" href="<?= e($polaroid['mediaSrc']) ?>" target="_blank" rel="noopener noreferrer">
+                        <?= ($lang ?? 'fr') === 'fr' ? 'Voir la photo' : 'View photo' ?>
+                    </a>
+                <?php elseif (!empty($polaroid['mediaSrc'])): ?>
+                    <a class="btn" href="<?= e($polaroid['mediaSrc']) ?>" target="_blank" rel="noopener noreferrer">
+                        <?= ($lang ?? 'fr') === 'fr' ? 'Ouvrir la vidéo' : 'Open video' ?>
+                    </a>
+                <?php else: ?>
+                    <a href="<?= $catalogueUrl ?>" class="btn"><?= ($lang ?? 'fr') === 'fr' ? 'Voir le catalogue' : 'Browse catalogue' ?></a>
+                <?php endif; ?>
                 <?php if (!empty($_SESSION['client']) && !empty($_SESSION['client']['is_admin'])): ?>
                     <a href="#" class="btn theme-video-btn"><?= ($lang ?? 'fr') === 'fr' ? 'Ajouter une vidéo plus tard' : 'Add a video later' ?></a>
                 <?php endif; ?>
