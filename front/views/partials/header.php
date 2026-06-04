@@ -25,7 +25,7 @@ $eventsLink = $isHome ? '#evenements' : ($homeUrl . '#evenements');
             <li><a href="<?= route('devis_index') ?>" class="btn"><?= $lang === 'fr' ? 'MES DEVIS' : 'MY QUOTES' ?></a></li>
             <li><a href="<?= route('account') ?>" class="btn"><?= $lang === 'fr' ? 'MON COMPTE' : 'MY ACCOUNT' ?></a></li>
             <?php if (!empty($_SESSION['client']['is_admin'])): ?>
-                <li><a href="<?= route('admin_event_medias') ?>" class="btn"><?= $lang === 'fr' ? 'ADMIN MEDIAS' : 'MEDIA ADMIN' ?></a></li>
+                <li><a href="<?= route('admin_dashboard') ?>" class="btn"><?= $lang === 'fr' ? 'DASHBOARD ADMIN' : 'ADMIN DASHBOARD' ?></a></li>
             <?php endif; ?>
             <li><a href="<?= route('logout') ?>" class="btn"><?= $lang === 'fr' ? 'DECONNEXION' : 'LOG OUT' ?></a></li>
         <?php else: ?>

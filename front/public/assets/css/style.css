@@ -499,6 +499,20 @@ section {
   text-decoration: underline;
 }
 
+.catalogue-grid {
+  margin-top: 20px;
+}
+
+.catalogue-header-polaroid {
+  max-width: 360px;
+  margin: 0 0 24px;
+}
+
+.catalogue-show-polaroid {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
 /* Responsive layout for event pages: cards auto-wrap as media grow. */
 .theme-grid {
   display: grid;

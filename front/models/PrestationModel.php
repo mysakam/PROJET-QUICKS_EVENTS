@@ -55,4 +55,19 @@ class PrestationModel
 
         return $prestation ?: null;
     }
+
+    public function findAllForAdmin(): array
+    {
+        $sql = "SELECT
+                    p.id_prestation,
+                    p.nom,
+                    c.nom AS category_name,
+                    c.slug AS category_slug
+                FROM prestations p
+                INNER JOIN categories c ON p.id_categorie = c.id_categorie
+                ORDER BY c.nom ASC, p.nom ASC";
+
+        $stmt = $this->pdo->query($sql);
+        return $stmt->fetchAll();
+    }
 }

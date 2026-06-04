@@ -1,5 +1,6 @@
 <?php
 $themes = $themes ?? [];
+$themeOptions = $themeOptions ?? [];
 $themeFilter = $themeFilter ?? null;
 $medias = $medias ?? [];
 ?>
@@ -28,7 +29,7 @@ $medias = $medias ?? [];
             <select name="theme" id="theme">
                 <option value="">-- Tous --</option>
                 <?php foreach ($themes as $theme): ?>
-                    <option value="<?= e($theme) ?>" <?= $themeFilter === $theme ? 'selected' : '' ?>><?= e($theme) ?></option>
+                    <option value="<?= e($theme) ?>" <?= $themeFilter === $theme ? 'selected' : '' ?>><?= e($themeOptions[$theme] ?? $theme) ?></option>
                 <?php endforeach; ?>
             </select>
             <button class="admin-btn" type="submit">Filtrer</button>
@@ -56,7 +57,7 @@ $medias = $medias ?? [];
                         <?php foreach ($medias as $media): ?>
                             <tr>
                                 <td><?= (int)$media['id_media'] ?></td>
-                                <td><?= e($media['theme_slug']) ?></td>
+                                <td><?= e($themeOptions[$media['theme_slug']] ?? $media['theme_slug']) ?></td>
                                 <td><?= e($media['media_type']) ?></td>
                                 <td><?= e($media['title_fr']) ?></td>
                                 <td><?= (int)$media['position'] ?></td>

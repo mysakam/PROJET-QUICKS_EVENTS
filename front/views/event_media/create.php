@@ -1,4 +1,7 @@
-<?php $themes = $themes ?? []; ?>
+<?php
+$themes = $themes ?? [];
+$themeOptions = $themeOptions ?? [];
+?>
 
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
@@ -14,7 +17,7 @@
                 <label for="theme_slug">Theme</label>
                 <select name="theme_slug" id="theme_slug" required>
                     <?php foreach ($themes as $theme): ?>
-                        <option value="<?= e($theme) ?>"><?= e($theme) ?></option>
+                        <option value="<?= e($theme) ?>"><?= e($themeOptions[$theme] ?? $theme) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

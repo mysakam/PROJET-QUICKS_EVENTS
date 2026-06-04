@@ -33,6 +33,45 @@ class EventMediaModel
         return $stmt->fetchAll();
     }
 
+    public function findFirstByThemes(array $themeSlugs, string $lang = 'fr'): array
+    {
+        $titleColumn = $lang === 'en' ? 'title_en' : 'title_fr';
+        $descriptionColumn = $lang === 'en' ? 'description_en' : 'description_fr';
+
+        $themeSlugs = array_values(array_unique(array_filter(array_map('trim', $themeSlugs))));
+        if (empty($themeSlugs)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($themeSlugs), '?'));
+
+        $sql = "SELECT
+                    id_media,
+                    theme_slug,
+                    media_type,
+                    media_url,
+                    {$titleColumn} AS title,
+                    {$descriptionColumn} AS description,
+                    position
+                FROM event_medias
+                WHERE theme_slug IN ($placeholders)
+                  AND is_active = 1
+                ORDER BY theme_slug ASC, position ASC, id_media ASC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($themeSlugs);
+
+        $map = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $slug = $row['theme_slug'];
+            if (!isset($map[$slug])) {
+                $map[$slug] = $row;
+            }
+        }
+
+        return $map;
+    }
+
     public function findAll(?string $themeSlug = null): array
     {
         $sql = "SELECT

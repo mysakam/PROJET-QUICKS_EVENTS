@@ -17,7 +17,14 @@ require __DIR__ . '/../models/PrestationModel.php';
 require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
 require __DIR__ . '/../models/ClientModel.php';
+require __DIR__ . '/../models/PrestataireModel.php';
 require __DIR__ . '/../models/EventMediaModel.php';
+
+require __DIR__ . '/../controllers/AdminBaseController.php';
+require __DIR__ . '/../controllers/AdminDashboardController.php';
+require __DIR__ . '/../controllers/AdminPrestatairesController.php';
+require __DIR__ . '/../controllers/AdminClientsController.php';
+require __DIR__ . '/../controllers/AdminStatsController.php';
 
 $router = new Router();
 
@@ -56,11 +63,29 @@ $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
 
 /* Admin medias evenements */
+$router->get('/admin', ['AdminDashboardController', 'index'], ['AuthMiddleware'], 'admin_dashboard');
+
 $router->get('/admin/event-medias', ['EventMediaAdminController', 'index'], ['AuthMiddleware'], 'admin_event_medias');
 $router->get('/admin/event-medias/create', ['EventMediaAdminController', 'create'], ['AuthMiddleware'], 'admin_event_medias_create');
 $router->post('/admin/event-medias', ['EventMediaAdminController', 'store'], ['AuthMiddleware'], 'admin_event_medias_store');
 $router->get('/admin/event-medias/{id}/edit', ['EventMediaAdminController', 'edit'], ['AuthMiddleware'], 'admin_event_medias_edit');
 $router->post('/admin/event-medias/{id}/update', ['EventMediaAdminController', 'update'], ['AuthMiddleware'], 'admin_event_medias_update');
 $router->post('/admin/event-medias/{id}/delete', ['EventMediaAdminController', 'delete'], ['AuthMiddleware'], 'admin_event_medias_delete');
+
+$router->get('/admin/prestataires', ['AdminPrestatairesController', 'index'], ['AuthMiddleware'], 'admin_prestataires_index');
+$router->get('/admin/prestataires/create', ['AdminPrestatairesController', 'create'], ['AuthMiddleware'], 'admin_prestataires_create');
+$router->post('/admin/prestataires', ['AdminPrestatairesController', 'store'], ['AuthMiddleware'], 'admin_prestataires_store');
+$router->get('/admin/prestataires/{id}/edit', ['AdminPrestatairesController', 'edit'], ['AuthMiddleware'], 'admin_prestataires_edit');
+$router->post('/admin/prestataires/{id}/update', ['AdminPrestatairesController', 'update'], ['AuthMiddleware'], 'admin_prestataires_update');
+$router->post('/admin/prestataires/{id}/delete', ['AdminPrestatairesController', 'delete'], ['AuthMiddleware'], 'admin_prestataires_delete');
+
+$router->get('/admin/clients', ['AdminClientsController', 'index'], ['AuthMiddleware'], 'admin_clients_index');
+$router->get('/admin/clients/create', ['AdminClientsController', 'create'], ['AuthMiddleware'], 'admin_clients_create');
+$router->post('/admin/clients', ['AdminClientsController', 'store'], ['AuthMiddleware'], 'admin_clients_store');
+$router->get('/admin/clients/{id}/edit', ['AdminClientsController', 'edit'], ['AuthMiddleware'], 'admin_clients_edit');
+$router->post('/admin/clients/{id}/update', ['AdminClientsController', 'update'], ['AuthMiddleware'], 'admin_clients_update');
+$router->post('/admin/clients/{id}/delete', ['AdminClientsController', 'delete'], ['AuthMiddleware'], 'admin_clients_delete');
+
+$router->get('/admin/statistiques', ['AdminStatsController', 'index'], ['AuthMiddleware'], 'admin_stats_index');
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

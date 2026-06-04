@@ -3,10 +3,14 @@
 class EventMediaAdminController extends Controller
 {
     private EventMediaModel $eventMediaModel;
+    private CategoryModel $categoryModel;
+    private PrestationModel $prestationModel;
 
     public function __construct()
     {
         $this->eventMediaModel = new EventMediaModel();
+        $this->categoryModel = new CategoryModel();
+        $this->prestationModel = new PrestationModel();
     }
 
     private function ensureAdmin(): bool
@@ -24,7 +28,33 @@ class EventMediaAdminController extends Controller
 
     private function themes(): array
     {
-        return ['mariage', 'anniversaire', 'soiree-theme', 'repas-seminaire'];
+        return array_keys($this->themeOptions());
+    }
+
+    private function themeOptions(): array
+    {
+        $options = [
+            'mariage' => 'Evenement - Mariage',
+            'anniversaire' => 'Evenement - Anniversaire',
+            'soiree-theme' => 'Evenement - Soiree a theme',
+            'repas-seminaire' => 'Evenement - Repas / Seminaire',
+        ];
+
+        try {
+            foreach ($this->categoryModel->findAll() as $category) {
+                $slug = 'catalogue-category-' . (int) $category['id_categorie'];
+                $options[$slug] = 'Catalogue rubrique - ' . $category['nom'];
+            }
+
+            foreach ($this->prestationModel->findAllForAdmin() as $prestation) {
+                $slug = 'catalogue-prestation-' . (int) $prestation['id_prestation'];
+                $options[$slug] = 'Catalogue prestation - ' . $prestation['nom'] . ' (' . $prestation['category_name'] . ')';
+            }
+        } catch (Throwable $e) {
+            // Keep event themes available even if catalogue tables are unavailable.
+        }
+
+        return $options;
     }
 
     private function dbErrorMessage(): string
@@ -50,6 +80,7 @@ class EventMediaAdminController extends Controller
         $this->render('event_media/index', [
             'medias' => $medias,
             'themes' => $this->themes(),
+            'themeOptions' => $this->themeOptions(),
             'themeFilter' => $themeFilter,
             'pageTitle' => 'Admin medias evenement',
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
@@ -64,6 +95,7 @@ class EventMediaAdminController extends Controller
 
         $this->render('event_media/create', [
             'themes' => $this->themes(),
+            'themeOptions' => $this->themeOptions(),
             'pageTitle' => 'Ajouter un media evenement',
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
         ]);
@@ -133,6 +165,7 @@ class EventMediaAdminController extends Controller
         $this->render('event_media/edit', [
             'media' => $media,
             'themes' => $this->themes(),
+            'themeOptions' => $this->themeOptions(),
             'pageTitle' => 'Modifier un media evenement',
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
         ]);

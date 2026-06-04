@@ -1,5 +1,6 @@
 <?php
 $themes = $themes ?? [];
+$themeOptions = $themeOptions ?? [];
 $media = $media ?? [];
 ?>
 
@@ -17,7 +18,7 @@ $media = $media ?? [];
                 <label for="theme_slug">Theme</label>
                 <select name="theme_slug" id="theme_slug" required>
                     <?php foreach ($themes as $theme): ?>
-                        <option value="<?= e($theme) ?>" <?= ($media['theme_slug'] === $theme) ? 'selected' : '' ?>><?= e($theme) ?></option>
+                        <option value="<?= e($theme) ?>" <?= ($media['theme_slug'] === $theme) ? 'selected' : '' ?>><?= e($themeOptions[$theme] ?? $theme) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
