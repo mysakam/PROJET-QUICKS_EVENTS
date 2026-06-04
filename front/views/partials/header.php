@@ -10,7 +10,12 @@ $eventsLink = $isHome ? '#evenements' : ($homeUrl . '#evenements');
 
 <header>
     <a href="<?= $homeUrl ?>" class="logo"><span> QUICK'EVENTS </span></a>
-    <ul class="navbar">
+    <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <ul class="navbar" id="main-nav">
         <li><a href="<?= $homeUrl ?>" class="btn"><?= $lang === 'fr' ? 'ACCUEIL' : 'HOME' ?></a></li>
         <li><a href="<?= $eventsLink ?>" class="btn"><?= $lang === 'fr' ? 'EVENEMENTS' : 'EVENTS' ?></a></li>
         <li><a href="<?= $catalogueUrl ?>" class="btn"><?= $lang === 'fr' ? 'CATALOGUES' : 'CATALOGUES' ?></a></li>
@@ -27,7 +32,6 @@ $eventsLink = $isHome ? '#evenements' : ($homeUrl . '#evenements');
             <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= $lang === 'fr' ? 'CONNEXION' : 'LOGIN' ?></a></li>
             <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= $lang === 'fr' ? 'INSCRIPTION' : 'REGISTER' ?></a></li>
         <?php endif; ?>
-
-        <a href="<?= route('home') . '?lang=' . $toggleLang ?>" class="btn-transcription"><?= $lang === 'fr' ? 'FR/EN' : 'EN/FR' ?></a>
+        <li><a href="<?= route('home') . '?lang=' . $toggleLang ?>" class="btn-transcription"><?= $lang === 'fr' ? 'FR/EN' : 'EN/FR' ?></a></li>
     </ul>
 </header>

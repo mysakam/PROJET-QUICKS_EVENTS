@@ -1,71 +1,73 @@
 <?php $themes = $themes ?? []; ?>
 
 <section class="apropos">
-    <h2 class="titre-texte"><span>A</span>jouter un media evenement</h2>
+    <div class="admin-media-shell admin-form-shell">
+        <h2 class="titre-texte"><span>A</span>jouter un media evenement</h2>
 
-    <?php if (!empty($_SESSION['error'])): ?>
-        <p style="color: #b42318;"><?= e($_SESSION['error']) ?></p>
-        <?php unset($_SESSION['error']); ?>
-    <?php endif; ?>
+        <?php if (!empty($_SESSION['error'])): ?>
+            <p class="admin-alert admin-alert-error"><?= e($_SESSION['error']) ?></p>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
-    <form method="POST" action="<?= route('admin_event_medias_store') ?>">
-        <p>
-            <label for="theme_slug">Theme</label><br>
-            <select name="theme_slug" id="theme_slug" required>
-                <?php foreach ($themes as $theme): ?>
-                    <option value="<?= e($theme) ?>"><?= e($theme) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </p>
+        <form class="admin-form" method="POST" action="<?= route('admin_event_medias_store') ?>">
+            <div class="admin-form-row">
+                <label for="theme_slug">Theme</label>
+                <select name="theme_slug" id="theme_slug" required>
+                    <?php foreach ($themes as $theme): ?>
+                        <option value="<?= e($theme) ?>"><?= e($theme) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
-        <p>
-            <label for="media_type">Type</label><br>
-            <select name="media_type" id="media_type" required>
-                <option value="image">image</option>
-                <option value="video">video</option>
-            </select>
-        </p>
+            <div class="admin-form-row">
+                <label for="media_type">Type</label>
+                <select name="media_type" id="media_type" required>
+                    <option value="image">image</option>
+                    <option value="video">video</option>
+                </select>
+            </div>
 
-        <p>
-            <label for="media_url">URL du media</label><br>
-            <input type="text" name="media_url" id="media_url" required style="width: 100%;">
-        </p>
+            <div class="admin-form-row">
+                <label for="media_url">URL du media</label>
+                <input type="text" name="media_url" id="media_url" required>
+            </div>
 
-        <p>
-            <label for="title_fr">Titre FR</label><br>
-            <input type="text" name="title_fr" id="title_fr" required style="width: 100%;">
-        </p>
+            <div class="admin-form-row">
+                <label for="title_fr">Titre FR</label>
+                <input type="text" name="title_fr" id="title_fr" required>
+            </div>
 
-        <p>
-            <label for="title_en">Titre EN</label><br>
-            <input type="text" name="title_en" id="title_en" required style="width: 100%;">
-        </p>
+            <div class="admin-form-row">
+                <label for="title_en">Titre EN</label>
+                <input type="text" name="title_en" id="title_en" required>
+            </div>
 
-        <p>
-            <label for="description_fr">Description FR</label><br>
-            <textarea name="description_fr" id="description_fr" rows="4" style="width: 100%;"></textarea>
-        </p>
+            <div class="admin-form-row">
+                <label for="description_fr">Description FR</label>
+                <textarea name="description_fr" id="description_fr" rows="4"></textarea>
+            </div>
 
-        <p>
-            <label for="description_en">Description EN</label><br>
-            <textarea name="description_en" id="description_en" rows="4" style="width: 100%;"></textarea>
-        </p>
+            <div class="admin-form-row">
+                <label for="description_en">Description EN</label>
+                <textarea name="description_en" id="description_en" rows="4"></textarea>
+            </div>
 
-        <p>
-            <label for="position">Position</label><br>
-            <input type="number" min="1" name="position" id="position" value="1" required>
-        </p>
+            <div class="admin-form-row">
+                <label for="position">Position</label>
+                <input type="number" min="1" name="position" id="position" value="1" required>
+            </div>
 
-        <p>
-            <label>
-                <input type="checkbox" name="is_active" checked>
-                Actif
-            </label>
-        </p>
+            <div class="admin-form-row admin-checkbox-row">
+                <label>
+                    <input type="checkbox" name="is_active" checked>
+                    Actif
+                </label>
+            </div>
 
-        <p>
-            <button type="submit">Enregistrer</button>
-            <a href="<?= route('admin_event_medias') ?>">Retour</a>
-        </p>
-    </form>
+            <div class="admin-form-actions">
+                <button class="admin-btn" type="submit">Enregistrer</button>
+                <a class="btn" href="<?= route('admin_event_medias') ?>">Retour</a>
+            </div>
+        </form>
+    </div>
 </section>

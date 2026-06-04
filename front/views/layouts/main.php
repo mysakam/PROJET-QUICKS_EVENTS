@@ -36,6 +36,8 @@ if (!headers_sent()) {
     }
     ?>
 
+    <script src="<?= asset('assets/js/main.js') ?>" defer></script>
+
 </body>
 
 </html>
