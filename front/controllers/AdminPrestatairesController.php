@@ -64,6 +64,30 @@ class AdminPrestatairesController extends AdminBaseController
         ]);
     }
 
+    public function show(int $id): void
+    {
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $prestataire = $this->prestataireModel->findById($id);
+
+        if (!$prestataire) {
+            http_response_code(404);
+            echo 'Prestataire introuvable.';
+            return;
+        }
+
+        $this->render('admin/prestataires/show', [
+            'prestataire' => $prestataire,
+            'activitySummary' => $this->prestataireModel->getActivitySummary($id),
+            'devisByStatus' => $this->prestataireModel->getDevisByStatus($id),
+            'recentDevis' => $this->prestataireModel->getRecentDevis($id, 12),
+            'pageTitle' => 'Fiche prestataire',
+            'lang' => $this->getLang(),
+        ]);
+    }
+
     public function store(): void
     {
         if (!$this->ensureAdmin()) {
@@ -79,6 +103,11 @@ class AdminPrestatairesController extends AdminBaseController
             'type_evenement' => trim($_POST['type_evenement'] ?? ''),
             'capacite_max' => trim($_POST['capacite_max'] ?? ''),
             'prix_offre' => trim($_POST['prix_offre'] ?? ''),
+            'iban' => strtoupper(trim($_POST['iban'] ?? '')),
+            'bic' => strtoupper(trim($_POST['bic'] ?? '')),
+            'banque_nom' => trim($_POST['banque_nom'] ?? ''),
+            'titulaire_compte' => trim($_POST['titulaire_compte'] ?? ''),
+            'note_sur_10' => trim($_POST['note_sur_10'] ?? ''),
         ];
 
         if ($data['nom'] === '') {
@@ -136,6 +165,11 @@ class AdminPrestatairesController extends AdminBaseController
             'type_evenement' => trim($_POST['type_evenement'] ?? ''),
             'capacite_max' => trim($_POST['capacite_max'] ?? ''),
             'prix_offre' => trim($_POST['prix_offre'] ?? ''),
+            'iban' => strtoupper(trim($_POST['iban'] ?? '')),
+            'bic' => strtoupper(trim($_POST['bic'] ?? '')),
+            'banque_nom' => trim($_POST['banque_nom'] ?? ''),
+            'titulaire_compte' => trim($_POST['titulaire_compte'] ?? ''),
+            'note_sur_10' => trim($_POST['note_sur_10'] ?? ''),
         ];
 
         if ($data['nom'] === '') {

@@ -40,6 +40,11 @@ CREATE TABLE prestataires (
     telephone VARCHAR(30) DEFAULT NULL,
     adresse VARCHAR(255) DEFAULT NULL,
     description TEXT DEFAULT NULL,
+    iban VARCHAR(34) DEFAULT NULL,
+    bic VARCHAR(20) DEFAULT NULL,
+    banque_nom VARCHAR(150) DEFAULT NULL,
+    titulaire_compte VARCHAR(150) DEFAULT NULL,
+    note_sur_10 DECIMAL(3, 1) DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE = InnoDB;
 
@@ -117,4 +122,4 @@ CREATE TABLE IF NOT EXISTS event_medias (
         is_active,
         position
     )
-) ENGINE=InnoDB;
+) ENGINE = InnoDB;

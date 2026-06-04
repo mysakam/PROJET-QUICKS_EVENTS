@@ -74,6 +74,7 @@ $router->post('/admin/event-medias/{id}/delete', ['EventMediaAdminController', '
 
 $router->get('/admin/prestataires', ['AdminPrestatairesController', 'index'], ['AuthMiddleware'], 'admin_prestataires_index');
 $router->get('/admin/prestataires/create', ['AdminPrestatairesController', 'create'], ['AuthMiddleware'], 'admin_prestataires_create');
+$router->get('/admin/prestataires/{id}', ['AdminPrestatairesController', 'show'], ['AuthMiddleware'], 'admin_prestataires_show');
 $router->post('/admin/prestataires', ['AdminPrestatairesController', 'store'], ['AuthMiddleware'], 'admin_prestataires_store');
 $router->get('/admin/prestataires/{id}/edit', ['AdminPrestatairesController', 'edit'], ['AuthMiddleware'], 'admin_prestataires_edit');
 $router->post('/admin/prestataires/{id}/update', ['AdminPrestatairesController', 'update'], ['AuthMiddleware'], 'admin_prestataires_update');

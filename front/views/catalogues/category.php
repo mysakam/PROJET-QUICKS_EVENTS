@@ -31,7 +31,9 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                                         <source src="<?= e($media['media_url']) ?>">
                                     </video>
                                 <?php else: ?>
-                                    <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
+                                    <a href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Voir la photo de <?= e($prestation['nom']) ?>">
+                                        <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
+                                    </a>
                                 <?php endif; ?>
                             <?php else: ?>
                                 <span>Image prestation a definir</span>
@@ -39,6 +41,11 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                         </div>
                         <h3><?= e($prestation['nom']) ?></h3>
                         <p class="card-text"><?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
+                        <?php if (!empty($media['media_url']) && (($media['media_type'] ?? 'image') !== 'video')): ?>
+                            <a class="btn" href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer">Voir la photo</a>
+                        <?php elseif (!empty($media['media_url'])): ?>
+                            <a class="btn" href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer">Ouvrir la video</a>
+                        <?php endif; ?>
                         <a class="btn" href="<?= route('prestations_show', ['id' => $prestation['id_prestation']]) ?>">Voir la prestation</a>
                     </article>
                 <?php endforeach; ?>

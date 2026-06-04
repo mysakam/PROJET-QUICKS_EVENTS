@@ -519,6 +519,32 @@ section {
   text-align: center;
 }
 
+.admin-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin: 18px 0;
+}
+
+.admin-kpi-card {
+  border: 1px solid rgba(4, 74, 121, 0.2);
+  border-radius: 12px;
+  background: #fff;
+  padding: 12px;
+}
+
+.admin-kpi-card h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #044a79;
+}
+
+.admin-kpi-card p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
 /* Responsive layout for event pages: cards auto-wrap as media grow. */
 .theme-grid {
   display: grid;

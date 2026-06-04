@@ -43,6 +43,7 @@
                                 <td><?= e($p['telephone'] ?? '-') ?></td>
                                 <td><?= e($p['adresse'] ?? '-') ?></td>
                                 <td class="admin-table-actions">
+                                    <a class="admin-link" href="<?= route('admin_prestataires_show', ['id' => $p['id_prestataire']]) ?>">Consulter</a>
                                     <a class="admin-link" href="<?= route('admin_prestataires_edit', ['id' => $p['id_prestataire']]) ?>">Modifier</a>
                                     <form method="POST" action="<?= route('admin_prestataires_delete', ['id' => $p['id_prestataire']]) ?>" onsubmit="return confirm('Supprimer ce prestataire ?');">
                                         <button type="submit" class="admin-btn admin-btn-danger">Supprimer</button>

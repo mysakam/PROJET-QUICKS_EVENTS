@@ -57,7 +57,12 @@ INSERT INTO
         email,
         telephone,
         adresse,
-        description
+        description,
+        iban,
+        bic,
+        banque_nom,
+        titulaire_compte,
+        note_sur_10
     )
 VALUES (
         1,
@@ -65,7 +70,12 @@ VALUES (
         'eden.decor@test.com',
         '0600000002',
         '12 rue des Fleurs, Marseille',
-        'Spécialiste décoration événementielle'
+        'Spécialiste décoration événementielle',
+        'FR7611111000000000000000101',
+        'PSSTFRPPMAR',
+        'Banque Provence',
+        'Eden Decor SARL',
+        8.6
     ),
     (
         2,
@@ -73,7 +83,12 @@ VALUES (
         'mobilier.pro@test.com',
         '0600000003',
         '8 avenue Prado, Marseille',
-        'Location de mobilier pour événements'
+        'Location de mobilier pour événements',
+        'FR7611111000000000000000102',
+        'PSSTFRPPMAR',
+        'Banque Provence',
+        'Mobilier Pro Events SAS',
+        8.1
     ),
     (
         3,
@@ -81,7 +96,12 @@ VALUES (
         'saveurs.prestige@test.com',
         '0600000004',
         '25 quai du Port, Marseille',
-        'Service traiteur premium'
+        'Service traiteur premium',
+        'FR7611111000000000000000103',
+        'PSSTFRPPMAR',
+        'Banque Provence',
+        'Saveurs Prestige SARL',
+        9.2
     ),
     (
         4,
@@ -89,7 +109,12 @@ VALUES (
         'secure.night@test.com',
         '0600000005',
         '4 boulevard National, Marseille',
-        'Sécurité pour soirées et événements'
+        'Sécurité pour soirées et événements',
+        'FR7611111000000000000000104',
+        'PSSTFRPPMAR',
+        'Banque Provence',
+        'Secure Night SAS',
+        7.8
     ),
     (
         5,
@@ -97,7 +122,12 @@ VALUES (
         'light.sound@test.com',
         '0600000006',
         '18 rue Sainte, Marseille',
-        'Sonorisation et éclairage professionnel'
+        'Sonorisation et éclairage professionnel',
+        'FR7611111000000000000000105',
+        'PSSTFRPPMAR',
+        'Banque Provence',
+        'Light & Sound Concept SARL',
+        8.9
     );
 
 INSERT INTO
