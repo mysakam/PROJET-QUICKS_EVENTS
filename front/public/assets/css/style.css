@@ -513,6 +513,12 @@ section {
   margin: 0 auto;
 }
 
+.catalogue-detail-card {
+  display: grid;
+  gap: 14px;
+  text-align: center;
+}
+
 /* Responsive layout for event pages: cards auto-wrap as media grow. */
 .theme-grid {
   display: grid;

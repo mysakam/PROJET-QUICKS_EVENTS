@@ -18,21 +18,8 @@ $media = $prestationMediaMap[$mediaKey] ?? null;
 
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
-        <article class="polaroid event-polaroid catalogue-show-polaroid">
-            <div class="event-media-slot">
-                <?php if (!empty($media['media_url'])): ?>
-                    <?php if (($media['media_type'] ?? 'image') === 'video'): ?>
-                        <video class="event-video" controls preload="metadata">
-                            <source src="<?= e($media['media_url']) ?>">
-                        </video>
-                    <?php else: ?>
-                        <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
-                    <?php endif; ?>
-                <?php else: ?>
-                    <span>Image prestation a definir dans Admin medias evenement</span>
-                <?php endif; ?>
-            </div>
-            <h1><?= e($prestation['nom']) ?></h1>
+        <article class="catalogue-detail-card">
+            <h1 class="titre-texte"><?= e($prestation['nom']) ?></h1>
             <p class="card-text">Categorie : <?= e($prestation['category_name']) ?></p>
             <p class="card-text">Prix : <?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
             <p class="card-text"><?= e($prestation['description']) ?></p>

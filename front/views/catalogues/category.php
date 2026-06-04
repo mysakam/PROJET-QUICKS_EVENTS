@@ -12,23 +12,7 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
 <section class="apropos">
     <div class="admin-media-shell">
         <h1 class="titre-texte"><span>R</span>ubrique <?= e($category['nom']) ?></h1>
-
-        <article class="polaroid event-polaroid catalogue-header-polaroid">
-            <div class="event-media-slot">
-                <?php if (!empty($categoryMedia['media_url'])): ?>
-                    <?php if (($categoryMedia['media_type'] ?? 'image') === 'video'): ?>
-                        <video class="event-video" controls preload="metadata">
-                            <source src="<?= e($categoryMedia['media_url']) ?>">
-                        </video>
-                    <?php else: ?>
-                        <img src="<?= e($categoryMedia['media_url']) ?>" alt="<?= e($categoryMedia['title'] ?? $category['nom']) ?>">
-                    <?php endif; ?>
-                <?php else: ?>
-                    <span>Image rubrique a definir dans Admin medias evenement</span>
-                <?php endif; ?>
-            </div>
-            <h3><?= e($category['nom']) ?></h3>
-        </article>
+        <p>Les prestations disponibles pour cette rubrique sont affichees ci-dessous.</p>
 
         <?php if (empty($prestations)): ?>
             <p>Aucune prestation trouvee.</p>
