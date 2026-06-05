@@ -44,10 +44,59 @@ class DevisController extends Controller
         $this->render('devis/checkout', [
             'cart' => $cart,
             'total' => $total,
+            'eventRequest' => $_SESSION['event_request'] ?? [],
             'pageTitle' => 'DEVIS',
             'pageCss' => 'devis-checkout.css',
             'backUrl' => route('panier'),
         ], 'devis');
+    }
+
+    public function eventRequest(): void
+    {
+        if (empty($_SESSION['client'])) {
+            redirect(route('login'));
+            return;
+        }
+
+        $this->render('devis/event', [
+            'pageTitle' => 'Créer mon événement',
+            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
+            'eventRequest' => $_SESSION['event_request'] ?? [],
+            'oldEventRequest' => $_SESSION['old_event_request'] ?? [],
+        ], 'auth');
+    }
+
+    public function eventRequestStore(): void
+    {
+        if (empty($_SESSION['client'])) {
+            redirect(route('login'));
+            return;
+        }
+
+        $langQuery = '?lang=' . ((($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
+        $data = [
+            'type_evenement' => trim($_POST['type_evenement'] ?? ''),
+            'nb_personnes' => trim($_POST['nb_personnes'] ?? ''),
+            'budget' => trim($_POST['budget'] ?? ''),
+        ];
+
+        if ($data['type_evenement'] === '' || $data['nb_personnes'] === '' || $data['budget'] === '') {
+            $_SESSION['old_event_request'] = $data;
+            $_SESSION['error'] = 'Merci de renseigner le type d\'evenement, le nombre d\'invites et le budget estimatif.';
+            redirect(route('mon_evenement') . $langQuery);
+            return;
+        }
+
+        $_SESSION['event_request'] = $data;
+        unset($_SESSION['old_event_request']);
+        $_SESSION['success'] = 'Votre fiche evenement a ete enregistree.';
+
+        if (!empty($this->getCart())) {
+            redirect(route('devis_checkout') . $langQuery);
+            return;
+        }
+
+        redirect(route('catalogues') . $langQuery);
     }
 
     public function store(): void
@@ -64,6 +113,30 @@ class DevisController extends Controller
         $reference = 'DEV-' . date('YmdHis');
         $dateEvenement = $_POST['date_evenement'] ?? null;
         $messageClient = trim($_POST['message_client'] ?? '');
+        $eventRequest = $_SESSION['event_request'] ?? [];
+        $eventSummary = [];
+
+        if (!empty($eventRequest)) {
+            $eventSummary[] = 'FICHE EVENEMENT';
+
+            if (!empty($eventRequest['type_evenement'])) {
+                $eventSummary[] = 'Type : ' . $eventRequest['type_evenement'];
+            }
+
+            if (!empty($eventRequest['nb_personnes'])) {
+                $eventSummary[] = 'Nombre d\'invites : ' . $eventRequest['nb_personnes'];
+            }
+
+            if (!empty($eventRequest['budget'])) {
+                $eventSummary[] = 'Budget estimatif : ' . $eventRequest['budget'];
+            }
+        }
+
+        if ($messageClient !== '') {
+            $eventSummary[] = 'Message client : ' . $messageClient;
+        }
+
+        $combinedMessage = !empty($eventSummary) ? implode("\n", $eventSummary) : null;
 
         try {
             $this->pdo->beginTransaction();
@@ -73,7 +146,7 @@ class DevisController extends Controller
                 'reference' => $reference,
                 'statut' => 'en_attente',
                 'date_evenement' => $dateEvenement ?: null,
-                'message_client' => $messageClient ?: null,
+                'message_client' => $combinedMessage,
                 'montant_total' => $total,
             ]);
 
@@ -89,6 +162,7 @@ class DevisController extends Controller
 
             $this->pdo->commit();
             $this->clearCart();
+            unset($_SESSION['event_request'], $_SESSION['old_event_request']);
             redirect(route('devis_success', ['id' => $idDevis]));
             return;
         } catch (Throwable $e) {

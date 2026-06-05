@@ -8,6 +8,17 @@
             <section class="checkout-card">
                 <h2>Récapitulatif</h2>
 
+                <?php if (!empty($eventRequest)): ?>
+                    <div class="checkout-event-summary">
+                        <p><strong>Fiche événement enregistrée</strong></p>
+                        <ul>
+                            <?php if (!empty($eventRequest['type_evenement'])): ?><li>Type : <?= e($eventRequest['type_evenement']) ?></li><?php endif; ?>
+                            <?php if (!empty($eventRequest['nb_personnes'])): ?><li>Nombre d'invités : <?= e($eventRequest['nb_personnes']) ?></li><?php endif; ?>
+                            <?php if (!empty($eventRequest['budget'])): ?><li>Budget estimatif : <?= e($eventRequest['budget']) ?></li><?php endif; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+
                 <div class="cart-list">
                     <?php foreach ($cart as $item): ?>
                         <div class="cart-item">

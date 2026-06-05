@@ -59,6 +59,8 @@ $router->post('/panier/supprimer/{id}', ['PanierController', 'remove'], ['AuthMi
 $router->post('/panier/vider', ['PanierController', 'clear'], ['AuthMiddleware'], 'panier_clear');
 
 /* Devis */
+$router->get('/mon-evenement', ['DevisController', 'eventRequest'], ['AuthMiddleware'], 'mon_evenement');
+$router->post('/mon-evenement', ['DevisController', 'eventRequestStore'], ['AuthMiddleware'], 'mon_evenement_post');
 $router->get('/devis/checkout', ['DevisController', 'checkout'], ['AuthMiddleware'], 'devis_checkout');
 $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
 $router->post('/devis/{id}/valider', ['DevisController', 'validate'], ['AuthMiddleware'], 'devis_validate');

@@ -123,6 +123,13 @@ $catalogueUrl = route('catalogues') . $langQuery;
             </ol>
         </div>
     </div>
+
+    <?php if (!empty($_SESSION['client'])): ?>
+        <div class="about-cta">
+            <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
+            <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
+        </div>
+    <?php endif; ?>
 </section>
 <section class="evenements" id="evenements">
     <h2 class="titre-texte"><span><?= $txt['events_title'] ?></span></h2>

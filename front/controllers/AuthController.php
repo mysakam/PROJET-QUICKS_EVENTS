@@ -11,24 +11,38 @@ class AuthController extends Controller
         $this->clientModel = new ClientModel();
     }
 
+    private function currentLang(): string
+    {
+        return (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr';
+    }
+
     public function login(): void
     {
+        $oldLoginEmail = $_SESSION['old_login_email'] ?? '';
+        unset($_SESSION['old_login_email']);
+
         $this->render('auth/login', [
             'pageTitle' => 'Connexion',
-            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
-        ]);
+            'lang' => $this->currentLang(),
+            'oldLoginEmail' => $oldLoginEmail,
+        ], 'auth');
     }
 
     public function register(): void
     {
+        $oldRegister = $_SESSION['old_register'] ?? [];
+        unset($_SESSION['old_register']);
+
         $this->render('auth/register', [
             'pageTitle' => 'Inscription',
-            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
-        ]);
+            'lang' => $this->currentLang(),
+            'oldRegister' => $oldRegister,
+        ], 'auth');
     }
 
     public function store(): void
     {
+        $langQuery = '?lang=' . $this->currentLang();
         $data = [
             'nom' => trim($_POST['nom'] ?? ''),
             'prenom' => trim($_POST['prenom'] ?? ''),
@@ -36,38 +50,65 @@ class AuthController extends Controller
             'password' => $_POST['password'] ?? '',
             'password_confirm' => $_POST['password_confirm'] ?? '',
             'telephone' => trim($_POST['telephone'] ?? ''),
-            'type_evenement' => trim($_POST['type_evenement'] ?? ''),
-            'nb_personnes' => trim($_POST['nb_personnes'] ?? ''),
-            'budget' => trim($_POST['budget'] ?? ''),
         ];
 
         if ($data['nom'] === '' || $data['prenom'] === '' || $data['email'] === '' || $data['password'] === '') {
+            $_SESSION['old_register'] = [
+                'nom' => $data['nom'],
+                'prenom' => $data['prenom'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+            ];
             $_SESSION['error'] = 'Nom, prenom, email et mot de passe sont obligatoires.';
-            redirect(route('register'));
+            redirect(route('register') . $langQuery);
             return;
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['old_register'] = [
+                'nom' => $data['nom'],
+                'prenom' => $data['prenom'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+            ];
             $_SESSION['error'] = 'Email invalide.';
-            redirect(route('register'));
+            redirect(route('register') . $langQuery);
             return;
         }
 
         if ($data['password'] !== $data['password_confirm']) {
+            $_SESSION['old_register'] = [
+                'nom' => $data['nom'],
+                'prenom' => $data['prenom'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+            ];
             $_SESSION['error'] = 'Les mots de passe ne correspondent pas.';
-            redirect(route('register'));
+            redirect(route('register') . $langQuery);
             return;
         }
 
         if (strlen($data['password']) < 6) {
+            $_SESSION['old_register'] = [
+                'nom' => $data['nom'],
+                'prenom' => $data['prenom'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+            ];
             $_SESSION['error'] = 'Le mot de passe doit contenir au moins 6 caracteres.';
-            redirect(route('register'));
+            redirect(route('register') . $langQuery);
             return;
         }
 
         if ($this->clientModel->findByEmail($data['email'])) {
+            $_SESSION['old_register'] = [
+                'nom' => $data['nom'],
+                'prenom' => $data['prenom'],
+                'email' => $data['email'],
+                'telephone' => $data['telephone'],
+            ];
             $_SESSION['error'] = 'Cet email existe deja.';
-            redirect(route('register'));
+            redirect(route('register') . $langQuery);
             return;
         }
 
@@ -80,26 +121,26 @@ class AuthController extends Controller
             'prenom' => $data['prenom'],
             'email' => $data['email'],
             'telephone' => $data['telephone'],
-            'type_evenement' => $data['type_evenement'],
-            'nb_personnes' => $data['nb_personnes'],
-            'budget' => $data['budget'],
             'is_admin' => in_array(strtolower($data['email']), $this->adminEmails, true),
         ];
+        unset($_SESSION['old_register']);
 
         $_SESSION['success'] = 'Compte client cree avec succes.';
-        redirect(route('catalogues'));
+        redirect(route('catalogues') . $langQuery);
         return;
     }
     public function authenticate(): void
     {
+        $langQuery = '?lang=' . $this->currentLang();
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
         $client = $this->clientModel->findByEmail($email);
 
         if (!$client || !password_verify($password, $client['mot_de_passe'])) {
+            $_SESSION['old_login_email'] = $email;
             $_SESSION['error'] = 'Identifiants invalides';
-            redirect(route('login'));
+            redirect(route('login') . $langQuery);
             return;
         }
 
@@ -112,8 +153,9 @@ class AuthController extends Controller
             'email' => $client['email'],
             'is_admin' => in_array(strtolower($client['email']), $this->adminEmails, true),
         ];
+        unset($_SESSION['old_login_email']);
 
-        redirect(route('catalogues'));
+        redirect(route('catalogues') . $langQuery);
         return;
     }
 
@@ -121,7 +163,7 @@ class AuthController extends Controller
     public function logout(): void
     {
         unset($_SESSION['client']);
-        redirect(route('login'));
+        redirect(route('login') . '?lang=' . $this->currentLang());
         return;
     }
 
