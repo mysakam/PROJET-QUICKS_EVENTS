@@ -102,7 +102,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
             </h2>
             <ul>
                 <?php foreach ($txt['who_lines'] as $line): ?>
-                    <li><?= $line ?></li>
+                <li><?= $line ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -118,17 +118,17 @@ $catalogueUrl = route('catalogues') . $langQuery;
             </h2>
             <ol>
                 <?php foreach ($txt['how_lines'] as $line): ?>
-                    <li><?= $line ?></li>
+                <li><?= $line ?></li>
                 <?php endforeach; ?>
             </ol>
         </div>
     </div>
 
     <?php if (!empty($_SESSION['client'])): ?>
-        <div class="about-cta">
-            <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
-            <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
-        </div>
+    <div class="about-cta">
+        <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
+        <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
+    </div>
     <?php endif; ?>
 </section>
 <section class="evenements" id="evenements">
@@ -141,8 +141,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
                     alt="<?= $txt['cards'][0]['title'] ?>">
             </div>
             <div class="card-text"><?= $txt['cards'][0]['text'] ?></div>
-            <a href="<?= route('event_mariage') . $langQuery ?>"
-                class="btn"><?= $txt['event_links'][0]['label'] ?></a>
+            <a href="<?= route('event_mariage') . $langQuery ?>" class="btn"><?= $txt['event_links'][0]['label'] ?></a>
         </div>
         <div class="polaroid">
             <h3><?= $txt['cards'][1]['title'] ?></h3>
@@ -165,10 +164,10 @@ $catalogueUrl = route('catalogues') . $langQuery;
         </div>
         <div class="polaroid">
             <h3><?= $txt['cards'][3]['title'] ?></h3>
-            <div class="image">
-                <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg"
-                    alt="<?= $txt['cards'][3]['title'] ?>">
-            </div>
+
+            <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg"
+                alt="<?= $txt['cards'][3]['title'] ?>">
+
             <div class="card-text"><?= $txt['cards'][3]['text'] ?></div>
             <a href="<?= route('event_repas_seminaire') . $langQuery ?>"
                 class="btn"><?= $txt['event_links'][3]['label'] ?></a>
