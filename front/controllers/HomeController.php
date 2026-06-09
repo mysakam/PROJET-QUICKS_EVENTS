@@ -1,8 +1,14 @@
 <?php
+
 class HomeController extends Controller
 {
     public function index(): void
     {
-        $this->render('home/index', [], 'none');
+        $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
+
+        $this->render('home/index', [
+            'lang' => $lang,
+            'pageTitle' => "QUICK'EVENTS",
+        ], 'main');
     }
 }

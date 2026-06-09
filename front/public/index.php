@@ -3,20 +3,27 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 
-require __DIR__ . '/../core/Controller.php';
-require __DIR__ . '/../core/Router.php';
-require __DIR__ . '/../core/Database.php';
-require __DIR__ . '/../helpers/url.php';
-require __DIR__ . '/../helpers/view.php';
-require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
+define('ROOT_PATH', dirname(__DIR__, 2));
+define('FRONT_PATH', dirname(__DIR__));
 
-require __DIR__ . '/../models/CategoryModel.php';
-require __DIR__ . '/../models/PrestationModel.php';
-require __DIR__ . '/../models/DevisModel.php';
-require __DIR__ . '/../models/DevisLigneModel.php';
-require __DIR__ . '/../models/ClientModel.php';
+require_once ROOT_PATH . '/shared/helpers/i18n.php';
+require_once FRONT_PATH . '/core/Controller.php';
+require_once FRONT_PATH . '/core/Router.php';
+require_once FRONT_PATH . '/core/Database.php';
+require_once FRONT_PATH . '/helpers/url.php';
+require_once FRONT_PATH . '/helpers/view.php';
+require_once FRONT_PATH . '/middlewares/AuthMiddleware.php';
+
+require_once FRONT_PATH . '/models/CategoryModel.php';
+require_once FRONT_PATH . '/models/PrestationModel.php';
+require_once FRONT_PATH . '/models/DevisModel.php';
+require_once FRONT_PATH . '/models/DevisLigneModel.php';
+require_once FRONT_PATH . '/models/ClientModel.php';
+
+set_lang();
 
 $router = new Router();
 
@@ -54,4 +61,6 @@ $router->get('/devis/success/{id}', ['DevisController', 'success'], ['AuthMiddle
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
 
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+if (PHP_SAPI !== 'cli') {
+    $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+}

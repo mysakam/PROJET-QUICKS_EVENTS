@@ -1,16 +1,23 @@
-<header style="padding:20px; border-bottom:1px solid #ddd; margin-bottom:20px;">
-    <nav style="display:flex; gap:15px; flex-wrap:wrap;">
-        <a href="<?= route('home') ?>">Accueil</a>
-        <a href="<?= route('catalogues') ?>">Catalogues</a>
+<?php
+$lang = ($_GET['lang'] ?? ($lang ?? 'fr')) === 'en' ? 'en' : 'fr';
+$langQuery = '?lang=' . $lang;
+$toggleLang = $lang === 'fr' ? 'en' : 'fr';
+?>
+<header>
+    <a href="<?= route('home') . $langQuery ?>" class="logo"><span>QUICK'EVENTS</span></a>
 
-        <?php if (!empty($_SESSION['client'])): ?>
-            <a href="<?= route('panier') ?>">Panier</a>
-            <a href="<?= route('devis_index') ?>">Mes devis</a>
-            <a href="<?= route('account') ?>">Mon compte</a>
-            <a href="<?= route('logout') ?>">Deconnexion</a>
-        <?php else: ?>
-            <a href="<?= route('login') ?>">Connexion</a>
-            <a href="<?= route('register') ?>">Inscription</a>
-        <?php endif; ?>
-    </nav>
+    <ul class="navbar">
+        <li><a href="<?= route('home') . $langQuery ?>#apropos"
+                class="btn"><?= $lang === 'fr' ? 'A PROPOS' : 'ABOUT' ?></a></li>
+        <li><a href="<?= route('home') . $langQuery ?>#evenements"
+                class="btn"><?= $lang === 'fr' ? 'EVENEMENTS' : 'EVENTS' ?></a></li>
+        <li><a href="<?= route('catalogues') . $langQuery ?>"
+                class="btn"><?= $lang === 'fr' ? 'CATALOGUES' : 'CATALOGUES' ?></a></li>
+        <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= $lang === 'fr' ? 'CONNEXION' : 'LOGIN' ?></a>
+        </li>
+        <li><a href="<?= route('register') . $langQuery ?>"
+                class="btn"><?= $lang === 'fr' ? 'INSCRIPTION' : 'REGISTER' ?></a></li>
+        <li><a href="<?= route('home') . '?lang=' . $toggleLang ?>"
+                class="btn-transcription"><?= $lang === 'fr' ? 'FR/EN' : 'EN/FR' ?></a></li>
+    </ul>
 </header>
