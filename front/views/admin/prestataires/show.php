@@ -1,5 +1,6 @@
 <?php
 $prestataire = $prestataire ?? [];
+$prestations = $prestations ?? [];
 $activitySummary = $activitySummary ?? ['total_devis' => 0, 'total_factures' => 0, 'montant_factures' => 0.0];
 $devisByStatus = $devisByStatus ?? [];
 $facturesByStatus = $facturesByStatus ?? [];
@@ -55,6 +56,10 @@ $recentFactures = $recentFactures ?? [];
                         <td><?= e($prestataire['adresse'] ?? '-') ?></td>
                     </tr>
                     <tr>
+                        <th>Type evenement</th>
+                        <td><?= e($prestataire['type_evenement'] ?? '-') ?></td>
+                    </tr>
+                    <tr>
                         <th>IBAN</th>
                         <td><?= e($prestataire['iban'] ?? '-') ?></td>
                     </tr>
@@ -74,6 +79,36 @@ $recentFactures = $recentFactures ?? [];
                         <th>Description</th>
                         <td><?= nl2br(e($prestataire['description'] ?? '-')) ?></td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Prestations associees</h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Prestation</th>
+                        <th>Categorie</th>
+                        <th>Prix unitaire</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($prestations)): ?>
+                        <tr>
+                            <td colspan="4">Aucune prestation associee.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($prestations as $prestation): ?>
+                            <tr>
+                                <td><?= e($prestation['nom'] ?? '-') ?></td>
+                                <td><?= e($prestation['category_name'] ?? '-') ?></td>
+                                <td><?= e(number_format((float) ($prestation['prix_unitaire'] ?? 0), 2, ',', ' ')) ?> EUR</td>
+                                <td><?= nl2br(e($prestation['description'] ?? '-')) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

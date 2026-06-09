@@ -17,6 +17,7 @@ class PrestataireModel
         }
 
         $columns = [
+            'type_evenement' => "ALTER TABLE prestataires ADD COLUMN type_evenement VARCHAR(150) DEFAULT NULL AFTER adresse",
             'iban' => "ALTER TABLE prestataires ADD COLUMN iban VARCHAR(34) DEFAULT NULL AFTER description",
             'bic' => "ALTER TABLE prestataires ADD COLUMN bic VARCHAR(20) DEFAULT NULL AFTER iban",
             'banque_nom' => "ALTER TABLE prestataires ADD COLUMN banque_nom VARCHAR(150) DEFAULT NULL AFTER bic",
@@ -74,6 +75,72 @@ class PrestataireModel
         return $stmt->fetchAll();
     }
 
+    public function findDistinctTypeEvenements(): array
+    {
+        $this->ensureExtendedColumns();
+        $stmt = $this->pdo->query(
+            "SELECT DISTINCT type_evenement
+             FROM prestataires
+             WHERE type_evenement IS NOT NULL
+               AND type_evenement <> ''
+             ORDER BY type_evenement ASC"
+        );
+
+        return array_map(static fn(array $row): string => (string) $row['type_evenement'], $stmt->fetchAll());
+    }
+
+    public function findAllWithFilters(array $filters = []): array
+    {
+        $this->ensureExtendedColumns();
+
+        $sql = "SELECT
+                    p.*,
+                    GROUP_CONCAT(DISTINCT c.nom ORDER BY c.nom SEPARATOR ', ') AS categories_labels,
+                    GROUP_CONCAT(DISTINCT pr.nom ORDER BY pr.nom SEPARATOR ', ') AS prestations_labels
+                FROM prestataires p
+                LEFT JOIN prestations pr ON pr.id_prestataire = p.id_prestataire
+                LEFT JOIN categories c ON c.id_categorie = pr.id_categorie
+                WHERE 1=1";
+
+        $params = [];
+
+        if (!empty($filters['q'])) {
+            $sql .= " AND (
+                p.nom LIKE :q
+                OR p.email LIKE :q
+                OR p.telephone LIKE :q
+                OR p.adresse LIKE :q
+                OR p.type_evenement LIKE :q
+                OR pr.nom LIKE :q
+                OR c.nom LIKE :q
+            )";
+            $params['q'] = '%' . $filters['q'] . '%';
+        }
+
+        if (!empty($filters['type_evenement'])) {
+            $sql .= " AND p.type_evenement = :type_evenement";
+            $params['type_evenement'] = $filters['type_evenement'];
+        }
+
+        if (!empty($filters['category_id'])) {
+            $sql .= " AND c.id_categorie = :category_id";
+            $params['category_id'] = (int) $filters['category_id'];
+        }
+
+        if (!empty($filters['prestation_id'])) {
+            $sql .= " AND pr.id_prestation = :prestation_id";
+            $params['prestation_id'] = (int) $filters['prestation_id'];
+        }
+
+        $sql .= " GROUP BY p.id_prestataire
+                  ORDER BY p.created_at DESC, p.id_prestataire DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetchAll();
+    }
+
     public function findById(int $idPrestataire): array|false
     {
         $this->ensureExtendedColumns();
@@ -91,13 +158,14 @@ class PrestataireModel
                 email,
                 telephone,
                 adresse,
+                type_evenement,
                 description,
                 iban,
                 bic,
                 banque_nom,
                 titulaire_compte,
                 note_sur_10
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         );
 
         $stmt->execute([
@@ -105,6 +173,7 @@ class PrestataireModel
             $data['email'] ?: null,
             $data['telephone'] ?: null,
             $data['adresse'] ?: null,
+            $data['type_evenement'] ?: null,
             $data['description'] ?: null,
             $data['iban'] ?: null,
             $data['bic'] ?: null,
@@ -125,6 +194,7 @@ class PrestataireModel
                  email = ?,
                  telephone = ?,
                  adresse = ?,
+                 type_evenement = ?,
                  description = ?,
                  iban = ?,
                  bic = ?,
@@ -139,6 +209,7 @@ class PrestataireModel
             $data['email'] ?: null,
             $data['telephone'] ?: null,
             $data['adresse'] ?: null,
+            $data['type_evenement'] ?: null,
             $data['description'] ?: null,
             $data['iban'] ?: null,
             $data['bic'] ?: null,
@@ -261,7 +332,66 @@ class PrestataireModel
 
     public function delete(int $idPrestataire): void
     {
-        $stmt = $this->pdo->prepare('DELETE FROM prestataires WHERE id_prestataire = ?');
-        $stmt->execute([$idPrestataire]);
+        $this->ensureFacturesTable();
+        $this->pdo->beginTransaction();
+
+        try {
+            $affectedDevisStmt = $this->pdo->prepare(
+                'SELECT DISTINCT dl.id_devis
+                 FROM devis_lignes dl
+                 INNER JOIN prestations p ON p.id_prestation = dl.id_prestation
+                 WHERE p.id_prestataire = ?'
+            );
+            $affectedDevisStmt->execute([$idPrestataire]);
+            $affectedDevisIds = array_map(
+                static fn(array $row): int => (int) $row['id_devis'],
+                $affectedDevisStmt->fetchAll()
+            );
+
+            $deleteLinesStmt = $this->pdo->prepare(
+                'DELETE dl
+                 FROM devis_lignes dl
+                 INNER JOIN prestations p ON p.id_prestation = dl.id_prestation
+                 WHERE p.id_prestataire = ?'
+            );
+            $deleteLinesStmt->execute([$idPrestataire]);
+
+            if ($affectedDevisIds !== []) {
+                $placeholders = implode(',', array_fill(0, count($affectedDevisIds), '?'));
+
+                $updateDevisSql = "UPDATE devis d
+                    LEFT JOIN (
+                        SELECT id_devis, COALESCE(SUM(montant_ligne), 0) AS total
+                        FROM devis_lignes
+                        WHERE id_devis IN ($placeholders)
+                        GROUP BY id_devis
+                    ) lignes ON lignes.id_devis = d.id_devis
+                    SET d.montant_total = COALESCE(lignes.total, 0)
+                    WHERE d.id_devis IN ($placeholders)";
+                $updateDevisStmt = $this->pdo->prepare($updateDevisSql);
+                $updateDevisStmt->execute(array_merge($affectedDevisIds, $affectedDevisIds));
+
+                $updateFacturesSql = "UPDATE factures f
+                    INNER JOIN devis d ON d.id_devis = f.id_devis
+                    SET f.montant_ttc = d.montant_total
+                    WHERE f.id_devis IN ($placeholders)";
+                $updateFacturesStmt = $this->pdo->prepare($updateFacturesSql);
+                $updateFacturesStmt->execute($affectedDevisIds);
+            }
+
+            $cleanup = $this->pdo->prepare('DELETE FROM prestations WHERE id_prestataire = ?');
+            $cleanup->execute([$idPrestataire]);
+
+            $stmt = $this->pdo->prepare('DELETE FROM prestataires WHERE id_prestataire = ?');
+            $stmt->execute([$idPrestataire]);
+
+            $this->pdo->commit();
+        } catch (Throwable $exception) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+
+            throw $exception;
+        }
     }
 }

@@ -27,6 +27,9 @@
                         <th>Client</th>
                         <th>Statut</th>
                         <th>Montant TTC</th>
+                        <th>Date de création de la facture</th>
+                        <th>Date de création du devis</th>
+                        <th>Date de réservation de l'événement</th>
                         <th>Emission</th>
                         <th>Echeance</th>
                         <th>Paiement</th>
@@ -37,7 +40,7 @@
                 <tbody>
                     <?php if (empty($factures)): ?>
                         <tr>
-                            <td colspan="11">Aucune facture enregistree.</td>
+                            <td colspan="14">Aucune facture enregistree.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($factures as $f): ?>
@@ -48,6 +51,9 @@
                                 <td><?= e(trim(($f['client_prenom'] ?? '') . ' ' . ($f['client_nom'] ?? ''))) ?></td>
                                 <td><?= e($f['statut']) ?></td>
                                 <td><?= e(number_format((float) $f['montant_ttc'], 2, ',', ' ')) ?> EUR</td>
+                                <td><?= !empty($f['facture_created_at']) ? e(date('d/m/Y', strtotime((string) $f['facture_created_at']))) : '-' ?></td>
+                                <td><?= !empty($f['devis_created_at']) ? e(date('d/m/Y', strtotime((string) $f['devis_created_at']))) : '-' ?></td>
+                                <td><?= !empty($f['date_reservation']) ? e(date('d/m/Y', strtotime((string) $f['date_reservation']))) : '-' ?></td>
                                 <td><?= e($f['date_emission'] ?? '-') ?></td>
                                 <td><?= e($f['date_echeance'] ?? '-') ?></td>
                                 <td><?= e($f['date_paiement'] ?? '-') ?></td>

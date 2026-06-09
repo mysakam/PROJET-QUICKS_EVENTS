@@ -1,4 +1,7 @@
-<?php $clients = $clients ?? []; ?>
+<?php
+$clients = $clients ?? [];
+$searchQuery = $searchQuery ?? '';
+?>
 <section class="apropos">
     <div class="admin-media-shell">
         <h2 class="titre-texte"><span>C</span>lients</h2>
@@ -16,6 +19,13 @@
             <a class="btn" href="<?= route('admin_dashboard') ?>">Dashboard admin</a>
             <a class="btn" href="<?= route('admin_clients_create') ?>">Ajouter un client</a>
         </div>
+
+        <form class="admin-filter-form" method="GET" action="<?= route('admin_clients_index') ?>">
+            <label for="q">Recherche</label>
+            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, prenom, email, telephone">
+            <button class="admin-btn" type="submit">Filtrer</button>
+            <a class="btn" href="<?= route('admin_clients_index') ?>">Reinitialiser</a>
+        </form>
 
         <div class="admin-table-wrap">
             <table class="admin-table">

@@ -8,7 +8,7 @@ $isHome = (parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) === route('ho
 $eventsLink = $isHome ? '#evenements' : ($homeUrl . '#evenements');
 ?>
 
-<header>
+<header class="site-header">
     <a href="<?= $homeUrl ?>" class="logo"><span> QUICK'EVENTS </span></a>
     <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
         <span></span>

@@ -69,10 +69,34 @@ class EventMediaAdminController extends Controller
         }
 
         $theme = trim($_GET['theme'] ?? '');
+        $searchQuery = trim($_GET['q'] ?? '');
+        $active = trim($_GET['active'] ?? '');
         $themeFilter = in_array($theme, $this->themes(), true) ? $theme : null;
+        $activeFilter = in_array($active, ['1', '0'], true) ? $active : '';
         $medias = [];
         try {
             $medias = $this->eventMediaModel->findAll($themeFilter);
+
+            if ($searchQuery !== '') {
+                $needle = mb_strtolower($searchQuery, 'UTF-8');
+                $medias = array_values(array_filter($medias, static function (array $media) use ($needle): bool {
+                    $haystack = mb_strtolower(implode(' ', [
+                        (string) ($media['title_fr'] ?? ''),
+                        (string) ($media['title_en'] ?? ''),
+                        (string) ($media['media_url'] ?? ''),
+                        (string) ($media['media_type'] ?? ''),
+                    ]), 'UTF-8');
+
+                    return str_contains($haystack, $needle);
+                }));
+            }
+
+            if ($activeFilter !== '') {
+                $isActive = $activeFilter === '1' ? 1 : 0;
+                $medias = array_values(array_filter($medias, static function (array $media) use ($isActive): bool {
+                    return (int) ($media['is_active'] ?? 0) === $isActive;
+                }));
+            }
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
         }
@@ -82,6 +106,8 @@ class EventMediaAdminController extends Controller
             'themes' => $this->themes(),
             'themeOptions' => $this->themeOptions(),
             'themeFilter' => $themeFilter,
+            'searchQuery' => $searchQuery,
+            'activeFilter' => $activeFilter,
             'pageTitle' => 'Admin medias evenement',
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
         ]);

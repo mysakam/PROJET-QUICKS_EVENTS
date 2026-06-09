@@ -15,8 +15,26 @@ class AdminClientsController extends AdminBaseController
             return;
         }
 
+        $searchQuery = trim($_GET['q'] ?? '');
+        $clients = $this->clientModel->findAll();
+
+        if ($searchQuery !== '') {
+            $needle = mb_strtolower($searchQuery, 'UTF-8');
+            $clients = array_values(array_filter($clients, static function (array $client) use ($needle): bool {
+                $haystack = mb_strtolower(implode(' ', [
+                    (string) ($client['nom'] ?? ''),
+                    (string) ($client['prenom'] ?? ''),
+                    (string) ($client['email'] ?? ''),
+                    (string) ($client['telephone'] ?? ''),
+                ]), 'UTF-8');
+
+                return str_contains($haystack, $needle);
+            }));
+        }
+
         $this->render('admin/clients/index', [
-            'clients' => $this->clientModel->findAll(),
+            'clients' => $clients,
+            'searchQuery' => $searchQuery,
             'pageTitle' => 'Admin clients',
             'lang' => $this->getLang(),
         ]);

@@ -44,6 +44,18 @@ $facture = $facture ?? [];
                         <td><?= e(number_format((float) ($facture['montant_ttc'] ?? 0), 2, ',', ' ')) ?> EUR</td>
                     </tr>
                     <tr>
+                        <th>Date de création de la facture</th>
+                        <td><?= !empty($facture['facture_created_at']) ? e(date('d/m/Y', strtotime((string) $facture['facture_created_at']))) : '-' ?></td>
+                    </tr>
+                    <tr>
+                        <th>Date de création du devis</th>
+                        <td><?= !empty($facture['devis_created_at']) ? e(date('d/m/Y', strtotime((string) $facture['devis_created_at']))) : '-' ?></td>
+                    </tr>
+                    <tr>
+                        <th>Date de réservation de l'événement</th>
+                        <td><?= !empty($facture['date_reservation']) ? e(date('d/m/Y', strtotime((string) $facture['date_reservation']))) : '-' ?></td>
+                    </tr>
+                    <tr>
                         <th>Date emission</th>
                         <td><?= e($facture['date_emission'] ?? '-') ?></td>
                     </tr>

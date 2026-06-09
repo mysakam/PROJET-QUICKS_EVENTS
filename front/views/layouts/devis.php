@@ -4,7 +4,7 @@ if (!headers_sent()) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="<?= htmlspecialchars($lang ?? 'fr', ENT_QUOTES, 'UTF-8') ?>">
 
 <head>
     <meta charset="UTF-8">
@@ -17,11 +17,11 @@ if (!headers_sent()) {
     <?php endif; ?>
 </head>
 
-<body>
+<body class="devis-layout">
 
     <?php require __DIR__ . '/../partials/header.php'; ?>
 
-    <div class="devis-page">
+    <div class="devis-page site-main">
         <?php require __DIR__ . '/../partials/devis-header.php'; ?>
 
         <main class="devis-main">

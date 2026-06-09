@@ -4,6 +4,7 @@ $category = $category ?? ['id_categorie' => 0, 'nom' => $slug ?? ''];
 $prestations = $prestations ?? [];
 $categoryMediaMap = $categoryMediaMap ?? [];
 $prestationMediaMap = $prestationMediaMap ?? [];
+$isClientLoggedIn = !empty($_SESSION['client']);
 
 $categoryKey = 'catalogue-category-' . (int) $category['id_categorie'];
 $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
@@ -11,8 +12,34 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
 
 <section class="apropos">
     <div class="admin-media-shell">
-        <h1 class="titre-texte"><span>R</span>ubrique <?= e($category['nom']) ?></h1>
-        <p>Les prestations disponibles pour cette rubrique sont affichees ci-dessous.</p>
+        <article class="panier-shell">
+            <h1 class="titre-texte"><span>R</span>ubrique <?= e($category['nom']) ?></h1>
+
+            <?php if (!empty($categoryMedia['media_url'])): ?>
+                <div class="event-media-slot panier-media-slot catalogue-header-polaroid">
+                    <?php if (($categoryMedia['media_type'] ?? 'image') === 'video'): ?>
+                        <video class="event-video" controls preload="metadata">
+                            <source src="<?= e($categoryMedia['media_url']) ?>">
+                        </video>
+                    <?php else: ?>
+                        <img src="<?= e($categoryMedia['media_url']) ?>" alt="<?= e($categoryMedia['title'] ?? $category['nom']) ?>">
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="panier-summary-card">
+                <p>Les prestations disponibles pour cette rubrique sont affichees ci-dessous.</p>
+            </div>
+
+            <div class="admin-form-actions">
+                <a class="btn" href="<?= route('catalogues') ?>">Retour catalogues</a>
+                <?php if ($isClientLoggedIn): ?>
+                    <a class="btn" href="<?= route('panier') ?>">Voir mon panier</a>
+                <?php else: ?>
+                    <a class="btn" href="<?= route('login') ?>">Connexion</a>
+                <?php endif; ?>
+            </div>
+        </article>
 
         <?php if (empty($prestations)): ?>
             <p>Aucune prestation trouvee.</p>
@@ -51,9 +78,5 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-
-        <div class="theme-actions">
-            <a class="btn theme-back-btn" href="<?= route('catalogues') ?>">Retour catalogues</a>
-        </div>
     </div>
 </section>

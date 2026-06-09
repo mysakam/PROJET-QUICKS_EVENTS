@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 
 	window.addEventListener("resize", function () {
-		if (window.innerWidth > 900) {
+		if (window.innerWidth > 1200) {
 			closeMenu();
 		}
 	});

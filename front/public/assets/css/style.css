@@ -6,6 +6,14 @@ body {
   scroll-behavior: smooth;
 }
 
+.site-main {
+  min-height: 100vh;
+}
+
+.devis-layout .site-main {
+  padding-top: 92px;
+}
+
 *,
 *::before,
 *::after {
@@ -16,7 +24,7 @@ p {
   font-weight: 300;
   color: black;
 }
-header {
+.site-header {
   position: fixed;
   top: 0%;
   left: 0%;
@@ -25,8 +33,10 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 10px;
-  z-index: 1;
+  gap: 12px;
+  padding: 8px 14px;
+  min-height: 72px;
+  z-index: 1000;
   transition: 0.5s;
 }
 
@@ -45,7 +55,11 @@ header {
   display: flex;
   position: relative;
   align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   gap: 10px;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar li {
@@ -98,7 +112,7 @@ header {
   transition: ease-out 0.2s;
 }
 
-header .navbar li a:hover {
+.site-header .navbar li a:hover {
   color: #014b75;
   border-bottom: rgb(17, 62, 83) 2px solid;
   transition: ease-out 0.2s;
@@ -898,6 +912,39 @@ section {
   text-align: center;
 }
 
+.panier-shell {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.96),
+    rgba(241, 247, 252, 0.92)
+  );
+  border: 1px solid rgba(4, 74, 121, 0.14);
+  border-radius: 20px;
+  padding: 18px;
+}
+
+.panier-summary-card {
+  background: #fff;
+  border: 1px solid rgba(4, 74, 121, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.panier-summary-card p {
+  margin: 0;
+  color: #27465e;
+}
+
+.panier-media-slot {
+  max-width: 520px;
+  margin: 0 auto;
+  min-height: 240px;
+}
+
+.panier-table {
+  min-width: 680px;
+}
+
 .admin-invoice-send-panel {
   background: linear-gradient(
     135deg,
@@ -960,7 +1007,7 @@ section {
 }
 
 @media (max-width: 1024px) {
-  header {
+  .site-header {
     padding: 8px 14px;
   }
 
@@ -978,7 +1025,7 @@ section {
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   .menu-toggle {
     display: block;
   }
@@ -1019,6 +1066,10 @@ section {
 
   body.nav-open {
     overflow: hidden;
+  }
+
+  .devis-layout .site-main {
+    padding-top: 86px;
   }
 }
 
@@ -1080,6 +1131,10 @@ section {
   .admin-form-actions .admin-btn {
     width: 100%;
     text-align: center;
+  }
+
+  .panier-media-slot {
+    min-height: 180px;
   }
 }
 

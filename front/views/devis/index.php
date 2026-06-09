@@ -18,7 +18,14 @@
                     </div>
 
                     <div>
-                        <span class="devis-card-label">Date</span>
+                        <span class="devis-card-label">Date de création du devis</span>
+                        <div class="devis-card-value">
+                            <?= !empty($devis['created_at']) ? date('d/m/Y', strtotime($devis['created_at'])) : '-' ?>
+                        </div>
+                    </div>
+
+                    <div>
+                        <span class="devis-card-label">Date de réservation de l'événement</span>
                         <div class="devis-card-value">
                             <?= !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : '-' ?>
                         </div>

@@ -1,7 +1,8 @@
 <?php
 $client = $_SESSION['client'] ?? [];
 $clientNom = trim(($client['prenom'] ?? '') . ' ' . ($client['nom'] ?? ''));
-$dateDevis = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : date('d/m/Y');
+$dateCreationDevis = !empty($devis['created_at']) ? date('d/m/Y', strtotime($devis['created_at'])) : date('d/m/Y');
+$dateReservation = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : '-';
 $total = (float)($devis['montant_total'] ?? 0);
 $facture = $facture ?? null;
 
@@ -10,7 +11,8 @@ $facture = $facture ?? null;
 <section class="devis-meta">
     <div>DEVIS N° <?= e($devis['reference'] ?? $devis['id_devis'] ?? '') ?></div>
     <div>NOM ET PRENOMS DU CLIENT: <?= e($clientNom ?: 'CLIENT') ?></div>
-    <div>DATE: <?= e($dateDevis) ?></div>
+    <div>DATE DE CRÉATION DU DEVIS: <?= e($dateCreationDevis) ?></div>
+    <div>DATE DE RÉSERVATION DE L'ÉVÉNEMENT: <?= e($dateReservation) ?></div>
 </section>
 
 <section class="devis-content">

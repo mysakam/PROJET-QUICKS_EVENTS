@@ -3,6 +3,9 @@
 if (!headers_sent()) {
     header('Content-Type: text/html; charset=utf-8');
 }
+
+$normalizedViewPath = isset($viewPath) ? str_replace('\\', '/', $viewPath) : '';
+$isDevisView = $normalizedViewPath !== '' && strpos($normalizedViewPath, '/views/devis/') !== false;
 ?>
 <!DOCTYPE html>
 <html lang="<?= e($lang ?? 'fr') ?>">
@@ -14,7 +17,7 @@ if (!headers_sent()) {
     <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
 </head>
 
-<body>
+<body class="<?= $isDevisView ? 'devis-layout' : '' ?>">
 
     <?php
     $headerPath = __DIR__ . '/../partials/header.php';
@@ -23,7 +26,7 @@ if (!headers_sent()) {
     }
     ?>
 
-    <main>
+    <main class="site-main">
         <?php if (isset($viewPath) && file_exists($viewPath)) {
             require $viewPath;
         } ?>

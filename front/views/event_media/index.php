@@ -2,6 +2,8 @@
 $themes = $themes ?? [];
 $themeOptions = $themeOptions ?? [];
 $themeFilter = $themeFilter ?? null;
+$searchQuery = $searchQuery ?? '';
+$activeFilter = $activeFilter ?? '';
 $medias = $medias ?? [];
 ?>
 
@@ -32,7 +34,16 @@ $medias = $medias ?? [];
                     <option value="<?= e($theme) ?>" <?= $themeFilter === $theme ? 'selected' : '' ?>><?= e($themeOptions[$theme] ?? $theme) ?></option>
                 <?php endforeach; ?>
             </select>
+            <label for="active">Actif</label>
+            <select name="active" id="active">
+                <option value="" <?= $activeFilter === '' ? 'selected' : '' ?>>-- Tous --</option>
+                <option value="1" <?= $activeFilter === '1' ? 'selected' : '' ?>>Oui</option>
+                <option value="0" <?= $activeFilter === '0' ? 'selected' : '' ?>>Non</option>
+            </select>
+            <label for="q">Recherche</label>
+            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Titre, URL, type">
             <button class="admin-btn" type="submit">Filtrer</button>
+            <a class="btn" href="<?= route('admin_event_medias') ?>">Reinitialiser</a>
         </form>
 
         <div class="admin-table-wrap">
