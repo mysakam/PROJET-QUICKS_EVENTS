@@ -1,12 +1,20 @@
 <?php
 
-class AuthMiddleware
+class AdminMiddleware
 {
-    public static function handle(): void
+    public function handle(): bool
     {
-        if (empty($_SESSION['client'])) {
+        if (!Auth::check()) {
             redirect(route('login'));
-            exit;
+            return false;
         }
+
+        if (!Auth::isAdmin()) {
+            http_response_code(403);
+            echo 'Acces reserve a l\'administrateur.';
+            return false;
+        }
+
+        return true;
     }
 }
