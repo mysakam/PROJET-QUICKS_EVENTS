@@ -66,6 +66,7 @@ $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 
 $router->post('/devis/{id}/valider', ['DevisController', 'validate'], ['AuthMiddleware'], 'devis_validate');
 $router->get('/devis/success/{id}', ['DevisController', 'success'], ['AuthMiddleware'], 'devis_success');
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
+$router->get('/factures', ['DevisController', 'factures'], ['AuthMiddleware'], 'factures_index');
 $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'devis_show');
 
 /* Admin medias evenements */
@@ -98,6 +99,7 @@ $router->post('/admin/factures/{id}/send-mail', ['AdminFacturesController', 'sen
 $router->get('/admin/clients', ['AdminClientsController', 'index'], ['AuthMiddleware'], 'admin_clients_index');
 $router->get('/admin/clients/create', ['AdminClientsController', 'create'], ['AuthMiddleware'], 'admin_clients_create');
 $router->post('/admin/clients', ['AdminClientsController', 'store'], ['AuthMiddleware'], 'admin_clients_store');
+$router->get('/admin/clients/{id}', ['AdminClientsController', 'show'], ['AuthMiddleware'], 'admin_clients_show');
 $router->get('/admin/clients/{id}/edit', ['AdminClientsController', 'edit'], ['AuthMiddleware'], 'admin_clients_edit');
 $router->post('/admin/clients/{id}/update', ['AdminClientsController', 'update'], ['AuthMiddleware'], 'admin_clients_update');
 $router->post('/admin/clients/{id}/delete', ['AdminClientsController', 'delete'], ['AuthMiddleware'], 'admin_clients_delete');

@@ -1,53 +1,59 @@
 .success-box {
-    max-width: 900px;
-    margin: 0 auto;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .success-message {
-    margin-bottom: 34px;
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
 }
 
 .success-meta,
 .success-lines {
-    margin-bottom: 30px;
+  margin-bottom: 14px;
 }
 
 .success-meta p,
 .success-lines li,
 .success-total p {
-    font-size: 16px;
-    line-height: 1.6;
-    margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 1.32;
+  margin: 0 0 3px;
+}
+
+.success-meta p:last-child,
+.success-lines li:last-child,
+.success-total p:last-child {
+  margin-bottom: 0;
 }
 
 .success-lines ul {
-    margin: 10px 0 0;
-    padding-left: 22px;
+  margin: 4px 0 0;
+  padding-left: 22px;
 }
 
 .success-actions {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    max-width: 500px;
-    margin: 70px auto 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 500px;
+  margin: 24px auto 8px;
 }
 
 .action-center {
-    text-align: center;
+  text-align: center;
 }
 
 @media (max-width: 900px) {
-    .success-message {
-        font-size: 20px;
-    }
+  .success-message {
+    font-size: 20px;
+  }
 
-    .success-actions {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        margin-top: 50px;
-    }
+  .success-actions {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
 }

@@ -163,6 +163,7 @@ class DevisController extends Controller
             $this->pdo->commit();
             $this->clearCart();
             unset($_SESSION['event_request'], $_SESSION['old_event_request']);
+            $_SESSION['success'] = 'Votre devis a bien ete enregistre.';
             redirect(route('devis_success', ['id' => $idDevis]));
             return;
         } catch (Throwable $e) {
@@ -206,6 +207,19 @@ class DevisController extends Controller
         $this->render('devis/index', [
             'devisList' => $devisList,
             'pageTitle' => 'MES DEVIS',
+            'pageCss' => 'devis-index.css',
+            'backUrl' => route('account'),
+        ], 'devis');
+    }
+
+    public function factures(): void
+    {
+        $idClient = $this->currentClientId();
+        $factures = $this->factureModel->findByClientId($idClient);
+
+        $this->render('devis/factures', [
+            'factures' => $factures,
+            'pageTitle' => 'MES FACTURES',
             'pageCss' => 'devis-index.css',
             'backUrl' => route('account'),
         ], 'devis');

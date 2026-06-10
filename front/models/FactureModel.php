@@ -229,6 +229,25 @@ class FactureModel
         return $facture ?: null;
     }
 
+    public function findByClientId(int $idClient): array
+    {
+        $this->ensureTable();
+
+        $sql = "SELECT
+                    f.*, 
+                    d.reference AS devis_reference,
+                    d.id_client
+                FROM factures f
+                INNER JOIN devis d ON d.id_devis = f.id_devis
+                WHERE d.id_client = :id_client
+                ORDER BY f.created_at DESC, f.id_facture DESC";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id_client' => $idClient]);
+
+        return $stmt->fetchAll();
+    }
+
     public function markAsSent(int $idFacture): void
     {
         $this->ensureTable();

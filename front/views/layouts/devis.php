@@ -19,17 +19,26 @@ if (!headers_sent()) {
 
 <body class="devis-layout">
 
-    <?php require __DIR__ . '/../partials/header.php'; ?>
-
-    <div class="devis-page site-main">
+    <div class="devis-page">
         <?php require __DIR__ . '/../partials/devis-header.php'; ?>
 
         <main class="devis-main">
-            <?php require $viewPath; ?>
+            <?php if (isset($viewPath) && file_exists($viewPath)) {
+                require $viewPath;
+            } ?>
         </main>
+
+        <?php if (!empty($_SESSION['success'])): ?>
+            <div class="flash-toast flash-toast-success" role="status" aria-live="polite" data-flash-toast>
+                <?= e($_SESSION['success']) ?>
+            </div>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
 
         <?php require __DIR__ . '/../partials/devis-footer.php'; ?>
     </div>
+
+    <script src="<?= asset('assets/js/main.js') ?>" defer></script>
 
 </body>
 

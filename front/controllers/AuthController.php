@@ -4,11 +4,15 @@ require_once __DIR__ . '/../models/ClientModel.php';
 class AuthController extends Controller
 {
     private ClientModel $clientModel;
+    private DevisModel $devisModel;
+    private FactureModel $factureModel;
     private array $adminEmails = ['samy@test.com'];
 
     public function __construct()
     {
         $this->clientModel = new ClientModel();
+        $this->devisModel = new DevisModel();
+        $this->factureModel = new FactureModel();
     }
 
     private function currentLang(): string
@@ -184,8 +188,19 @@ class AuthController extends Controller
             return;
         }
 
+        $idClient = (int) $sessionClient['id_client'];
+        $devisList = $this->devisModel->findByClientId($idClient);
+        $factures = $this->factureModel->findByClientId($idClient);
+        $facturesByDevisId = [];
+
+        foreach ($factures as $facture) {
+            $facturesByDevisId[(int) ($facture['id_devis'] ?? 0)] = $facture;
+        }
+
         $this->render('client/account', [
             'client' => $client,
+            'devisList' => $devisList,
+            'facturesByDevisId' => $facturesByDevisId,
             'pageTitle' => 'Mon compte',
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
         ]);

@@ -29,6 +29,43 @@ class ClientModel
         return $stmt->fetchAll();
     }
 
+    public function findAllWithJourneySummary(): array
+    {
+        $sql = "SELECT
+                    c.*,
+                    COALESCE(ds.devis_count, 0) AS devis_count,
+                    ld.reference AS last_devis_reference,
+                    ld.statut AS last_devis_statut,
+                    ld.created_at AS last_devis_created_at,
+                    COALESCE(fs.factures_count, 0) AS factures_count,
+                    lf.reference AS last_facture_reference,
+                    lf.statut AS last_facture_statut,
+                    lf.created_at AS last_facture_created_at
+                FROM clients c
+                LEFT JOIN (
+                    SELECT
+                        d.id_client,
+                        COUNT(*) AS devis_count,
+                        MAX(d.id_devis) AS last_devis_id
+                    FROM devis d
+                    GROUP BY d.id_client
+                ) ds ON ds.id_client = c.id_client
+                LEFT JOIN devis ld ON ld.id_devis = ds.last_devis_id
+                LEFT JOIN (
+                    SELECT
+                        d.id_client,
+                        COUNT(f.id_facture) AS factures_count,
+                        MAX(f.id_facture) AS last_facture_id
+                    FROM devis d
+                    LEFT JOIN factures f ON f.id_devis = d.id_devis
+                    GROUP BY d.id_client
+                ) fs ON fs.id_client = c.id_client
+                LEFT JOIN factures lf ON lf.id_facture = fs.last_facture_id
+                ORDER BY c.created_at DESC";
+
+        return $this->pdo->query($sql)->fetchAll();
+    }
+
     public function create(string $nom, string $email, string $password): int
     {
         return $this->createWithProfile([

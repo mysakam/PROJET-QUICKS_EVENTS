@@ -3,10 +3,14 @@
 class AdminClientsController extends AdminBaseController
 {
     private ClientModel $clientModel;
+    private DevisModel $devisModel;
+    private FactureModel $factureModel;
 
     public function __construct()
     {
         $this->clientModel = new ClientModel();
+        $this->devisModel = new DevisModel();
+        $this->factureModel = new FactureModel();
     }
 
     public function index(): void
@@ -16,7 +20,7 @@ class AdminClientsController extends AdminBaseController
         }
 
         $searchQuery = trim($_GET['q'] ?? '');
-        $clients = $this->clientModel->findAll();
+        $clients = $this->clientModel->findAllWithJourneySummary();
 
         if ($searchQuery !== '') {
             $needle = mb_strtolower($searchQuery, 'UTF-8');
@@ -31,6 +35,13 @@ class AdminClientsController extends AdminBaseController
                 return str_contains($haystack, $needle);
             }));
         }
+
+        foreach ($clients as &$client) {
+            $idClient = (int) ($client['id_client'] ?? 0);
+            $client['devis_history'] = $this->devisModel->findByClientId($idClient);
+            $client['factures_history'] = $this->factureModel->findByClientId($idClient);
+        }
+        unset($client);
 
         $this->render('admin/clients/index', [
             'clients' => $clients,
@@ -48,6 +59,60 @@ class AdminClientsController extends AdminBaseController
 
         $this->render('admin/clients/create', [
             'pageTitle' => 'Ajouter un client',
+            'lang' => $this->getLang(),
+        ]);
+    }
+
+    public function show(int $id): void
+    {
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $client = $this->clientModel->findById($id);
+        if (!$client) {
+            http_response_code(404);
+            echo 'Client introuvable.';
+            return;
+        }
+
+        $filters = [
+            'devis_statut' => trim((string) ($_GET['devis_statut'] ?? '')),
+            'facture_statut' => trim((string) ($_GET['facture_statut'] ?? '')),
+            'date_from' => trim((string) ($_GET['date_from'] ?? '')),
+            'date_to' => trim((string) ($_GET['date_to'] ?? '')),
+        ];
+
+        $history = $this->devisModel->findJourneyByClientId($id, $filters);
+
+        $devisStatusOptions = [];
+        foreach ($this->devisModel->findByClientId($id) as $devis) {
+            $status = (string) ($devis['statut'] ?? '');
+            if ($status !== '' && !in_array($status, $devisStatusOptions, true)) {
+                $devisStatusOptions[] = $status;
+            }
+        }
+
+        $factureStatusOptions = $this->factureModel->statuses();
+        $totalDevis = 0.0;
+        $totalFactures = 0.0;
+
+        foreach ($history as $row) {
+            $totalDevis += (float) ($row['devis_montant_total'] ?? 0);
+            if ($row['facture_montant_ttc'] !== null) {
+                $totalFactures += (float) ($row['facture_montant_ttc'] ?? 0);
+            }
+        }
+
+        $this->render('admin/clients/show', [
+            'client' => $client,
+            'history' => $history,
+            'filters' => $filters,
+            'devisStatusOptions' => $devisStatusOptions,
+            'factureStatusOptions' => $factureStatusOptions,
+            'totalDevis' => $totalDevis,
+            'totalFactures' => $totalFactures,
+            'pageTitle' => 'Historique client',
             'lang' => $this->getLang(),
         ]);
     }

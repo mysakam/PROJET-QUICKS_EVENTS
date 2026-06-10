@@ -4,6 +4,7 @@ $clientNom = trim(($client['prenom'] ?? '') . ' ' . ($client['nom'] ?? ''));
 $dateCreationDevis = !empty($devis['created_at']) ? date('d/m/Y', strtotime($devis['created_at'])) : date('d/m/Y');
 $dateReservation = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : '-';
 $total = (float)($devis['montant_total'] ?? 0);
+$lignes = $lignes ?? [];
 $facture = $facture ?? null;
 
 ?>
@@ -53,10 +54,6 @@ $facture = $facture ?? null;
     </section>
 
     <section class="success-actions">
-        <div class="action-center">
-            <a class="pill-link" href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">VOIR LE DEVIS</a>
-        </div>
-
         <div class="action-center">
             <a class="pill-link" href="<?= route('devis_index') ?>">MES DEVIS</a>
         </div>

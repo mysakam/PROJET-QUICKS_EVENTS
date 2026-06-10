@@ -28,6 +28,13 @@ if (!headers_sent()) {
         } ?>
     </main>
 
+    <?php if (!empty($_SESSION['success'])): ?>
+        <div class="flash-toast flash-toast-success" role="status" aria-live="polite" data-flash-toast>
+            <?= e($_SESSION['success']) ?>
+        </div>
+        <?php unset($_SESSION['success']); ?>
+    <?php endif; ?>
+
     <?php
     $footerPath = __DIR__ . '/../partials/footer.php';
     if (file_exists($footerPath)) {
