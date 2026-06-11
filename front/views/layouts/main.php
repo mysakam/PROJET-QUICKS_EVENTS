@@ -39,6 +39,13 @@ $isDevisView = $normalizedViewPath !== '' && strpos($normalizedViewPath, '/views
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
+    <?php if (!empty($_SESSION['error'])): ?>
+        <div class="flash-toast flash-toast-error" role="alert" aria-live="assertive" data-flash-toast>
+            <?= e($_SESSION['error']) ?>
+        </div>
+        <?php unset($_SESSION['error']); ?>
+    <?php endif; ?>
+
     <?php
     $footerPath = __DIR__ . '/../partials/footer.php';
     if (file_exists($footerPath)) {

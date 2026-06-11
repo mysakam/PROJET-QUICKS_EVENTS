@@ -1162,6 +1162,10 @@ section {
   background: linear-gradient(135deg, #0f8a47, #22a661);
 }
 
+.flash-toast-error {
+  background: linear-gradient(135deg, #b42318, #dc4b3e);
+}
+
 .flash-toast.is-hiding {
   opacity: 0;
   transform: translateY(-8px);

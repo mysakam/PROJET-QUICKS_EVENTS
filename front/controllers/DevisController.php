@@ -114,10 +114,13 @@ class DevisController extends Controller
             'cart' => $cart,
             'total' => $total,
             'eventRequest' => $_SESSION['event_request'] ?? [],
+            'oldDevisForm' => $_SESSION['old_devis_form'] ?? [],
             'pageTitle' => 'DEVIS',
             'pageCss' => 'devis-checkout.css',
             'backUrl' => route('panier'),
         ], 'devis');
+
+        unset($_SESSION['old_devis_form']);
     }
 
     public function eventRequest(): void
@@ -180,11 +183,21 @@ class DevisController extends Controller
         $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
         $idClient = $this->currentClientId();
         $reference = 'DEV-' . date('YmdHis');
-        $dateEvenement = $_POST['date_evenement'] ?? null;
+        $dateEvenement = trim($_POST['date_evenement'] ?? '');
         $messageClient = trim($_POST['message_client'] ?? '');
         $eventRequest = $_SESSION['event_request'] ?? [];
         $selectedPackage = $_SESSION['selected_package'] ?? null;
         $eventSummary = [];
+
+        if ($dateEvenement === '') {
+            $_SESSION['error'] = "La date de l'evenement est obligatoire pour enregistrer un devis.";
+            $_SESSION['old_devis_form'] = [
+                'date_evenement' => '',
+                'message_client' => $messageClient,
+            ];
+            redirect(route('devis_checkout'));
+            return;
+        }
 
         if (!empty($eventRequest)) {
             $eventSummary[] = 'FICHE EVENEMENT';
@@ -222,7 +235,7 @@ class DevisController extends Controller
                 'id_client' => $idClient,
                 'reference' => $reference,
                 'statut' => 'en_attente',
-                'date_evenement' => $dateEvenement ?: null,
+                'date_evenement' => $dateEvenement,
                 'message_client' => $combinedMessage,
                 'montant_total' => $total,
             ]);

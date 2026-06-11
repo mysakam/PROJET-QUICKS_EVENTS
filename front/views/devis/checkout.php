@@ -1,3 +1,9 @@
+<?php
+$oldDevisForm = $oldDevisForm ?? [];
+$oldDateEvenement = (string) ($oldDevisForm['date_evenement'] ?? '');
+$oldMessageClient = (string) ($oldDevisForm['message_client'] ?? '');
+?>
+
 <?php if (empty($cart)): ?>
     <div class="empty-box">
         <p>Votre panier est vide.</p>
@@ -43,12 +49,12 @@
                 <form method="POST" action="<?= route('devis_store') ?>">
                     <div class="form-group">
                         <label for="date_evenement">Date de l'événement</label>
-                        <input class="form-control" type="date" name="date_evenement" id="date_evenement">
+                        <input class="form-control" type="date" name="date_evenement" id="date_evenement" required value="<?= e($oldDateEvenement) ?>">
                     </div>
 
                     <div class="form-group">
                         <label for="message_client">Message</label>
-                        <textarea class="form-control" name="message_client" id="message_client"></textarea>
+                        <textarea class="form-control" name="message_client" id="message_client"><?= e($oldMessageClient) ?></textarea>
                     </div>
 
                     <div class="total-box">
