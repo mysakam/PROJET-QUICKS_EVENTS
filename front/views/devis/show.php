@@ -85,7 +85,9 @@ $isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
         </div>
     <?php else: ?>
         <div class="action-center">
-            <a class="pill-link" href="<?= route('devis_checkout') ?>">MODIFIER</a>
+            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>">
+                <button type="submit" class="pill-link">MODIFIER</button>
+            </form>
         </div>
 
         <div class="action-center">
