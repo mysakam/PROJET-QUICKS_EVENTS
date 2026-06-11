@@ -33,11 +33,13 @@ $router = new Router();
 
 /* Pages */
 $router->get('/', ['HomeController', 'index'], [], 'home');
+$router->get('/cug', ['HomeController', 'cug'], [], 'cug');
 $router->get('/dashboard', ['DashboardController', 'index'], ['AuthMiddleware'], 'dashboard');
 $router->get('/mariage', ['EventPagesController', 'mariage'], [], 'event_mariage');
 $router->get('/anniversaire', ['EventPagesController', 'anniversaire'], [], 'event_anniversaire');
 $router->get('/soiree-theme', ['EventPagesController', 'soireeTheme'], [], 'event_soiree_theme');
 $router->get('/repas-seminaire', ['EventPagesController', 'repasSeminaire'], [], 'event_repas_seminaire');
+$router->get('/events/{slug}/packages/{index}/select', ['EventPagesController', 'selectPackage'], ['AuthMiddleware'], 'event_package_select');
 
 /* Auth */
 $router->get('/login', ['AuthController', 'login'], [], 'login');

@@ -22,7 +22,10 @@
                 <div class="cart-list">
                     <?php foreach ($cart as $item): ?>
                         <div class="cart-item">
-                            <div class="cart-item-title"><?= e($item['name'] ?? 'Prestation') ?></div>
+                            <div class="cart-item-title\"><?= e($item['name'] ?? 'Prestation') ?></div>
+                            <?php if (!empty($item['is_package'])): ?>
+                                <span class="checkout-package-badge">Package sélectionné</span>
+                            <?php endif; ?>
                             <div class="cart-item-meta">
                                 Quantité : <?= (int)($item['quantity'] ?? 0) ?><br>
                                 Prix unitaire : <?= number_format((float)($item['price'] ?? 0), 2, ',', ' ') ?> €<br>

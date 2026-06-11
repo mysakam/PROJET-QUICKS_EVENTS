@@ -114,6 +114,7 @@ class DevisController extends Controller
         $dateEvenement = $_POST['date_evenement'] ?? null;
         $messageClient = trim($_POST['message_client'] ?? '');
         $eventRequest = $_SESSION['event_request'] ?? [];
+        $selectedPackage = $_SESSION['selected_package'] ?? null;
         $eventSummary = [];
 
         if (!empty($eventRequest)) {
@@ -136,6 +137,13 @@ class DevisController extends Controller
             $eventSummary[] = 'Message client : ' . $messageClient;
         }
 
+        if (!empty($selectedPackage['theme'])) {
+            $eventSummary[] = 'Package choisi : ' . $selectedPackage['theme'];
+            if (!empty($selectedPackage['price'])) {
+                $eventSummary[] = 'Prix package : ' . $selectedPackage['price'];
+            }
+        }
+
         $combinedMessage = !empty($eventSummary) ? implode("\n", $eventSummary) : null;
 
         try {
@@ -151,6 +159,10 @@ class DevisController extends Controller
             ]);
 
             foreach ($cart as $item) {
+                if (!empty($item['is_package']) || empty($item['prestation_id'])) {
+                    continue;
+                }
+
                 $this->devisLigneModel->create([
                     'id_devis' => $idDevis,
                     'id_prestation' => $item['prestation_id'],
@@ -162,7 +174,7 @@ class DevisController extends Controller
 
             $this->pdo->commit();
             $this->clearCart();
-            unset($_SESSION['event_request'], $_SESSION['old_event_request']);
+            unset($_SESSION['event_request'], $_SESSION['old_event_request'], $_SESSION['selected_package']);
             $_SESSION['success'] = 'Votre devis a bien ete enregistre.';
             redirect(route('devis_success', ['id' => $idDevis]));
             return;

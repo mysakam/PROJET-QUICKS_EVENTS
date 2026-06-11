@@ -32,7 +32,7 @@ $t = [
             ['label' => 'Voir la page Soirée à thème', 'route' => 'event_soiree_theme'],
             ['label' => 'Voir la page Repas séminaire', 'route' => 'event_repas_seminaire'],
         ],
-        'bottom_title' => 'Pret a les epater...',
+        'bottom_title' => 'Prêt à les épater... ',
         'bottom_cta' => 'Decouvrir les catalogues',
         'cards' => [
             ['title' => 'Mariage', 'text' => 'Organisez votre mariage de reve avec nos prestataires et sites evenementiels de qualite.'],
@@ -102,7 +102,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
             </h2>
             <ul>
                 <?php foreach ($txt['who_lines'] as $line): ?>
-                <li><?= $line ?></li>
+                    <li><?= $line ?></li>
                 <?php endforeach; ?>
             </ul>
         </div>
@@ -118,17 +118,17 @@ $catalogueUrl = route('catalogues') . $langQuery;
             </h2>
             <ol>
                 <?php foreach ($txt['how_lines'] as $line): ?>
-                <li><?= $line ?></li>
+                    <li><?= $line ?></li>
                 <?php endforeach; ?>
             </ol>
         </div>
     </div>
 
     <?php if (!empty($_SESSION['client'])): ?>
-    <div class="about-cta">
-        <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
-        <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
-    </div>
+        <div class="about-cta">
+            <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
+            <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
+        </div>
     <?php endif; ?>
 </section>
 <section class="evenements" id="evenements">
@@ -174,7 +174,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         </div>
     </div>
     <div class="action">
-        <h3><?= $txt['bottom_title'] ?></h3>
+        <h3 class="action-title"><?= $txt['bottom_title'] ?></h3>
         <div>
             <a href="<?= $catalogueUrl ?>" class="btn"><?= $txt['bottom_cta'] ?></a>
         </div>

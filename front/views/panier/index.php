@@ -29,8 +29,16 @@ if (!isset($total)) $total = 0;
                     </thead>
                     <tbody>
                         <?php foreach ($cart as $id => $item): ?>
-                            <tr>
-                                <td><?= e($item['name']) ?></td>
+                            <tr class="<?= !empty($item['is_package']) ? 'package-row' : '' ?>">
+                                <td>
+                                    <?= e($item['name']) ?>
+                                    <?php if (!empty($item['is_package'])): ?>
+                                        <span class="package-badge">Package sélectionné</span>
+                                        <?php if (!empty($item['package_theme'])): ?>
+                                            <div class="package-theme-line">Thème: <?= e($item['package_theme']) ?></div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?= e($item['category']) ?></td>
                                 <td><?= number_format((float) $item['price'], 2, ',', ' ') ?> EUR</td>
                                 <td><?= (int) $item['quantity'] ?></td>
