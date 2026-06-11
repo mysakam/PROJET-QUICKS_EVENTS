@@ -30,6 +30,75 @@ class DevisController extends Controller
         unset($_SESSION['cart']);
     }
 
+    private static function amountFromText(string $value): float
+    {
+        $digitsOnly = preg_replace('/[^0-9.,]/', '', $value) ?? '';
+        $normalized = str_replace(' ', '', $digitsOnly);
+        $normalized = str_replace(',', '.', $normalized);
+        return (float) $normalized;
+    }
+
+    private static function parseEventSummary(?string $message): array
+    {
+        $summary = [
+            'event_request' => [],
+            'selected_package' => null,
+        ];
+
+        if ($message === null || trim($message) === '') {
+            return $summary;
+        }
+
+        $packageTheme = null;
+        $packagePrice = null;
+
+        foreach (preg_split('/\R+/', $message) as $rawLine) {
+            $line = trim($rawLine);
+
+            if (stripos($line, 'Type :') === 0) {
+                $summary['event_request']['type_evenement'] = trim(substr($line, strlen('Type :')));
+                continue;
+            }
+
+            if (stripos($line, "Nombre d'invites :") === 0) {
+                $summary['event_request']['nb_personnes'] = trim(substr($line, strlen("Nombre d'invites :")));
+                continue;
+            }
+
+            if (stripos($line, 'Budget estimatif :') === 0) {
+                $summary['event_request']['budget'] = trim(substr($line, strlen('Budget estimatif :')));
+                continue;
+            }
+
+            if (stripos($line, 'Package choisi :') === 0) {
+                $packageTheme = trim(substr($line, strlen('Package choisi :')));
+                continue;
+            }
+
+            if (stripos($line, 'Prix package :') === 0) {
+                $packagePrice = trim(substr($line, strlen('Prix package :')));
+                continue;
+            }
+        }
+
+        if ($packageTheme !== null && $packageTheme !== '') {
+            $summary['selected_package'] = [
+                'theme' => $packageTheme,
+                'price' => $packagePrice,
+            ];
+
+            if (empty($summary['event_request']['type_evenement'])) {
+                $summary['event_request']['type_evenement'] = $packageTheme;
+            }
+
+            if ($packagePrice !== null && $packagePrice !== '' && empty($summary['event_request']['budget'])) {
+                $summary['event_request']['budget'] = $packagePrice;
+            }
+        }
+
+        return $summary;
+    }
+
     public function checkout(): void
     {
         $cart = $this->getCart();
@@ -311,5 +380,113 @@ class DevisController extends Controller
 
         $this->devisModel->updateStatus($id, 'valide_client');
         redirect(route('devis_success', ['id' => $id]));
+    }
+
+    public function cancel(int $id): void
+    {
+        $sessionClient = $_SESSION['client'] ?? null;
+
+        if (!$sessionClient) {
+            redirect(route('login'));
+            return;
+        }
+
+        $devis = $this->devisModel->findById($id);
+        if (!$devis) {
+            http_response_code(404);
+            echo 'Devis introuvable';
+            return;
+        }
+
+        if ((int) $devis['id_client'] !== (int) $sessionClient['id_client']) {
+            http_response_code(403);
+            echo 'Acces refuse';
+            return;
+        }
+
+        $this->devisModel->deleteByClient($id, (int) $sessionClient['id_client']);
+        $_SESSION['success'] = 'Le devis a bien ete annule.';
+        redirect(route('devis_index'));
+    }
+
+    public function reopen(int $id): void
+    {
+        $sessionClient = $_SESSION['client'] ?? null;
+
+        if (!$sessionClient) {
+            redirect(route('login'));
+            return;
+        }
+
+        $devis = $this->devisModel->findById($id);
+        if (!$devis) {
+            http_response_code(404);
+            echo 'Devis introuvable';
+            return;
+        }
+
+        if ((int) $devis['id_client'] !== (int) $sessionClient['id_client']) {
+            http_response_code(403);
+            echo 'Acces refuse';
+            return;
+        }
+
+        $lignes = $this->devisLigneModel->findByDevisId($id);
+        $prestationModel = new PrestationModel();
+        $cart = [];
+
+        foreach ($lignes as $ligne) {
+            $idPrestation = (int) ($ligne['id_prestation'] ?? 0);
+            if ($idPrestation <= 0) {
+                continue;
+            }
+
+            $prestation = $prestationModel->findById($idPrestation);
+            $name = $prestation['nom'] ?? ($ligne['nom'] ?? ('Prestation #' . $idPrestation));
+            $category = $prestation['category_name'] ?? 'Prestation';
+
+            $cart[$idPrestation] = [
+                'prestation_id' => $idPrestation,
+                'name' => $name,
+                'category' => $category,
+                'price' => (float) ($ligne['prix_unitaire'] ?? 0),
+                'quantity' => (int) ($ligne['quantite'] ?? 1),
+            ];
+        }
+
+        $parsedSummary = self::parseEventSummary($devis['message_client'] ?? null);
+        $selectedPackage = $parsedSummary['selected_package'];
+
+        if (empty($cart) && !empty($selectedPackage['theme'])) {
+            $packageKey = (int) (950000 + (abs(crc32((string) $selectedPackage['theme'])) % 49999));
+            $cart[$packageKey] = [
+                'prestation_id' => null,
+                'name' => 'Package - ' . $selectedPackage['theme'],
+                'category' => 'Package evenementiel',
+                'price' => self::amountFromText((string) ($selectedPackage['price'] ?? '0')),
+                'quantity' => 1,
+                'is_package' => true,
+                'package_theme' => $selectedPackage['theme'],
+            ];
+        }
+
+        $_SESSION['cart'] = $cart;
+
+        if (!empty($parsedSummary['event_request'])) {
+            $_SESSION['event_request'] = $parsedSummary['event_request'];
+        }
+
+        if (!empty($selectedPackage)) {
+            $_SESSION['selected_package'] = $selectedPackage;
+        }
+
+        $_SESSION['success'] = 'Un nouveau panier a ete genere a partir du devis.';
+
+        if (empty($cart)) {
+            redirect(route('mon_evenement'));
+            return;
+        }
+
+        redirect(route('devis_checkout'));
     }
 }

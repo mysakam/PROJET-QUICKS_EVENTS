@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			window.setTimeout(function () {
 				toast.remove();
 			}, 220);
-		}, 1000);
+		}, 2000);
 	}
 
 	var toggle = document.querySelector(".menu-toggle");

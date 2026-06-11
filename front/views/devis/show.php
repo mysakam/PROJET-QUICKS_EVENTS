@@ -5,6 +5,7 @@ $dateCreationDevis = !empty($devis['created_at']) ? date('d/m/Y', strtotime($dev
 $dateReservation = !empty($devis['date_evenement']) ? date('d/m/Y', strtotime($devis['date_evenement'])) : '-';
 $total = (float)($devis['montant_total'] ?? 0);
 $facture = $facture ?? null;
+$isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
 
 ?>
 
@@ -70,17 +71,31 @@ $facture = $facture ?? null;
 </section>
 
 <section class="devis-actions">
-    <div class="action-center">
-        <a class="pill-link" href="<?= route('devis_checkout') ?>">MODIFIER</a>
-    </div>
+    <?php if ($isValidatedByClient): ?>
+        <div class="action-center">
+            <form method="POST" action="<?= route('devis_cancel', ['id' => $devis['id_devis']]) ?>">
+                <button type="submit" class="pill-link">ANNULER</button>
+            </form>
+        </div>
 
-    <div class="action-center">
-        <form method="POST" action="<?= route('devis_validate', ['id' => $devis['id_devis']]) ?>">
-            <button type="submit" class="pill-link">VALIDER ET DEMANDER LA FACTURE</button>
-        </form>
-    </div>
+        <div class="action-center">
+            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>">
+                <button type="submit" class="pill-link">REPRENDRE LE DEVIS</button>
+            </form>
+        </div>
+    <?php else: ?>
+        <div class="action-center">
+            <a class="pill-link" href="<?= route('devis_checkout') ?>">MODIFIER</a>
+        </div>
 
-    <div class="action-center">
-        <a class="pill-link" href="<?= route('devis_index') ?>">ANNULER</a>
-    </div>
+        <div class="action-center">
+            <form method="POST" action="<?= route('devis_validate', ['id' => $devis['id_devis']]) ?>">
+                <button type="submit" class="pill-link">VALIDER ET DEMANDER LA FACTURE</button>
+            </form>
+        </div>
+
+        <div class="action-center">
+            <a class="pill-link" href="<?= route('devis_index') ?>">ANNULER</a>
+        </div>
+    <?php endif; ?>
 </section>

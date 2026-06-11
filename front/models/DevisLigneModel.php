@@ -39,9 +39,9 @@ class DevisLigneModel
     {
         $sql = "SELECT
                     dl.*,
-                    p.nom
+                    COALESCE(p.nom, CONCAT('Prestation #', dl.id_prestation)) AS nom
                 FROM devis_lignes dl
-                INNER JOIN prestations p ON p.id_prestation = dl.id_prestation
+                LEFT JOIN prestations p ON p.id_prestation = dl.id_prestation
                 WHERE dl.id_devis = :id_devis
                 ORDER BY dl.id_ligne_devis ASC";
 

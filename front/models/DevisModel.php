@@ -124,4 +124,13 @@ class DevisModel
         $stmt = $this->pdo->prepare('UPDATE devis SET statut = ? WHERE id_devis = ?');
         $stmt->execute([$statut, $idDevis]);
     }
+
+    public function deleteByClient(int $idDevis, int $idClient): bool
+    {
+        $stmt = $this->pdo->prepare('DELETE FROM devis WHERE id_devis = :id_devis AND id_client = :id_client');
+        return $stmt->execute([
+            'id_devis' => $idDevis,
+            'id_client' => $idClient,
+        ]);
+    }
 }

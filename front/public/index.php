@@ -66,6 +66,8 @@ $router->post('/mon-evenement', ['DevisController', 'eventRequestStore'], ['Auth
 $router->get('/devis/checkout', ['DevisController', 'checkout'], ['AuthMiddleware'], 'devis_checkout');
 $router->post('/devis/store', ['DevisController', 'store'], ['AuthMiddleware'], 'devis_store');
 $router->post('/devis/{id}/valider', ['DevisController', 'validate'], ['AuthMiddleware'], 'devis_validate');
+$router->post('/devis/{id}/annuler', ['DevisController', 'cancel'], ['AuthMiddleware'], 'devis_cancel');
+$router->post('/devis/{id}/reprendre', ['DevisController', 'reopen'], ['AuthMiddleware'], 'devis_reopen');
 $router->get('/devis/success/{id}', ['DevisController', 'success'], ['AuthMiddleware'], 'devis_success');
 $router->get('/devis', ['DevisController', 'index'], ['AuthMiddleware'], 'devis_index');
 $router->get('/factures', ['DevisController', 'factures'], ['AuthMiddleware'], 'factures_index');
