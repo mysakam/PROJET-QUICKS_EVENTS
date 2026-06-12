@@ -24,7 +24,7 @@
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
-            <form class="admin-form" method="POST" action="<?= route('register_post') . $langQuery ?>">
+            <form class="admin-form" method="POST" action="<?= route('register_post') . $langQuery ?>" data-fetch-form>
                 <div class="auth-form-grid">
                     <div class="admin-form-row">
                         <label for="nom">Nom</label>

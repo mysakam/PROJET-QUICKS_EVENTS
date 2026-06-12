@@ -24,7 +24,7 @@
                 <?php unset($_SESSION['error']); ?>
             <?php endif; ?>
 
-            <form class="admin-form" action="<?= route('login_post') . $langQuery ?>" method="post">
+            <form class="admin-form" action="<?= route('login_post') . $langQuery ?>" method="post" data-fetch-form>
                 <div class="admin-form-row">
                     <label for="email">Email</label>
                     <input type="email" name="email" id="email" required value="<?= e($oldLoginEmail ?? '') ?>">

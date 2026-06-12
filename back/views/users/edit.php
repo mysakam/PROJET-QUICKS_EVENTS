@@ -5,7 +5,7 @@ $item = $item ?? null;
 <section class="card">
     <h1><?= e($item ? 'Éditer client' : 'Créer client') ?></h1>
 
-    <form method="post" action="<?= route($item ? 'users_update' : 'users_store', $item ? ['id' => $item['id_client']] : []) ?>" class="form-grid">
+    <form method="post" action="<?= route($item ? 'users_update' : 'users_store', $item ? ['id' => $item['id_client']] : []) ?>" class="form-grid" data-fetch-form>
         <?= Csrf::field() ?>
 
         <label for="nom">Nom</label>

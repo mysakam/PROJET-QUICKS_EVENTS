@@ -8,7 +8,7 @@ $errors = Session::flash('errors') ?? [];
         <div class="alert error"><?= e($error) ?></div>
     <?php endif; ?>
 
-    <form method="post" action="<?= route('admin_login_post') ?>" class="form-grid">
+    <form method="post" action="<?= route('admin_login_post') ?>" class="form-grid" data-fetch-form>
         <?= Csrf::field() ?>
 
         <label for="email">Email administrateur</label>
