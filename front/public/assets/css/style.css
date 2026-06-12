@@ -487,6 +487,37 @@ section {
   min-height: 55vh;
 }
 
+.event-banner {
+  height: 34vh;
+  min-height: 260px;
+  max-height: 360px;
+  padding-top: 92px;
+  padding-bottom: 28px;
+}
+
+.event-banner .contenu {
+  max-width: 62%;
+}
+
+.event-banner .contenu h1 {
+  font-size: clamp(1.9rem, 2.9vw, 2.5rem);
+  margin-bottom: 8px;
+}
+
+.event-banner .contenu p:nth-child(2) {
+  font-size: clamp(1rem, 1.6vw, 1.12rem);
+  margin-bottom: 14px;
+}
+
+.event-banner .theme-hero-actions {
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.event-banner + .apropos {
+  padding-top: 28px;
+}
+
 .theme-grid {
   align-items: start;
 }
@@ -1565,6 +1596,37 @@ section {
 
   .banniere .contenu p:nth-child(2) {
     font-size: 1.2em;
+  }
+
+  .event-banner {
+    height: 30vh;
+    min-height: 220px;
+    max-height: 280px;
+    padding-top: 82px;
+    padding-bottom: 22px;
+  }
+
+  .event-banner .contenu {
+    max-width: 94%;
+  }
+
+  .event-banner .contenu h1 {
+    font-size: 1.65rem;
+    margin-bottom: 6px;
+  }
+
+  .event-banner .contenu p:nth-child(2) {
+    font-size: 0.98rem;
+    margin-bottom: 10px;
+  }
+
+  .event-banner .theme-hero-actions {
+    margin-top: 8px;
+    gap: 8px;
+  }
+
+  .event-banner + .apropos {
+    padding-top: 18px;
   }
 
   .theme-grid {

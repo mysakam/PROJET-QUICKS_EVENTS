@@ -41,7 +41,7 @@ $statusLabel = static function (?string $status): string {
                         <td><?= e($client['nom'] ?? '') ?></td>
                     </tr>
                     <tr>
-                        <th>Prenom</th>
+                        <th>Prénom</th>
                         <td><?= e($client['prenom'] ?? '') ?></td>
                     </tr>
                     <tr>
@@ -49,11 +49,11 @@ $statusLabel = static function (?string $status): string {
                         <td><?= e($client['email'] ?? '') ?></td>
                     </tr>
                     <tr>
-                        <th>Telephone</th>
+                        <th>Téléphone</th>
                         <td><?= e($client['telephone'] ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <th>Compte cree le</th>
+                        <th>Compte créé le</th>
                         <td><?= e($client['created_at'] ?? '-') ?></td>
                     </tr>
                 </tbody>
@@ -76,11 +76,11 @@ $statusLabel = static function (?string $status): string {
                         <th colspan="4" class="account-journey-sep">Facture</th>
                     </tr>
                     <tr>
-                        <th>Reference devis</th>
+                        <th>Référence devis</th>
                         <th>Statut devis</th>
                         <th>Date devis</th>
                         <th>Montant devis</th>
-                        <th class="account-journey-sep">Reference facture</th>
+                        <th class="account-journey-sep">Référence facture</th>
                         <th>Statut facture</th>
                         <th>Date facture</th>
                         <th>Montant facture (TTC)</th>

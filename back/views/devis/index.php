@@ -5,7 +5,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Reference</th>
+                <th>Référence</th>
                 <th>Client</th>
                 <th>Statut</th>
                 <th>Montant</th>

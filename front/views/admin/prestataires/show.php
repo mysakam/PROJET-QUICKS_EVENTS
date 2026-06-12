@@ -48,7 +48,7 @@ $recentFactures = $recentFactures ?? [];
                         <td><?= e($prestataire['email'] ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <th>Telephone</th>
+                        <th>Téléphone</th>
                         <td><?= e($prestataire['telephone'] ?? '-') ?></td>
                     </tr>
                     <tr>
@@ -56,7 +56,7 @@ $recentFactures = $recentFactures ?? [];
                         <td><?= e($prestataire['adresse'] ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <th>Type evenement</th>
+                        <th>Type événement</th>
                         <td><?= e($prestataire['type_evenement'] ?? '-') ?></td>
                     </tr>
                     <tr>
@@ -83,13 +83,13 @@ $recentFactures = $recentFactures ?? [];
             </table>
         </div>
 
-        <h3>Prestations associees</h3>
+        <h3>Prestations associées</h3>
         <div class="admin-table-wrap">
             <table class="admin-table">
                 <thead>
                     <tr>
                         <th>Prestation</th>
-                        <th>Categorie</th>
+                        <th>Catégorie</th>
                         <th>Prix unitaire</th>
                         <th>Description</th>
                     </tr>
@@ -97,7 +97,7 @@ $recentFactures = $recentFactures ?? [];
                 <tbody>
                     <?php if (empty($prestations)): ?>
                         <tr>
-                            <td colspan="4">Aucune prestation associee.</td>
+                            <td colspan="4">Aucune prestation associée.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($prestations as $prestation): ?>
@@ -125,7 +125,7 @@ $recentFactures = $recentFactures ?? [];
                 <tbody>
                     <?php if (empty($devisByStatus)): ?>
                         <tr>
-                            <td colspan="2">Aucun devis lie a ce prestataire.</td>
+                            <td colspan="2">Aucun devis lié à ce prestataire.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($devisByStatus as $row): ?>
@@ -151,7 +151,7 @@ $recentFactures = $recentFactures ?? [];
                 <tbody>
                     <?php if (empty($facturesByStatus)): ?>
                         <tr>
-                            <td colspan="2">Aucune facture liee a ce prestataire.</td>
+                            <td colspan="2">Aucune facture liée à ce prestataire.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($facturesByStatus as $row): ?>
@@ -195,23 +195,23 @@ $recentFactures = $recentFactures ?? [];
             </table>
         </div>
 
-        <h3>Dernieres factures</h3>
+        <h3>Dernières factures</h3>
         <div class="admin-table-wrap">
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>Reference</th>
+                        <th>Référence</th>
                         <th>Statut</th>
                         <th>Montant prestataire</th>
-                        <th>Date emission</th>
-                        <th>Date echeance</th>
+                        <th>Date émission</th>
+                        <th>Date échéance</th>
                         <th>Date paiement</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($recentFactures)): ?>
                         <tr>
-                            <td colspan="6">Aucune facture recente.</td>
+                            <td colspan="6">Aucune facture récente.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($recentFactures as $facture): ?>

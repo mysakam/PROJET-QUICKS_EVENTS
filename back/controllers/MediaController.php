@@ -15,7 +15,7 @@ class MediaController extends Controller
         }
 
         $this->render('media/index', [
-            'pageTitle' => 'Medias',
+            'pageTitle' => 'Médias',
             'medias' => $medias,
             'notice' => $notice,
         ]);
@@ -23,13 +23,13 @@ class MediaController extends Controller
 
     public function create(): void
     {
-        $this->render('media/create', ['pageTitle' => 'Ajouter media']);
+        $this->render('media/create', ['pageTitle' => 'Ajouter média']);
     }
 
     public function edit(string $id): void
     {
         $this->render('media/edit', [
-            'pageTitle' => 'Editer media',
+            'pageTitle' => 'Éditer média',
             'mediaId' => (int) $id,
         ]);
     }

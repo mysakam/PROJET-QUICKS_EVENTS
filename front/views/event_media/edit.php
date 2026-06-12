@@ -6,7 +6,7 @@ $media = $media ?? [];
 
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
-        <h2 class="titre-texte"><span>M</span>odifier un media evenement</h2>
+        <h2 class="titre-texte"><span>M</span>odifier un média événement</h2>
 
         <?php if (!empty($_SESSION['error'])): ?>
             <p class="admin-alert admin-alert-error"><?= e($_SESSION['error']) ?></p>
@@ -15,7 +15,7 @@ $media = $media ?? [];
 
         <form class="admin-form" method="POST" action="<?= route('admin_event_medias_update', ['id' => $media['id_media']]) ?>">
             <div class="admin-form-row">
-                <label for="theme_slug">Theme</label>
+                <label for="theme_slug">Thème</label>
                 <select name="theme_slug" id="theme_slug" required>
                     <?php foreach ($themes as $theme): ?>
                         <option value="<?= e($theme) ?>" <?= ($media['theme_slug'] === $theme) ? 'selected' : '' ?>><?= e($themeOptions[$theme] ?? $theme) ?></option>
@@ -32,7 +32,7 @@ $media = $media ?? [];
             </div>
 
             <div class="admin-form-row">
-                <label for="media_url">URL du media</label>
+                <label for="media_url">URL du média</label>
                 <input type="text" name="media_url" id="media_url" value="<?= e($media['media_url']) ?>" required>
             </div>
 
@@ -69,7 +69,7 @@ $media = $media ?? [];
             </div>
 
             <div class="admin-form-actions">
-                <button class="admin-btn" type="submit">Mettre a jour</button>
+                <button class="admin-btn" type="submit">Mettre à jour</button>
                 <a class="btn" href="<?= route('admin_event_medias') ?>">Retour</a>
             </div>
         </form>

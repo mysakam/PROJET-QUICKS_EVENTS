@@ -1,6 +1,6 @@
 <?php $categories = $categories ?? []; ?>
 <section class="card">
-    <h1>Categories</h1>
+    <h1>Catégories</h1>
     <table>
         <thead>
             <tr>

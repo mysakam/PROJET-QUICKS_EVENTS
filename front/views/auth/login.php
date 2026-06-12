@@ -5,15 +5,15 @@
         <div class="auth-copy">
             <p class="auth-kicker">QUICK'EVENTS</p>
             <h2 class="titre-texte"><span>C</span>onnexion</h2>
-            <p>Accedez a votre espace client pour suivre vos devis, votre panier et votre compte.</p>
+            <p>Accédez à votre espace client pour suivre vos devis, votre panier et votre compte.</p>
 
             <div class="auth-highlights">
-                <div class="auth-highlight">Catalogue et devis centralises</div>
+                <div class="auth-highlight">Catalogue et devis centralisés</div>
                 <div class="auth-highlight">Historique de votre compte</div>
-                <div class="auth-highlight">Acces rapide a vos actions</div>
+                <div class="auth-highlight">Accès rapide à vos actions</div>
             </div>
 
-            <a class="btn auth-side-link" href="<?= route('register') . $langQuery ?>">Creer un compte</a>
+            <a class="btn auth-side-link" href="<?= route('register') . $langQuery ?>">Créer un compte</a>
         </div>
 
         <div class="admin-media-shell admin-form-shell auth-card">

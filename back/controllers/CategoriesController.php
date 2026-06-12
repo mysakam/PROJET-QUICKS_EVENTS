@@ -14,7 +14,7 @@ class CategoriesController extends Controller
         }
 
         $this->render('categories/index', [
-            'pageTitle' => 'Categories',
+            'pageTitle' => 'Catégories',
             'categories' => $categories,
         ]);
     }

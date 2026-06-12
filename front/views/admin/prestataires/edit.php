@@ -22,10 +22,10 @@ $prestationsFormData = $prestations !== [] ? $prestations : [[
         <form class="admin-form" method="POST" action="<?= route('admin_prestataires_update', ['id' => $prestataire['id_prestataire']]) ?>">
             <div class="admin-form-row"><label for="nom">Nom</label><input id="nom" name="nom" type="text" value="<?= e($prestataire['nom'] ?? '') ?>" required></div>
             <div class="admin-form-row"><label for="email">Email</label><input id="email" name="email" type="email" value="<?= e($prestataire['email'] ?? '') ?>"></div>
-            <div class="admin-form-row"><label for="telephone">Telephone</label><input id="telephone" name="telephone" type="text" value="<?= e($prestataire['telephone'] ?? '') ?>"></div>
+            <div class="admin-form-row"><label for="telephone">Téléphone</label><input id="telephone" name="telephone" type="text" value="<?= e($prestataire['telephone'] ?? '') ?>"></div>
             <div class="admin-form-row"><label for="adresse">Adresse</label><input id="adresse" name="adresse" type="text" value="<?= e($prestataire['adresse'] ?? '') ?>"></div>
-            <div class="admin-form-row"><label for="type_evenement">Type d'evenement propose</label><input id="type_evenement" name="type_evenement" type="text" value="<?= e($prestataire['type_evenement'] ?? '') ?>"></div>
-            <div class="admin-form-row"><label for="capacite_max">Nombre de personnes (capacite max)</label><input id="capacite_max" name="capacite_max" type="number" min="1"></div>
+            <div class="admin-form-row"><label for="type_evenement">Type d'événement proposé</label><input id="type_evenement" name="type_evenement" type="text" value="<?= e($prestataire['type_evenement'] ?? '') ?>"></div>
+            <div class="admin-form-row"><label for="capacite_max">Nombre de personnes (capacité max)</label><input id="capacite_max" name="capacite_max" type="number" min="1"></div>
             <div class="admin-form-row"><label for="prix_offre">Prix de l'offre</label><input id="prix_offre" name="prix_offre" type="text" placeholder="ex: 1200 EUR"></div>
             <?php require __DIR__ . '/_prestations_form.php'; ?>
             <div class="admin-form-row"><label for="iban">IBAN</label><input id="iban" name="iban" type="text" value="<?= e($prestataire['iban'] ?? '') ?>" placeholder="FR76..."></div>
@@ -35,7 +35,7 @@ $prestationsFormData = $prestations !== [] ? $prestations : [[
             <div class="admin-form-row"><label for="note_sur_10">Note sur 10</label><input id="note_sur_10" name="note_sur_10" type="number" step="0.1" min="0" max="10" value="<?= e($prestataire['note_sur_10'] ?? '') ?>"></div>
             <div class="admin-form-row"><label for="description">Description de l'offre</label><textarea id="description" name="description" rows="4"><?= e($prestataire['description'] ?? '') ?></textarea></div>
             <div class="admin-form-actions">
-                <button class="admin-btn" type="submit">Mettre a jour</button>
+                <button class="admin-btn" type="submit">Mettre à jour</button>
                 <a class="btn" href="<?= route('admin_prestataires_index') ?>">Retour</a>
             </div>
         </form>

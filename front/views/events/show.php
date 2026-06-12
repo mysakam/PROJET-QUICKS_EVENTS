@@ -4,13 +4,12 @@ $homeUrl = route('home') . $langQuery;
 $catalogueUrl = route('catalogues') . $langQuery;
 ?>
 
-<section class="banniere theme-banner" id="banniere">
+<section class="banniere theme-banner event-banner" id="banniere">
     <div class="contenu">
         <h1><?= e($page['title_' . ($lang ?? 'fr')] ?? '') ?></h1>
         <p><?= e($page['subtitle_' . ($lang ?? 'fr')] ?? '') ?></p>
         <div class="theme-hero-actions">
             <a href="<?= $catalogueUrl ?>" class="btn"><?= ($lang ?? 'fr') === 'fr' ? 'Voir le catalogue' : 'Browse catalogue' ?></a>
-            <a href="<?= $homeUrl ?>" class="btn"><?= ($lang ?? 'fr') === 'fr' ? 'Retour à l’accueil' : 'Back to home' ?></a>
         </div>
     </div>
 </section>

@@ -26,7 +26,7 @@ $statusLabel = static function (?string $status): string {
     }
 
     if (strtolower($normalized) === 'valide_client') {
-        return 'Valide';
+        return 'Validé';
     }
 
     $label = str_replace('_', ' ', strtolower($normalized));
@@ -52,7 +52,7 @@ $statusLabel = static function (?string $status): string {
                         <td><?= e((string) ($client['email'] ?? '-')) ?></td>
                     </tr>
                     <tr>
-                        <th>Telephone</th>
+                        <th>Téléphone</th>
                         <td><?= e((string) ($client['telephone'] ?? '-')) ?></td>
                         <th>ID</th>
                         <td><?= (int) ($client['id_client'] ?? 0) ?></td>
@@ -90,18 +90,18 @@ $statusLabel = static function (?string $status): string {
             <input id="date_to" name="date_to" type="date" value="<?= e((string) ($filters['date_to'] ?? '')) ?>">
 
             <button class="admin-btn" type="submit">Filtrer</button>
-            <a class="btn" href="<?= route('admin_clients_show', ['id' => (int) ($client['id_client'] ?? 0)]) ?>">Reinitialiser</a>
+            <a class="btn" href="<?= route('admin_clients_show', ['id' => (int) ($client['id_client'] ?? 0)]) ?>">Réinitialiser</a>
         </form>
 
         <div class="admin-table-wrap">
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>Reference devis</th>
+                        <th>Référence devis</th>
                         <th>Statut devis</th>
                         <th>Date devis</th>
                         <th>Montant devis (HT)</th>
-                        <th>Reference facture</th>
+                        <th>Référence facture</th>
                         <th>Statut facture</th>
                         <th>Date facture</th>
                         <th>Montant facture (TTC)</th>
@@ -110,7 +110,7 @@ $statusLabel = static function (?string $status): string {
                 <tbody>
                     <?php if (empty($history)): ?>
                         <tr>
-                            <td colspan="8">Aucun element pour ce client avec ces filtres.</td>
+                            <td colspan="8">Aucun élément pour ce client avec ces filtres.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($history as $row): ?>
@@ -148,9 +148,9 @@ $statusLabel = static function (?string $status): string {
             <table class="admin-table" style="min-width: 0;">
                 <tbody>
                     <tr>
-                        <th>Total devis (HT) sur la selection</th>
+                        <th>Total devis (HT) sur la sélection</th>
                         <td><?= e(number_format($totalDevis, 2, ',', ' ')) ?> EUR</td>
-                        <th>Total factures (TTC) sur la selection</th>
+                        <th>Total factures (TTC) sur la sélection</th>
                         <td><?= e(number_format($totalFactures, 2, ',', ' ')) ?> EUR</td>
                     </tr>
                 </tbody>

@@ -13,7 +13,7 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
 
         <form class="admin-form" method="POST" action="<?= route('admin_factures_update', ['id' => $facture['id_facture']]) ?>">
             <div class="admin-form-row">
-                <label>Reference</label>
+                <label>Référence</label>
                 <input type="text" value="<?= e($facture['reference'] ?? '') ?>" disabled>
             </div>
             <div class="admin-form-row">
@@ -29,11 +29,11 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
                 <input id="montant_ttc" name="montant_ttc" type="text" value="<?= e((string) ($facture['montant_ttc'] ?? '0')) ?>" required>
             </div>
             <div class="admin-form-row">
-                <label for="date_emission">Date emission</label>
+                <label for="date_emission">Date émission</label>
                 <input id="date_emission" name="date_emission" type="date" value="<?= e($facture['date_emission'] ?? '') ?>">
             </div>
             <div class="admin-form-row">
-                <label for="date_echeance">Date echeance</label>
+                <label for="date_echeance">Date échéance</label>
                 <input id="date_echeance" name="date_echeance" type="date" value="<?= e($facture['date_echeance'] ?? '') ?>">
             </div>
             <div class="admin-form-row">
@@ -41,7 +41,7 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
                 <input id="date_paiement" name="date_paiement" type="date" value="<?= e($facture['date_paiement'] ?? '') ?>">
             </div>
             <div class="admin-form-actions">
-                <button class="admin-btn" type="submit">Mettre a jour</button>
+                <button class="admin-btn" type="submit">Mettre à jour</button>
                 <a class="btn" href="<?= route('admin_factures_index') ?>">Retour</a>
             </div>
         </form>

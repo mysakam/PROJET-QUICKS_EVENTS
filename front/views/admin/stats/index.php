@@ -149,12 +149,12 @@ $topCategories = $topCategories ?? [];
             </table>
         </div>
 
-        <h3>CA par categorie</h3>
+        <h3>CA par catégorie</h3>
         <div class="admin-table-wrap">
             <table class="admin-table">
                 <thead>
                     <tr>
-                        <th>Categorie</th>
+                        <th>Catégorie</th>
                         <th>CA</th>
                     </tr>
                 </thead>

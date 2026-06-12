@@ -13,7 +13,7 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
         <?php endif; ?>
 
         <?php if (empty($devisOptions)): ?>
-            <p>Tous les devis ont deja une facture.</p>
+            <p>Tous les devis ont déjà une facture.</p>
             <a class="btn" href="<?= route('admin_factures_index') ?>">Retour</a>
         <?php else: ?>
             <form class="admin-form" method="POST" action="<?= route('admin_factures_store') ?>">
@@ -28,7 +28,7 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
                     </select>
                 </div>
                 <div class="admin-form-row">
-                    <label for="reference">Reference facture</label>
+                    <label for="reference">Référence facture</label>
                     <input id="reference" name="reference" type="text" value="<?= e($defaultReference) ?>" required>
                 </div>
                 <div class="admin-form-row">
@@ -44,11 +44,11 @@ $statuses = $statuses ?? ['emise', 'envoyee', 'payee', 'annulee', 'en_retard'];
                     <input id="montant_ttc" name="montant_ttc" type="text" value="0" required>
                 </div>
                 <div class="admin-form-row">
-                    <label for="date_emission">Date emission</label>
+                    <label for="date_emission">Date émission</label>
                     <input id="date_emission" name="date_emission" type="date">
                 </div>
                 <div class="admin-form-row">
-                    <label for="date_echeance">Date echeance</label>
+                    <label for="date_echeance">Date échéance</label>
                     <input id="date_echeance" name="date_echeance" type="date">
                 </div>
                 <div class="admin-form-row">

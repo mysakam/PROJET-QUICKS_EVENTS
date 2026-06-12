@@ -1,12 +1,12 @@
 <section class="apropos">
     <div class="admin-media-shell">
         <h2 class="titre-texte"><span>D</span>ashboard admin</h2>
-        <p>Choisissez un module pour gerer les donnees.</p>
+        <p>Choisissez un module pour gérer les données.</p>
 
         <div class="theme-grid">
             <article class="polaroid event-polaroid">
-                <h3>Medias</h3>
-                <p class="card-text">Gerer les photos/videos des pages evenements.</p>
+                <h3>Médias</h3>
+                <p class="card-text">Gérer les photos/vidéos des pages événements.</p>
                 <a class="btn" href="<?= route('admin_event_medias') ?>">Ouvrir</a>
             </article>
             <article class="polaroid event-polaroid">
@@ -16,7 +16,7 @@
             </article>
             <article class="polaroid event-polaroid">
                 <h3>Factures</h3>
-                <p class="card-text">Gestion des factures liees aux devis et aux prestataires.</p>
+                <p class="card-text">Gestion des factures liées aux devis et aux prestataires.</p>
                 <a class="btn" href="<?= route('admin_factures_index') ?>">Ouvrir</a>
             </article>
             <article class="polaroid event-polaroid">
@@ -26,7 +26,7 @@
             </article>
             <article class="polaroid event-polaroid">
                 <h3>Statistiques</h3>
-                <p class="card-text">Devis, CA, statuts et tops par entite.</p>
+                <p class="card-text">Devis, CA, statuts et tops par entité.</p>
                 <a class="btn" href="<?= route('admin_stats_index') ?>">Ouvrir</a>
             </article>
         </div>

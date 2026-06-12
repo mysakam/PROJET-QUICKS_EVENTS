@@ -1,6 +1,6 @@
 <section class="card">
     <h1>Connexion back-office</h1>
-    <p>Connectez-vous avec un compte client admin autorise.</p>
+    <p>Connectez-vous avec un compte client admin autorisé.</p>
 
     <form method="post" action="<?= route('login_post') ?>" class="form-grid">
         <label for="email">Email</label>

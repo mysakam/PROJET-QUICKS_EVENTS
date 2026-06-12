@@ -32,7 +32,7 @@ $facture = $facture ?? [];
             <table class="admin-table">
                 <tbody>
                     <tr>
-                        <th>Reference</th>
+                        <th>Référence</th>
                         <td><?= e($facture['reference'] ?? '-') ?></td>
                     </tr>
                     <tr>
@@ -56,11 +56,11 @@ $facture = $facture ?? [];
                         <td><?= !empty($facture['date_reservation']) ? e(date('d/m/Y', strtotime((string) $facture['date_reservation']))) : '-' ?></td>
                     </tr>
                     <tr>
-                        <th>Date emission</th>
+                        <th>Date émission</th>
                         <td><?= e($facture['date_emission'] ?? '-') ?></td>
                     </tr>
                     <tr>
-                        <th>Date echeance</th>
+                        <th>Date échéance</th>
                         <td><?= e($facture['date_echeance'] ?? '-') ?></td>
                     </tr>
                     <tr>

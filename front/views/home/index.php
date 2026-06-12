@@ -9,20 +9,20 @@ $t = [
         'register' => 'INSCRIPTION',
         'lang_toggle' => 'FR/EN',
         'hero_title' => 'ORGANISEZ VOS EVENEMENTS EN UN CLIC...',
-        'hero_text' => 'Choisissez des prestataires evenementiels et des sites evenementiels qui vous conviennent.',
-        'who_title' => 'Qui sommes nous ?',
+        'hero_text' => 'Choisissez des prestataires événementiels et des sites événementiels qui vous conviennent.',
+        'who_title' => 'Qui sommes-nous ?',
         'who_lines' => [
-            "Un conglomerat d'experts en organisation d'evenements.",
-            "Nous couvrons tous les aspects de la planification d'evenements.",
-            'Nous garantissons la qualite et la satisfaction de nos clients.',
-            'Nous innovons constamment pour offrir des experiences uniques.',
+            "Un conglomérat d'experts en organisation d'événements.",
+            "Nous couvrons tous les aspects de la planification d'événements.",
+            'Nous garantissons la qualité et la satisfaction de nos clients.',
+            'Nous innovons constamment pour offrir des expériences uniques.',
         ],
-        'how_title' => 'Comment ca marche ?',
+        'how_title' => 'Comment ça marche ?',
         'how_lines' => [
-            'Choisissez un prestataire ou un site evenementiel.',
-            'Personnalisez votre evenement selon vos besoins.',
-            'Recevez votre devis personnalise.',
-            "Confirmez et finalisez votre reservation (minimum 24 heures avant l'evenement).",
+            "Inscrivez-vous et consultez nos catalogues d'événements.",
+            "Choisissez ou personnalisez votre événement en fonction des prestations proposées.",
+            'Demandez un devis et recevez-le dans les plus brefs délais.',
+            "Validez votre devis et recevez une facture à payer (réserver minimum 24h avant l'événement).",
         ],
         'events_title' => 'NOTRE RUBRIQUE EVENEMENTS',
         'discover_label' => 'Voir le catalogue',
@@ -33,12 +33,12 @@ $t = [
             ['label' => 'Voir la page Repas séminaire', 'route' => 'event_repas_seminaire'],
         ],
         'bottom_title' => 'Prêt à les épater... ',
-        'bottom_cta' => 'Decouvrir les catalogues',
+        'bottom_cta' => 'Découvrir les catalogues',
         'cards' => [
-            ['title' => 'Mariage', 'text' => 'Organisez votre mariage de reve avec nos prestataires et sites evenementiels de qualite.'],
-            ['title' => 'Anniversaire', 'text' => 'Celebrez votre anniversaire de maniere inoubliable avec nos prestataires evenementiels.'],
-            ['title' => 'Soiree a theme', 'text' => 'Organisez une soiree memorable avec nos prestataires specialises.'],
-            ['title' => 'Repas seminaire', 'text' => 'Organisez un evenement professionnel reussi avec nos partenaires.'],
+            ['title' => 'Mariage', 'text' => 'Organisez votre mariage de rêve avec nos prestataires et sites événementiels de qualité.'],
+            ['title' => 'Anniversaire', 'text' => 'Célébrez votre anniversaire de manière inoubliable avec nos prestataires événementiels.'],
+            ['title' => 'Soirée à thème', 'text' => 'Organisez une soirée mémorable avec nos prestataires spécialisés.'],
+            ['title' => 'Repas séminaire', 'text' => 'Organisez un événement professionnel réussi avec nos partenaires.'],
         ],
     ],
 
@@ -98,7 +98,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
     <div class="rowApropos">
         <div class="col50">
             <h2 class="titre-texte">
-                <span><?= $lang === 'fr' ? 'Q' : 'W' ?></span><?= $lang === 'fr' ? 'ui sommes nous ?' : 'ho are we?' ?>
+                <span><?= $lang === 'fr' ? 'Q' : 'W' ?></span><?= $lang === 'fr' ? 'ui sommes-nous ?' : 'ho are we?' ?>
             </h2>
             <ul>
                 <?php foreach ($txt['who_lines'] as $line): ?>
@@ -114,7 +114,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         </div>
         <div class="col50">
             <h2 class="titre-texte">
-                <span><?= $lang === 'fr' ? 'C' : 'H' ?></span><?= $lang === 'fr' ? 'omment ca marche ?' : 'ow does it work?' ?>
+                <span><?= $lang === 'fr' ? 'C' : 'H' ?></span><?= $lang === 'fr' ? 'omment ça marche ?' : 'ow does it work?' ?>
             </h2>
             <ol>
                 <?php foreach ($txt['how_lines'] as $line): ?>

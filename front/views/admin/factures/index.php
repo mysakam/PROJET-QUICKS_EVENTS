@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Reference</th>
+                        <th>Référence</th>
                         <th>Devis</th>
                         <th>Client</th>
                         <th>Statut</th>
@@ -30,8 +30,8 @@
                         <th>Date de création de la facture</th>
                         <th>Date de création du devis</th>
                         <th>Date de réservation de l'événement</th>
-                        <th>Emission</th>
-                        <th>Echeance</th>
+                        <th>Émission</th>
+                        <th>Échéance</th>
                         <th>Paiement</th>
                         <th>Envoi mail</th>
                         <th>Actions</th>
@@ -40,7 +40,7 @@
                 <tbody>
                     <?php if (empty($factures)): ?>
                         <tr>
-                            <td colspan="14">Aucune facture enregistree.</td>
+                            <td colspan="14">Aucune facture enregistrée.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($factures as $f): ?>

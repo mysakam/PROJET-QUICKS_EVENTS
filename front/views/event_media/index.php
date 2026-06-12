@@ -9,7 +9,7 @@ $medias = $medias ?? [];
 
 <section class="apropos">
     <div class="admin-media-shell">
-        <h2 class="titre-texte"><span>A</span>dmin medias evenement</h2>
+        <h2 class="titre-texte"><span>A</span>dmin médias événement</h2>
 
         <?php if (!empty($_SESSION['success'])): ?>
             <p class="admin-alert admin-alert-success"><?= e($_SESSION['success']) ?></p>
@@ -22,12 +22,12 @@ $medias = $medias ?? [];
         <?php endif; ?>
 
         <div class="admin-media-actions">
-            <a class="btn" href="<?= route('admin_event_medias_create') ?>">Ajouter un media</a>
+            <a class="btn" href="<?= route('admin_event_medias_create') ?>">Ajouter un média</a>
             <a class="btn" href="<?= route('admin_event_medias') ?>">Tout afficher</a>
         </div>
 
         <form class="admin-filter-form" method="GET" action="<?= route('admin_event_medias') ?>">
-            <label for="theme">Filtrer par theme</label>
+            <label for="theme">Filtrer par thème</label>
             <select name="theme" id="theme">
                 <option value="">-- Tous --</option>
                 <?php foreach ($themes as $theme): ?>
@@ -43,7 +43,7 @@ $medias = $medias ?? [];
             <label for="q">Recherche</label>
             <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Titre, URL, type">
             <button class="admin-btn" type="submit">Filtrer</button>
-            <a class="btn" href="<?= route('admin_event_medias') ?>">Reinitialiser</a>
+            <a class="btn" href="<?= route('admin_event_medias') ?>">Réinitialiser</a>
         </form>
 
         <div class="admin-table-wrap">
@@ -51,7 +51,7 @@ $medias = $medias ?? [];
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Theme</th>
+                        <th>Thème</th>
                         <th>Type</th>
                         <th>Titre FR</th>
                         <th>Position</th>
@@ -62,7 +62,7 @@ $medias = $medias ?? [];
                 <tbody>
                     <?php if (empty($medias)): ?>
                         <tr>
-                            <td colspan="7">Aucun media trouve.</td>
+                            <td colspan="7">Aucun média trouvé.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($medias as $media): ?>
@@ -75,7 +75,7 @@ $medias = $medias ?? [];
                                 <td><?= !empty($media['is_active']) ? 'Oui' : 'Non' ?></td>
                                 <td class="admin-table-actions">
                                     <a class="admin-link" href="<?= route('admin_event_medias_edit', ['id' => $media['id_media']]) ?>">Modifier</a>
-                                    <form method="POST" action="<?= route('admin_event_medias_delete', ['id' => $media['id_media']]) ?>" onsubmit="return confirm('Supprimer ce media ?');">
+                                    <form method="POST" action="<?= route('admin_event_medias_delete', ['id' => $media['id_media']]) ?>" onsubmit="return confirm('Supprimer ce média ?');">
                                         <button class="admin-btn admin-btn-danger" type="submit">Supprimer</button>
                                     </form>
                                 </td>

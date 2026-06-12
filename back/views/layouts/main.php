@@ -20,11 +20,11 @@ $title = $pageTitle ?? 'Back Office';
             <nav>
                 <a href="<?= route('dashboard') ?>">Dashboard</a>
                 <a href="<?= route('users_index') ?>">Clients</a>
-                <a href="<?= route('categories_index') ?>">Categories</a>
+                <a href="<?= route('categories_index') ?>">Catégories</a>
                 <a href="<?= route('prestations_index') ?>">Prestations</a>
                 <a href="<?= route('devis_index') ?>">Devis</a>
-                <a href="<?= route('media_index') ?>">Medias</a>
-                <a href="<?= route('logout') ?>">Deconnexion</a>
+                <a href="<?= route('media_index') ?>">Médias</a>
+                <a href="<?= route('logout') ?>">Déconnexion</a>
             </nav>
         <?php endif; ?>
     </header>

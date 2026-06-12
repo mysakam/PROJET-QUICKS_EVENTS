@@ -13,10 +13,10 @@ abstract class AdminBaseController extends Controller
         }
 
         return true;
-    }
+    }// Méthode pour récupérer la langue de l'utilisateur
 
     protected function getLang(): string
     {
         return (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr';
-    }
+    }// Méthode pour récupérer les traductions de l'interface admin
 }

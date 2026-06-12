@@ -5,7 +5,7 @@ class AdminClientsController extends AdminBaseController
     private ClientModel $clientModel;
     private DevisModel $devisModel;
     private FactureModel $factureModel;
-
+// Constructeur pour initialiser les modèles nécessaires// pour les opérations sur les clients, devis et factures
     public function __construct()
     {
         $this->clientModel = new ClientModel();
@@ -18,10 +18,10 @@ class AdminClientsController extends AdminBaseController
         if (!$this->ensureAdmin()) {
             return;
         }
-
+// Récupérer la requête de recherche et les clients avec leur résumé de parcours (nombre de devis, factures, etc.)
         $searchQuery = trim($_GET['q'] ?? '');
         $clients = $this->clientModel->findAllWithJourneySummary();
-
+// Filtrer les clients en fonction de la requête de recherche
         if ($searchQuery !== '') {
             $needle = mb_strtolower($searchQuery, 'UTF-8');
             $clients = array_values(array_filter($clients, static function (array $client) use ($needle): bool {
@@ -35,12 +35,13 @@ class AdminClientsController extends AdminBaseController
                 return str_contains($haystack, $needle);
             }));
         }
-
+// Enrichir chaque client avec son historique de devis et factures
         foreach ($clients as &$client) {
             $idClient = (int) ($client['id_client'] ?? 0);
             $client['devis_history'] = $this->devisModel->findByClientId($idClient);
             $client['factures_history'] = $this->factureModel->findByClientId($idClient);
         }
+        // Nettoyer la variable temporaire pour éviter les références indésirables
         unset($client);
 
         $this->render('admin/clients/index', [
@@ -50,7 +51,7 @@ class AdminClientsController extends AdminBaseController
             'lang' => $this->getLang(),
         ]);
     }
-
+// Afficher le formulaire de création d'un nouveau client
     public function create(): void
     {
         if (!$this->ensureAdmin()) {
@@ -62,7 +63,7 @@ class AdminClientsController extends AdminBaseController
             'lang' => $this->getLang(),
         ]);
     }
-
+// Afficher les détails d'un client, y compris son historique de devis et factures, avec des options de filtrage
     public function show(int $id): void
     {
         if (!$this->ensureAdmin()) {
@@ -75,7 +76,7 @@ class AdminClientsController extends AdminBaseController
             echo 'Client introuvable.';
             return;
         }
-
+// Récupérer les filtres de la requête pour les devis et factures
         $filters = [
             'devis_statut' => trim((string) ($_GET['devis_statut'] ?? '')),
             'facture_statut' => trim((string) ($_GET['facture_statut'] ?? '')),
@@ -84,7 +85,7 @@ class AdminClientsController extends AdminBaseController
         ];
 
         $history = $this->devisModel->findJourneyByClientId($id, $filters);
-
+// Récupérer les statuts de devis disponibles pour ce client
         $devisStatusOptions = [];
         foreach ($this->devisModel->findByClientId($id) as $devis) {
             $status = (string) ($devis['statut'] ?? '');
@@ -92,7 +93,7 @@ class AdminClientsController extends AdminBaseController
                 $devisStatusOptions[] = $status;
             }
         }
-
+// Récupérer les statuts de factures disponibles pour ce client
         $factureStatusOptions = $this->factureModel->statuses();
         $totalDevis = 0.0;
         $totalFactures = 0.0;

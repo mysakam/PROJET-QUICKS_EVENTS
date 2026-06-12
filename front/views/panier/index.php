@@ -20,9 +20,9 @@ if (!isset($total)) $total = 0;
                     <thead>
                         <tr>
                             <th>Prestation</th>
-                            <th>Categorie</th>
+                            <th>Catégorie</th>
                             <th>Prix unitaire</th>
-                            <th>Quantite</th>
+                            <th>Quantité</th>
                             <th>Sous-total</th>
                             <th>Action</th>
                         </tr>

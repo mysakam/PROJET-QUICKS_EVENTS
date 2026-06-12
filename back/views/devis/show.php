@@ -3,12 +3,12 @@ $devisItem = $devisItem ?? null;
 $lignes = $lignes ?? [];
 ?>
 <section class="card">
-    <h1>Detail devis</h1>
+    <h1>Détail devis</h1>
 
     <?php if (!$devisItem): ?>
         <p>Devis introuvable.</p>
     <?php else: ?>
-        <p><strong>Reference:</strong> <?= e($devisItem['reference'] ?? '-') ?></p>
+        <p><strong>Référence:</strong> <?= e($devisItem['reference'] ?? '-') ?></p>
         <p><strong>Client:</strong> <?= e(($devisItem['prenom'] ?? '') . ' ' . ($devisItem['nom'] ?? '')) ?></p>
         <p><strong>Email:</strong> <?= e($devisItem['email'] ?? '-') ?></p>
         <p><strong>Statut:</strong> <?= e($devisItem['statut'] ?? '-') ?></p>
@@ -20,7 +20,7 @@ $lignes = $lignes ?? [];
                 <tr>
                     <th>ID</th>
                     <th>Prestation</th>
-                    <th>Quantite</th>
+                    <th>Quantité</th>
                     <th>Prix unitaire</th>
                     <th>Montant ligne</th>
                 </tr>

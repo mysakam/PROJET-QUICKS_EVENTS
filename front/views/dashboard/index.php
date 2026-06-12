@@ -11,7 +11,7 @@ $isAdmin = !empty($_SESSION['client']['is_admin']);
             <p>Votre espace client regroupe vos catalogues, vos devis et vos informations personnelles dans une interface plus claire.</p>
 
             <div class="auth-highlights">
-                <div class="auth-highlight">Acces rapide aux catalogues</div>
+                <div class="auth-highlight">Accès rapide aux catalogues</div>
                 <div class="auth-highlight">Suivi des devis en cours</div>
                 <div class="auth-highlight">Gestion de votre compte</div>
             </div>
@@ -41,7 +41,7 @@ $isAdmin = !empty($_SESSION['client']['is_admin']);
                 <div class="dashboard-quick-links">
                     <a href="<?= route('catalogues') ?>">Parcourir les offres</a>
                     <a href="<?= route('devis_index') ?>">Relire mes devis</a>
-                    <a href="<?= route('account') ?>">Mettre a jour mon profil</a>
+                    <a href="<?= route('account') ?>">Mettre à jour mon profil</a>
                     <?php if ($isAdmin): ?>
                         <a href="<?= route('admin_dashboard') ?>">Ouvrir le dashboard admin</a>
                     <?php endif; ?>

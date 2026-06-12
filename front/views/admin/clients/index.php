@@ -48,9 +48,9 @@ $statusLabel = static function (?string $status): string {
 
         <form class="admin-filter-form" method="GET" action="<?= route('admin_clients_index') ?>">
             <label for="q">Recherche</label>
-            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, prenom, email, telephone">
+            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, prénom, email, téléphone">
             <button class="admin-btn" type="submit">Filtrer</button>
-            <a class="btn" href="<?= route('admin_clients_index') ?>">Reinitialiser</a>
+            <a class="btn" href="<?= route('admin_clients_index') ?>">Réinitialiser</a>
         </form>
 
         <div class="admin-table-wrap">
@@ -59,9 +59,9 @@ $statusLabel = static function (?string $status): string {
                     <tr>
                         <th>ID</th>
                         <th>Nom</th>
-                        <th>Prenom</th>
+                        <th>Prénom</th>
                         <th>Email</th>
-                        <th>Telephone</th>
+                        <th>Téléphone</th>
                         <th>Devis</th>
                         <th>Factures</th>
                         <th>Historique devis</th>
@@ -72,7 +72,7 @@ $statusLabel = static function (?string $status): string {
                 <tbody>
                     <?php if (empty($clients)): ?>
                         <tr>
-                            <td colspan="10">Aucun client enregistre.</td>
+                            <td colspan="10">Aucun client enregistré.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($clients as $c): ?>

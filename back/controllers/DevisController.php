@@ -42,7 +42,7 @@ class DevisController extends Controller
         }
 
         $this->render('devis/show', [
-            'pageTitle' => 'Detail devis',
+            'pageTitle' => 'Détail devis',
             'devisItem' => $devis,
             'lignes' => $lignes,
         ]);

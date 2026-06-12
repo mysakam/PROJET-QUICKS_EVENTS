@@ -28,15 +28,15 @@ $typeEvenement = $typeEvenement ?? '';
 
         <form class="admin-filter-form" method="GET" action="<?= route('admin_prestataires_index') ?>">
             <label for="q">Recherche</label>
-            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, email, telephone, adresse">
-            <label for="type_evenement">Type d'evenement</label>
+            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, email, téléphone, adresse">
+            <label for="type_evenement">Type d'événement</label>
             <select id="type_evenement" name="type_evenement">
                 <option value="">-- Tous --</option>
                 <?php foreach ($typeEvenementOptions as $option): ?>
                     <option value="<?= e($option) ?>" <?= $typeEvenement === $option ? 'selected' : '' ?>><?= e($option) ?></option>
                 <?php endforeach; ?>
             </select>
-            <label for="category_id">Categorie</label>
+            <label for="category_id">Catégorie</label>
             <select id="category_id" name="category_id">
                 <option value="">-- Toutes --</option>
                 <?php foreach ($categories as $category): ?>
@@ -55,7 +55,7 @@ $typeEvenement = $typeEvenement ?? '';
                 <?php endforeach; ?>
             </select>
             <button class="admin-btn" type="submit">Filtrer</button>
-            <a class="btn" href="<?= route('admin_prestataires_index') ?>">Reinitialiser</a>
+            <a class="btn" href="<?= route('admin_prestataires_index') ?>">Réinitialiser</a>
         </form>
 
         <div class="admin-table-wrap">
@@ -65,10 +65,10 @@ $typeEvenement = $typeEvenement ?? '';
                         <th>ID</th>
                         <th>Nom</th>
                         <th>Email</th>
-                        <th>Telephone</th>
+                        <th>Téléphone</th>
                         <th>Adresse</th>
-                        <th>Type evenement</th>
-                        <th>Categories</th>
+                        <th>Type événement</th>
+                        <th>Catégories</th>
                         <th>Prestations</th>
                         <th>Actions</th>
                     </tr>
@@ -76,7 +76,7 @@ $typeEvenement = $typeEvenement ?? '';
                 <tbody>
                     <?php if (empty($prestataires)): ?>
                         <tr>
-                            <td colspan="9">Aucun prestataire enregistre.</td>
+                            <td colspan="9">Aucun prestataire enregistré.</td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($prestataires as $p): ?>

@@ -35,7 +35,7 @@ class DashBoard extends Controller
 
         if (!Auth::isAdmin()) {
             Auth::logout();
-            Session::flash('error', 'Compte non autorise sur le back-office.');
+            Session::flash('error', 'Compte non autorisé sur le back-office.');
             redirect(route('login'));
             return;
         }

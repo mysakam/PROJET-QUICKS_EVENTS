@@ -9,15 +9,15 @@ $prestationsFormData = $prestationsFormData ?? [[
 ]];
 ?>
 <div class="admin-form-row">
-    <label>Prestations associees</label>
+    <label>Prestations associées</label>
     <div data-prestations-list>
         <?php foreach ($prestationsFormData as $index => $prestation): ?>
             <div class="admin-table-wrap" data-prestation-item style="padding: 14px; margin-bottom: 12px;">
                 <input type="hidden" name="prestation_id[]" value="<?= (int) ($prestation['id_prestation'] ?? 0) ?>">
                 <div class="admin-form-row">
-                    <label>Categorie de prestation</label>
+                    <label>Catégorie de prestation</label>
                     <select name="prestation_category_id[]">
-                        <option value="">-- Selectionner --</option>
+                        <option value="">-- Sélectionner --</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= (int) $category['id_categorie'] ?>" <?= ((int) ($prestation['id_categorie'] ?? 0) === (int) $category['id_categorie']) ? 'selected' : '' ?>>
                                 <?= e($category['nom']) ?>
@@ -35,7 +35,7 @@ $prestationsFormData = $prestationsFormData ?? [[
                 </div>
                 <div class="admin-form-row">
                     <label>Description prestation</label>
-                    <textarea name="prestation_description[]" rows="3" placeholder="Details de la prestation..."><?= e($prestation['description'] ?? '') ?></textarea>
+                    <textarea name="prestation_description[]" rows="3" placeholder="Détails de la prestation..."><?= e($prestation['description'] ?? '') ?></textarea>
                 </div>
                 <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation>Retirer cette prestation</button>
             </div>
@@ -48,9 +48,9 @@ $prestationsFormData = $prestationsFormData ?? [[
     <div class="admin-table-wrap" data-prestation-item style="padding: 14px; margin-bottom: 12px;">
         <input type="hidden" name="prestation_id[]" value="0">
         <div class="admin-form-row">
-            <label>Categorie de prestation</label>
+            <label>Catégorie de prestation</label>
             <select name="prestation_category_id[]">
-                <option value="">-- Selectionner --</option>
+                <option value="">-- Sélectionner --</option>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= (int) $category['id_categorie'] ?>"><?= e($category['nom']) ?></option>
                 <?php endforeach; ?>
@@ -66,7 +66,7 @@ $prestationsFormData = $prestationsFormData ?? [[
         </div>
         <div class="admin-form-row">
             <label>Description prestation</label>
-            <textarea name="prestation_description[]" rows="3" placeholder="Details de la prestation..."></textarea>
+            <textarea name="prestation_description[]" rows="3" placeholder="Détails de la prestation..."></textarea>
         </div>
         <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation>Retirer cette prestation</button>
     </div>

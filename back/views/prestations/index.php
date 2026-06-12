@@ -6,7 +6,7 @@
             <tr>
                 <th>ID</th>
                 <th>Nom</th>
-                <th>Categorie</th>
+                <th>Catégorie</th>
                 <th>Prix unitaire</th>
             </tr>
         </thead>

@@ -10,7 +10,7 @@ $categoryMediaMap = $categoryMediaMap ?? [];
         <p>Choisissez une rubrique pour voir les prestations disponibles.</p>
 
         <?php if (empty($categories)): ?>
-            <p>Aucune categorie disponible.</p>
+            <p>Aucune catégorie disponible.</p>
         <?php else: ?>
             <div class="theme-grid catalogue-grid">
                 <?php foreach ($categories as $category): ?>
@@ -29,7 +29,7 @@ $categoryMediaMap = $categoryMediaMap ?? [];
                                     <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $category['nom']) ?>">
                                 <?php endif; ?>
                             <?php else: ?>
-                                <span>Image a definir dans Admin medias evenement</span>
+                                <span>Image à définir dans Admin médias événement</span>
                             <?php endif; ?>
                         </div>
                         <h3><?= e($category['nom']) ?></h3>
