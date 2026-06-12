@@ -5,10 +5,10 @@
             <div class="brand-name">QUICK'EVENTS</div>
         </div>
 
-        <h1 class="devis-title"><?= $pageTitle ?? 'DEVIS' ?></h1>
+        <h1 class="devis-title"><?= e($pageTitle ?? 'DEVIS') ?></h1>
 
         <div class="back-btn">
-            <a href="<?= $backUrl ?? route('account') ?>">RETOUR &rsaquo;</a>
+            <a href="<?= e($backUrl ?? route('account')) ?>">RETOUR &rsaquo;</a>
         </div>
     </div>
 </header>

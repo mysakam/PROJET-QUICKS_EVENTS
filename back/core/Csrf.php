@@ -37,9 +37,23 @@ class Csrf
         return hash_equals($_SESSION[self::SESSION_KEY], $token);
     }
 
+    public static function requestToken(): string
+    {
+        $header = $_SERVER['HTTP_X_CSRF_TOKEN'] ?? '';
+        if ($header !== '') {
+            return (string) $header;
+        }
+
+        return (string) ($_POST[self::TOKEN_KEY] ?? '');
+    }
+
     public static function check(): bool
     {
-        $token = $_POST[self::TOKEN_KEY] ?? '';
-        return self::verify($token);
+        return self::verify((string) ($_POST[self::TOKEN_KEY] ?? ''));
+    }
+
+    public static function checkRequest(): bool
+    {
+        return self::verify(self::requestToken());
     }
 }

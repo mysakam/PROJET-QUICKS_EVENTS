@@ -61,6 +61,12 @@ class Router
 
             array_shift($matches);
 
+            if ($method === 'POST' && !Csrf::checkRequest()) {
+                http_response_code(419);
+                echo 'Session expirée. Merci de rafraîchir la page et de réessayer.';
+                return;
+            }
+
             foreach ($route['middleware'] as $mw) {
                 require_once __DIR__ . '/../middlewares/' . $mw . '.php';
                 if (!(new $mw())->handle()) {

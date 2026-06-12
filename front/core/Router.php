@@ -47,13 +47,20 @@ class Router
 
             array_shift($matches);
 
+            if ($method === 'POST' && !Csrf::checkRequest()) {
+                http_response_code(419);
+                echo 'Session expirée. Merci de rafraîchir la page et de réessayer.';
+                return;
+            }
+
             foreach ($route['middleware'] as $mw) {
                 require_once __DIR__ . '/../middlewares/' . $mw . '.php';
                 if (!(new $mw())->handle()) return;
             }
 
             [$controllerName, $action] = $route['handler'];
-            require_once __DIR__ . '/../controllers/' . $controllerName . '.php';            $controller = new $controllerName();
+            require_once __DIR__ . '/../controllers/' . $controllerName . '.php';
+            $controller = new $controllerName();
             $controller->$action(...$matches);
             return;
         }

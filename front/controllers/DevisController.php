@@ -17,7 +17,7 @@ class DevisController extends Controller
 
     private function currentClientId(): int
     {
-        return (int) ($_SESSION['client']['id_client'] ?? 1);
+        return (int) ($_SESSION['client']['id_client'] ?? 0);
     }
 
     private function getCart(): array
@@ -280,6 +280,12 @@ class DevisController extends Controller
             return;
         }
 
+        if ((int) ($devis['id_client'] ?? 0) !== $this->currentClientId()) {
+            http_response_code(403);
+            echo 'Acces refuse';
+            return;
+        }
+
         $lignes = $this->devisLigneModel->findByDevisId($id);
         $facture = $this->factureModel->findByDevisId($id);
 
@@ -326,6 +332,12 @@ class DevisController extends Controller
         if (!$devis) {
             http_response_code(404);
             echo 'Devis introuvable';
+            return;
+        }
+
+        if ((int) ($devis['id_client'] ?? 0) !== $this->currentClientId()) {
+            http_response_code(403);
+            echo 'Acces refuse';
             return;
         }
 

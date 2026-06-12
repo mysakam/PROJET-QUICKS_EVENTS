@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
 			var submitterName = submitter && submitter.name ? submitter.name : '';
 			var submitterValue = submitter && submitter.value ? submitter.value : '';
 			var formData = new FormData(form);
+			var csrfInput = form.querySelector('input[name="_csrf_token"]');
+			var csrfToken = csrfInput ? csrfInput.value : '';
 			if (submitterName && !formData.has(submitterName)) {
 				formData.append(submitterName, submitterValue);
 			}
@@ -24,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
 				method: 'POST',
 				body: formData,
 				headers: {
-					'X-Requested-With': 'fetch'
+					'X-Requested-With': 'fetch',
+					'X-CSRF-Token': csrfToken
 				},
 				credentials: 'same-origin'
 			})

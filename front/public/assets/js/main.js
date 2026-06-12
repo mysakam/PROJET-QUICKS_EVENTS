@@ -1,4 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
+	var csrfMeta = document.querySelector('meta[name="csrf-token"]');
+	var csrfToken = csrfMeta ? csrfMeta.getAttribute("content") || "" : "";
+
+	if (csrfToken) {
+		document.querySelectorAll("form").forEach(function (form) {
+			if ((form.method || "get").toUpperCase() !== "POST") {
+				return;
+			}
+
+			if (!form.querySelector('input[name="_csrf_token"]')) {
+				var csrfInput = document.createElement("input");
+				csrfInput.type = "hidden";
+				csrfInput.name = "_csrf_token";
+				csrfInput.value = csrfToken;
+				form.appendChild(csrfInput);
+			}
+		});
+	}
+
 	var toast = document.querySelector("[data-flash-toast]");
 
 	if (toast) {
@@ -188,13 +207,18 @@ document.addEventListener("DOMContentLoaded", function () {
 				formData.append(submitterName, submitterValue);
 			}
 
+			if (csrfToken && !formData.has("_csrf_token")) {
+				formData.append("_csrf_token", csrfToken);
+			}
+
 			setLoading(submitter, true);
 
 			fetch(form.action, {
 				method: "POST",
 				body: formData,
 				headers: {
-					"X-Requested-With": "fetch"
+					"X-Requested-With": "fetch",
+					"X-CSRF-Token": csrfToken
 				},
 				credentials: "same-origin"
 			})

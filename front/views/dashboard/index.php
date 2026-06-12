@@ -7,7 +7,7 @@ $isAdmin = !empty($_SESSION['client']['is_admin']);
     <div class="admin-media-shell dashboard-shell">
         <div class="dashboard-copy">
             <p class="auth-kicker">QUICK'EVENTS</p>
-            <h2 class="titre-texte"><span>B</span>ienvenue <?= $clientName ?></h2>
+            <h2 class="titre-texte"><span>B</span>ienvenue <?= e($clientName) ?></h2>
             <p>Votre espace client regroupe vos catalogues, vos devis et vos informations personnelles dans une interface plus claire.</p>
 
             <div class="auth-highlights">
@@ -26,7 +26,7 @@ $isAdmin = !empty($_SESSION['client']['is_admin']);
         <div class="dashboard-panel">
             <article class="auth-card dashboard-stat-card">
                 <p class="dashboard-stat-label">Compte</p>
-                <strong><?= $clientName ?></strong>
+                <strong><?= e($clientName) ?></strong>
                 <span><?= e($_SESSION['client']['email'] ?? '') ?></span>
             </article>
 
