@@ -73,25 +73,25 @@ $isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
 <section class="devis-actions">
     <?php if ($isValidatedByClient): ?>
         <div class="action-center">
-            <form method="POST" action="<?= route('devis_cancel', ['id' => $devis['id_devis']]) ?>">
+            <form method="POST" action="<?= route('devis_cancel', ['id' => $devis['id_devis']]) ?>" data-fetch-form>
                 <button type="submit" class="pill-link">ANNULER</button>
             </form>
         </div>
 
         <div class="action-center">
-            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>">
+            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>" data-fetch-form>
                 <button type="submit" class="pill-link">REPRENDRE LE DEVIS</button>
             </form>
         </div>
     <?php else: ?>
         <div class="action-center">
-            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>">
+            <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>" data-fetch-form>
                 <button type="submit" class="pill-link">MODIFIER</button>
             </form>
         </div>
 
         <div class="action-center">
-            <form method="POST" action="<?= route('devis_validate', ['id' => $devis['id_devis']]) ?>">
+            <form method="POST" action="<?= route('devis_validate', ['id' => $devis['id_devis']]) ?>" data-fetch-form>
                 <button type="submit" class="pill-link">VALIDER ET DEMANDER LA FACTURE</button>
             </form>
         </div>

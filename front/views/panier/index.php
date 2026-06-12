@@ -44,7 +44,7 @@ if (!isset($total)) $total = 0;
                                 <td><?= (int) $item['quantity'] ?></td>
                                 <td><?= number_format((float) $item['price'] * (int) $item['quantity'], 2, ',', ' ') ?> EUR</td>
                                 <td>
-                                    <form action="<?= route('panier_remove', ['id' => $id]) ?>" method="post">
+                                    <form action="<?= route('panier_remove', ['id' => $id]) ?>" method="post" data-fetch-form>
                                         <button class="admin-btn admin-btn-danger" type="submit">Supprimer</button>
                                     </form>
                                 </td>
@@ -59,7 +59,7 @@ if (!isset($total)) $total = 0;
             </div>
 
             <div class="admin-form-actions">
-                <form action="<?= route('panier_clear') ?>" method="post">
+                <form action="<?= route('panier_clear') ?>" method="post" data-fetch-form>
                     <button class="admin-btn admin-btn-danger" type="submit">Vider le panier</button>
                 </form>
                 <a class="btn" href="<?= route('devis_checkout') ?>">Demander un devis</a>

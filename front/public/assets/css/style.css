@@ -1539,6 +1539,25 @@ section {
   font-weight: 600;
 }
 
+.fetch-form-error {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(180, 35, 24, 0.1);
+  color: #b42318;
+  border: 1px solid rgba(180, 35, 24, 0.2);
+  font-weight: 600;
+}
+
+form.is-submitting {
+  opacity: 0.92;
+}
+
+button.is-loading {
+  cursor: wait;
+  opacity: 0.75;
+}
+
 .admin-invoice-send-panel {
   background: linear-gradient(
     135deg,

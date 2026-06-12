@@ -129,6 +129,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Progressive enhancement: submit selected forms via fetch while keeping server redirects.
 	document.querySelectorAll("form[data-fetch-form]").forEach(function (form) {
+		function setLoading(button, isLoading) {
+			if (!button) {
+				return;
+			}
+
+			if (isLoading) {
+				if (!button.dataset.originalText) {
+					button.dataset.originalText = button.textContent;
+				}
+				button.disabled = true;
+				button.classList.add("is-loading");
+				button.textContent = "Envoi en cours...";
+				form.classList.add("is-submitting");
+				return;
+			}
+
+			button.disabled = false;
+			button.classList.remove("is-loading");
+			button.textContent = button.dataset.originalText || button.textContent;
+			form.classList.remove("is-submitting");
+		}
+
+		function showNetworkError() {
+			var existing = form.querySelector(".fetch-form-error");
+			if (existing) {
+				existing.remove();
+			}
+
+			var errorBox = document.createElement("p");
+			errorBox.className = "fetch-form-error";
+			errorBox.setAttribute("role", "alert");
+			errorBox.textContent = "La connexion a échoué. Vérifiez votre réseau puis réessayez.";
+			form.prepend(errorBox);
+		}
+
 		form.addEventListener("submit", function (event) {
 			if ((form.method || "get").toUpperCase() !== "POST") {
 				return;
@@ -144,9 +179,16 @@ document.addEventListener("DOMContentLoaded", function () {
 			var submitterName = submitter && submitter.name ? submitter.name : "";
 			var submitterValue = submitter && submitter.value ? submitter.value : "";
 			var formData = new FormData(form);
+			var oldError = form.querySelector(".fetch-form-error");
+			if (oldError) {
+				oldError.remove();
+			}
+
 			if (submitterName && !formData.has(submitterName)) {
 				formData.append(submitterName, submitterValue);
 			}
+
+			setLoading(submitter, true);
 
 			fetch(form.action, {
 				method: "POST",
@@ -170,7 +212,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					});
 				})
 				.catch(function () {
-					form.submit();
+					setLoading(submitter, false);
+					showNetworkError();
 				});
 		});
 	});

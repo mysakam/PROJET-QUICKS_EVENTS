@@ -44,7 +44,7 @@ connecté, ou un lien de connexion sinon. Un lien de retour vers la catégorie d
 
             <div class="admin-form-actions">
                 <?php if (!empty($_SESSION['client'])): ?>
-                    <form action="<?= route('panier_add', ['id' => $prestation['id_prestation']]) ?>" method="post">
+                    <form action="<?= route('panier_add', ['id' => $prestation['id_prestation']]) ?>" method="post" data-fetch-form>
                         <button class="admin-btn" type="submit">Ajouter au panier</button>
                     </form>
                 <?php else: ?>

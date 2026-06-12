@@ -46,7 +46,7 @@ $oldMessageClient = (string) ($oldDevisForm['message_client'] ?? '');
             <section class="checkout-card">
                 <h2>Finaliser le devis</h2>
 
-                <form method="POST" action="<?= route('devis_store') ?>">
+                <form method="POST" action="<?= route('devis_store') ?>" data-fetch-form>
                     <div class="form-group">
                         <label for="date_evenement">Date de l'événement</label>
                         <input class="form-control" type="date" name="date_evenement" id="date_evenement" required value="<?= e($oldDateEvenement) ?>">

@@ -36,7 +36,7 @@ $oldEventRequest = $oldEventRequest ?? [];
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
-            <form class="admin-form" method="POST" action="<?= route('mon_evenement_post') . $langQuery ?>">
+            <form class="admin-form" method="POST" action="<?= route('mon_evenement_post') . $langQuery ?>" data-fetch-form>
                 <div class="admin-form-row">
                     <label for="type_evenement">Type d'événement</label>
                     <input type="text" id="type_evenement" name="type_evenement" placeholder="mariage, anniversaire, séminaire..." required value="<?= e($oldEventRequest['type_evenement'] ?? $eventRequest['type_evenement'] ?? '') ?>">
