@@ -25,16 +25,31 @@ $catalogueUrl = route('catalogues') . $langQuery;
                 <?php foreach ($packages as $package): ?>
                     <article class="event-package-card">
                         <div class="event-package-media">
-                            <?php if (!empty($package['imageSrc'])): ?>
-                                <button
-                                    class="event-package-image-btn"
-                                    type="button"
-                                    data-package-image
-                                    data-image-src="<?= e($package['imageSrc']) ?>"
-                                    data-image-alt="<?= e($package['theme']) ?>"
-                                    aria-label="<?= ($lang ?? 'fr') === 'fr' ? 'Voir l\'image en grand' : 'Open full image' ?>">
-                                    <img src="<?= e($package['imageSrc']) ?>" alt="<?= e($package['theme']) ?>">
-                                </button>
+                            <?php $pkgImages = $package['images'] ?? []; ?>
+                            <?php if (!empty($pkgImages)): ?>
+                                <div class="pkg-carousel" data-pkg-carousel>
+                                    <div class="pkg-carousel-track" data-pkg-carousel-track>
+                                        <?php foreach ($pkgImages as $imgSrc): ?>
+                                            <div class="pkg-carousel-slide">
+                                                <img
+                                                    src="<?= e($imgSrc) ?>"
+                                                    alt="<?= e($package['theme']) ?>"
+                                                    data-package-image
+                                                    data-image-src="<?= e($imgSrc) ?>"
+                                                    data-image-alt="<?= e($package['theme']) ?>">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php if (count($pkgImages) > 1): ?>
+                                        <button class="pkg-carousel-prev" type="button" aria-label="<?= ($lang ?? 'fr') === 'fr' ? 'Image précédente' : 'Previous image' ?>">&#8249;</button>
+                                        <button class="pkg-carousel-next" type="button" aria-label="<?= ($lang ?? 'fr') === 'fr' ? 'Image suivante' : 'Next image' ?>">&#8250;</button>
+                                        <div class="pkg-carousel-dots" aria-hidden="true">
+                                            <?php foreach ($pkgImages as $i => $_): ?>
+                                                <span class="pkg-carousel-dot<?= $i === 0 ? ' is-active' : '' ?>"></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             <?php else: ?>
                                 <span><?= ($lang ?? 'fr') === 'fr' ? 'Image du package' : 'Package image' ?></span>
                             <?php endif; ?>

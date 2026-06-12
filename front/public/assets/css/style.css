@@ -744,6 +744,96 @@ section {
   cursor: pointer;
 }
 
+/* ── Package image carousel ── */
+.pkg-carousel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pkg-carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.38s ease;
+  will-change: transform;
+}
+
+.pkg-carousel-slide {
+  flex: 0 0 100%;
+  height: 100%;
+}
+
+.pkg-carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  cursor: zoom-in;
+  transition: transform 0.28s ease;
+}
+
+.pkg-carousel-slide img:hover {
+  transform: scale(1.03);
+}
+
+.pkg-carousel-prev,
+.pkg-carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(2, 22, 36, 0.55);
+  color: #fff;
+  border: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.pkg-carousel-prev {
+  left: 8px;
+}
+.pkg-carousel-next {
+  right: 8px;
+}
+
+.pkg-carousel-prev:hover,
+.pkg-carousel-next:hover {
+  background: rgba(4, 74, 121, 0.85);
+}
+
+.pkg-carousel-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.pkg-carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.pkg-carousel-dot.is-active {
+  background: #fff;
+  transform: scale(1.3);
+}
+
 .theme-back-btn {
   display: inline-block;
 }

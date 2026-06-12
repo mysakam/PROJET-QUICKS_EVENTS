@@ -19,6 +19,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Mariage nature avec bois clair, fleurs pastel et ambiance guinguette chic.',
                     'description_en' => 'Nature-inspired wedding with light wood, pastel flowers and chic outdoor spirit.',
                     'image_src' => '/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp',
+                    'images' => [
+                        '/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp',
+                        '/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif',
+                        '/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg',
+                    ],
                     'offer_items_fr' => ['Décoration complète de salle et arche florale', '100 chaises + couverts premium', 'Tente de réception et espace cocktail', 'Open bar 4h + DJ + effets spéciaux', 'Sécurité et coordination jour J'],
                     'offer_items_en' => ['Full hall decoration and floral arch', '100 chairs + premium cutlery set', 'Reception tent and cocktail area', '4h open bar + DJ + special effects', 'Security and full day coordination'],
                     'price_fr' => '4 900 EUR',
@@ -30,6 +35,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Univers luxueux noir et or, lumière tamisée et scénographie raffinée.',
                     'description_en' => 'Luxury black and gold atmosphere with refined staging and ambient lighting.',
                     'image_src' => '/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif',
+                    'images' => [
+                        '/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif',
+                        '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                        '/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp',
+                    ],
                     'offer_items_fr' => ['Design premium noir & or', '100 places assises dressées', 'Scène mariés + piste de danse LED', 'Open bar signature + barman', 'DJ set, sécurité et maître de cérémonie'],
                     'offer_items_en' => ['Premium black & gold design setup', '100 fully dressed seats', 'Couple stage + LED dance floor', 'Signature open bar + bartender', 'DJ set, security and master of ceremony'],
                     'price_fr' => '6 700 EUR',
@@ -57,6 +67,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Anniversaire dynamique avec palette vive, candy bar et photobooth fun.',
                     'description_en' => 'Dynamic birthday setup with vivid palette, candy bar and fun photobooth.',
                     'image_src' => '/assets/css/images/image-45-768x768.jpeg',
+                    'images' => [
+                        '/assets/css/images/image-45-768x768.jpeg',
+                        '/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg',
+                        '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                    ],
                     'offer_items_fr' => ['Décoration thème color pop', '100 chaises + vaisselle festive', 'Coin photo + accessoires', 'DJ + animations jeux', 'Sécurité et coordination soirée'],
                     'offer_items_en' => ['Color pop themed decoration', '100 chairs + festive tableware', 'Photo corner + props', 'DJ + game activities', 'Security and evening coordination'],
                     'price_fr' => '3 200 EUR',
@@ -68,6 +83,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Ambiance chic noir et blanc avec décoration moderne et dancefloor central.',
                     'description_en' => 'Chic black and white atmosphere with modern decor and central dancefloor.',
                     'image_src' => '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                    'images' => [
+                        '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                        '/assets/css/images/pramod-tiwari-w09m4VYrAK4-unsplash.jpg',
+                        '/assets/css/images/image-45-768x768.jpeg',
+                    ],
                     'offer_items_fr' => ['Mise en scène black & white', 'Buffet sucré/salé 100 pers', 'Open bar soft + cocktails', 'DJ set + effets lumineux', 'Agent sécurité + équipe accueil'],
                     'offer_items_en' => ['Black & white stage design', 'Sweet/savoury buffet for 100 guests', 'Soft open bar + cocktails', 'DJ set + light effects', 'Security staff + welcome team'],
                     'price_fr' => '4 450 EUR',
@@ -95,6 +115,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Décor exotique, lumière chaude et ambiance plage premium.',
                     'description_en' => 'Exotic decor, warm lighting and premium beach vibe.',
                     'image_src' => '/assets/css/images/Conch-Shell-Decor.webp',
+                    'images' => [
+                        '/assets/css/images/Conch-Shell-Decor.webp',
+                        '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                        '/assets/css/images/pramod-tiwari-w09m4VYrAK4-unsplash.jpg',
+                    ],
                     'offer_items_fr' => ['Décoration tropicale immersive', '100 assises lounge', 'Bar à cocktails exotique', 'DJ house + percussions live', 'Sécurité et staff événementiel'],
                     'offer_items_en' => ['Immersive tropical decoration', '100 lounge seats', 'Exotic cocktail bar', 'House DJ + live percussion', 'Security and event staff'],
                     'price_fr' => '4 150 EUR',
@@ -106,6 +131,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Scénographie LED futuriste, ambiance club et effets spéciaux.',
                     'description_en' => 'Futuristic LED staging with club atmosphere and special effects.',
                     'image_src' => '/assets/css/images/pramod-tiwari-w09m4VYrAK4-unsplash.jpg',
+                    'images' => [
+                        '/assets/css/images/pramod-tiwari-w09m4VYrAK4-unsplash.jpg',
+                        '/assets/css/images/Conch-Shell-Decor.webp',
+                        '/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg',
+                    ],
                     'offer_items_fr' => ['Décor néon + mapping lumière', '100 places et zone VIP', 'Open bar + show barman', 'DJ électro + machine fumée', 'Sécurité renforcée + coordination'],
                     'offer_items_en' => ['Neon decor + light mapping', '100 seats and VIP area', 'Open bar + bartender show', 'Electro DJ + smoke effects', 'Reinforced security + coordination'],
                     'price_fr' => '5 300 EUR',
@@ -133,6 +163,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Format corporate élégant avec équipement conférence et restauration haut de gamme.',
                     'description_en' => 'Elegant corporate format with conference setup and premium catering.',
                     'image_src' => '/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg',
+                    'images' => [
+                        '/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg',
+                        '/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif',
+                        '/assets/css/images/pramod-tiwari-w09m4VYrAK4-unsplash.jpg',
+                    ],
                     'offer_items_fr' => ['Mise en place salle de séminaire', '100 places assises équipées', 'Déjeuner complet + pauses café', 'Sonorisation + écran + micro', 'Hôtesse accueil et sécurité'],
                     'offer_items_en' => ['Seminar room setup', '100 equipped seated places', 'Full lunch + coffee breaks', 'Sound system + screen + microphones', 'Hostess welcome and security'],
                     'price_fr' => '3 950 EUR',
@@ -144,6 +179,11 @@ class EventPagesController extends Controller
                     'description_fr' => 'Séminaire éco-chic avec décoration naturelle et cuisine responsable.',
                     'description_en' => 'Eco-chic seminar with natural decoration and responsible catering.',
                     'image_src' => '/assets/css/images/Conch-Shell-Decor.webp',
+                    'images' => [
+                        '/assets/css/images/Conch-Shell-Decor.webp',
+                        '/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg',
+                        '/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif',
+                    ],
                     'offer_items_fr' => ['Décoration végétale et mobilier bois', '100 couverts réutilisables premium', 'Buffet local et boissons detox', 'Animation musicale douce', 'Sécurité + coordination logistique'],
                     'offer_items_en' => ['Green decor with wooden furniture', '100 reusable premium place settings', 'Local buffet and detox drinks', 'Soft musical ambiance', 'Security + logistics coordination'],
                     'price_fr' => '4 300 EUR',
@@ -195,11 +235,13 @@ class EventPagesController extends Controller
     private function mapPackages(array $packages, string $lang): array
     {
         return array_map(static function (array $package, int $index) use ($lang): array {
+            $images = $package['images'] ?? (isset($package['image_src']) ? [$package['image_src']] : []);
             return [
                 'index' => $index,
                 'theme' => $package['theme_' . $lang] ?? '',
                 'description' => $package['description_' . $lang] ?? '',
-                'imageSrc' => $package['image_src'] ?? null,
+                'imageSrc' => $images[0] ?? ($package['image_src'] ?? null),
+                'images' => $images,
                 'offerItems' => $package['offer_items_' . $lang] ?? [],
                 'price' => $package['price_' . $lang] ?? '',
                 'amount' => self::priceToFloat((string) ($package['price_fr'] ?? $package['price_en'] ?? '0')),
