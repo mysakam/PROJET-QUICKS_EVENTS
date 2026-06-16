@@ -40,16 +40,16 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
 <section class="apropos">
     <div class="admin-media-shell">
         <article class="panier-shell">
-            <h1 class="titre-texte"><span><?= $lang === 'fr' ? 'R' : 'C' ?></span><?= $lang === 'fr' ? 'ubrique' : 'ategory' ?> <?= e($category['nom']) ?></h1>
+            <h1 class="titre-texte"><?= e($t['title_prefix']) ?> <?= e($category['nom']) ?></h1>
 
             <?php if (!empty($categoryMedia['media_url'])): ?>
                 <div class="event-media-slot panier-media-slot catalogue-header-polaroid">
                     <?php if (($categoryMedia['media_type'] ?? 'image') === 'video'): ?>
                         <video class="event-video" controls preload="metadata">
-                            <source src="<?= e($categoryMedia['media_url']) ?>">
+                            <source src="<?= e(img_url((string)$categoryMedia['media_url'])) ?>">
                         </video>
                     <?php else: ?>
-                        <img src="<?= e($categoryMedia['media_url']) ?>" alt="<?= e($categoryMedia['title'] ?? $category['nom']) ?>">
+                        <img src="<?= e(img_url((string)$categoryMedia['media_url'])) ?>" alt="<?= e($categoryMedia['title'] ?? $category['nom']) ?>">
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
@@ -82,11 +82,11 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                             <?php if (!empty($media['media_url'])): ?>
                                 <?php if (($media['media_type'] ?? 'image') === 'video'): ?>
                                     <video class="event-video" controls preload="metadata">
-                                        <source src="<?= e($media['media_url']) ?>">
+                                        <source src="<?= e(img_url((string)$media['media_url'])) ?>">
                                     </video>
                                 <?php else: ?>
-                                    <a href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer" aria-label="Voir la photo de <?= e($prestation['nom']) ?>">
-                                        <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
+                                    <a href="<?= e(img_url((string)$media['media_url'])) ?>" target="_blank" rel="noopener noreferrer" aria-label="Voir la photo de <?= e($prestation['nom']) ?>">
+                                        <img src="<?= e(img_url((string)$media['media_url'])) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
                                     </a>
                                 <?php endif; ?>
                             <?php else: ?>
@@ -96,9 +96,9 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                         <h3><?= e($prestation['nom']) ?></h3>
                         <p class="card-text"><?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
                         <?php if (!empty($media['media_url']) && (($media['media_type'] ?? 'image') !== 'video')): ?>
-                            <a class="btn" href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['photo']) ?></a>
+                            <a class="btn" href="<?= e(img_url((string)$media['media_url'])) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['photo']) ?></a>
                         <?php elseif (!empty($media['media_url'])): ?>
-                            <a class="btn" href="<?= e($media['media_url']) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['video']) ?></a>
+                            <a class="btn" href="<?= e(img_url((string)$media['media_url'])) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['video']) ?></a>
                         <?php endif; ?>
                         <a class="btn" href="<?= route('prestations_show', ['id' => $prestation['id_prestation']]) . '?lang=' . $lang ?>">View service</a>
                     </article>

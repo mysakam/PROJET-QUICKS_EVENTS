@@ -48,7 +48,27 @@ if (!function_exists('t')) {
 if (!function_exists('img_url')) {
     function img_url(string $path): string
     {
-        // Retire le / initial puis délègue à asset()
+        $path = trim($path);
+        if ($path === '') {
+            return '';
+        }
+
+        // URLs externes / data URI: ne pas modifier
+        if (preg_match('~^(https?:)?//|^data:~i', $path)) {
+            return $path;
+        }
+
+        // Déjà préfixé avec BASE_URL
+        if (defined('BASE_URL') && BASE_URL !== '' && BASE_URL !== '/' && str_starts_with($path, BASE_URL . '/')) {
+            return $path;
+        }
+
+        // Chemins absolus applicatifs classiques
+        if (str_starts_with($path, '/assets/') || str_starts_with($path, '/uploads/')) {
+            return url(ltrim($path, '/'));
+        }
+
+        // Fallback sur asset local
         return asset(ltrim($path, '/'));
     }
 }

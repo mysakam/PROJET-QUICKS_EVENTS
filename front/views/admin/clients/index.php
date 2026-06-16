@@ -1,6 +1,7 @@
 <?php
 $clients = $clients ?? [];
 $searchQuery = $searchQuery ?? '';
+$lang = $lang ?? current_lang();
 
 $statusClass = static function (?string $status): string {
     $normalized = strtolower(trim((string) $status));
@@ -14,14 +15,16 @@ $statusClass = static function (?string $status): string {
     };
 };
 
-$statusLabel = static function (?string $status): string {
+$statusLabel = static function (?string $status) use ($lang): string {
     $normalized = trim((string) $status);
     if ($normalized === '') {
         return '-';
     }
 
-    if (strtolower($normalized) === 'valide_client') {
-        return 'Validé';
+    $key = 'admin.status.' . strtolower($normalized);
+    $translated = t($key, $lang);
+    if ($translated !== $key) {
+        return $translated;
     }
 
     $label = str_replace('_', ' ', strtolower($normalized));
@@ -30,7 +33,7 @@ $statusLabel = static function (?string $status): string {
 ?>
 <section class="apropos">
     <div class="admin-media-shell">
-        <h2 class="titre-texte"><span>C</span>lients</h2>
+        <h2 class="titre-texte"><?= e(t('admin.clients.title', $lang)) ?></h2>
 
         <?php if (!empty($_SESSION['success'])): ?>
             <p class="admin-alert admin-alert-success"><?= e($_SESSION['success']) ?></p>
@@ -42,15 +45,16 @@ $statusLabel = static function (?string $status): string {
         <?php endif; ?>
 
         <div class="admin-media-actions">
-            <a class="btn" href="<?= route('admin_dashboard') ?>">Dashboard admin</a>
-            <a class="btn" href="<?= route('admin_clients_create') ?>">Ajouter un client</a>
+            <a class="btn" href="<?= route('admin_dashboard') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.dashboard.title', $lang)) ?></a>
+            <a class="btn" href="<?= route('admin_clients_create') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.clients.add', $lang)) ?></a>
         </div>
 
         <form class="admin-filter-form" method="GET" action="<?= route('admin_clients_index') ?>">
-            <label for="q">Recherche</label>
-            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="Nom, prénom, email, téléphone">
-            <button class="admin-btn" type="submit">Filtrer</button>
-            <a class="btn" href="<?= route('admin_clients_index') ?>">Réinitialiser</a>
+            <input type="hidden" name="lang" value="<?= e($lang) ?>">
+            <label for="q"><?= e(t('admin.clients.search', $lang)) ?></label>
+            <input id="q" name="q" type="text" value="<?= e($searchQuery) ?>" placeholder="<?= e(t('admin.clients.search_ph', $lang)) ?>">
+            <button class="admin-btn" type="submit"><?= e(t('admin.clients.filter', $lang)) ?></button>
+            <a class="btn" href="<?= route('admin_clients_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.clients.reset', $lang)) ?></a>
         </form>
 
         <div class="admin-table-wrap">
@@ -58,21 +62,21 @@ $statusLabel = static function (?string $status): string {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nom</th>
-                        <th>Prénom</th>
-                        <th>Email</th>
-                        <th>Téléphone</th>
-                        <th>Devis</th>
-                        <th>Factures</th>
-                        <th>Historique devis</th>
-                        <th>Historique factures</th>
-                        <th>Actions</th>
+                        <th><?= e(t('admin.clients.th_nom', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_prenom', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_email', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_phone', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_quotes', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_invoices', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_quotes_history', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_invoices_history', $lang)) ?></th>
+                        <th><?= e(t('admin.clients.th_actions', $lang)) ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($clients)): ?>
                         <tr>
-                            <td colspan="10">Aucun client enregistré.</td>
+                            <td colspan="10"><?= e(t('admin.clients.none', $lang)) ?></td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($clients as $c): ?>
@@ -123,10 +127,10 @@ $statusLabel = static function (?string $status): string {
                                     <?php endif; ?>
                                 </td>
                                 <td class="admin-table-actions">
-                                    <a class="admin-link" href="<?= route('admin_clients_show', ['id' => $c['id_client']]) ?>">Consulter</a>
-                                    <a class="admin-link" href="<?= route('admin_clients_edit', ['id' => $c['id_client']]) ?>">Modifier</a>
-                                    <form method="POST" action="<?= route('admin_clients_delete', ['id' => $c['id_client']]) ?>" onsubmit="return confirm('Supprimer ce client ?');">
-                                        <button type="submit" class="admin-btn admin-btn-danger">Supprimer</button>
+                                    <a class="admin-link" href="<?= route('admin_clients_show', ['id' => $c['id_client']]) ?>?lang=<?= e($lang) ?>"><?= e(t('admin.clients.view', $lang)) ?></a>
+                                    <a class="admin-link" href="<?= route('admin_clients_edit', ['id' => $c['id_client']]) ?>?lang=<?= e($lang) ?>"><?= e(t('admin.clients.edit', $lang)) ?></a>
+                                    <form method="POST" action="<?= route('admin_clients_delete', ['id' => $c['id_client']]) ?>?lang=<?= e($lang) ?>" onsubmit="return confirm('<?= e(t('admin.clients.delete_confirm', $lang)) ?>');">
+                                        <button type="submit" class="admin-btn admin-btn-danger"><?= e(t('admin.clients.delete', $lang)) ?></button>
                                     </form>
                                 </td>
                             </tr>

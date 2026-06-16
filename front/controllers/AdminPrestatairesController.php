@@ -197,7 +197,7 @@ class AdminPrestatairesController extends AdminBaseController
 
         if ($data['nom'] === '') {
             $_SESSION['error'] = 'Le nom du prestataire est obligatoire.';
-            redirect(route('admin_prestataires_create'));
+            redirect($this->routeWithLang('admin_prestataires_create'));
             return;
         }
 
@@ -205,7 +205,7 @@ class AdminPrestatairesController extends AdminBaseController
         $prestationError = $this->validatePrestationsPayload($prestationsData);
         if ($prestationError !== null) {
             $_SESSION['error'] = $prestationError;
-            redirect(route('admin_prestataires_create'));
+            redirect($this->routeWithLang('admin_prestataires_create'));
             return;
         }
 
@@ -217,7 +217,7 @@ class AdminPrestatairesController extends AdminBaseController
         }
 
         $_SESSION['success'] = 'Prestataire ajoute avec succes.';
-        redirect(route('admin_prestataires_index'));
+        redirect($this->routeWithLang('admin_prestataires_index'));
     }
 
     public function edit(int $id): void
@@ -274,7 +274,7 @@ class AdminPrestatairesController extends AdminBaseController
 
         if ($data['nom'] === '') {
             $_SESSION['error'] = 'Le nom du prestataire est obligatoire.';
-            redirect(route('admin_prestataires_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_prestataires_edit', ['id' => $id]));
             return;
         }
 
@@ -282,7 +282,7 @@ class AdminPrestatairesController extends AdminBaseController
         $prestationError = $this->validatePrestationsPayload($prestationsData);
         if ($prestationError !== null) {
             $_SESSION['error'] = $prestationError;
-            redirect(route('admin_prestataires_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_prestataires_edit', ['id' => $id]));
             return;
         }
 
@@ -292,7 +292,7 @@ class AdminPrestatairesController extends AdminBaseController
         $this->prestationModel->syncForPrestataire($id, $prestationsData);
 
         $_SESSION['success'] = 'Prestataire modifie avec succes.';
-        redirect(route('admin_prestataires_index'));
+        redirect($this->routeWithLang('admin_prestataires_index'));
     }
 
     public function delete(int $id): void
@@ -308,6 +308,6 @@ class AdminPrestatairesController extends AdminBaseController
             $_SESSION['error'] = 'Suppression impossible pour le moment. Les donnees liees a ce prestataire n\'ont pas pu etre nettoyees automatiquement.';
         }
 
-        redirect(route('admin_prestataires_index'));
+        redirect($this->routeWithLang('admin_prestataires_index'));
     }
 }

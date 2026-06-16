@@ -18,6 +18,7 @@ $media = $prestationMediaMap[$mediaKey] ?? null;
 
 $txt = [
     'fr' => [
+        'service_prefix' => 'Prestation',
         'category' => 'Catégorie',
         'price' => 'Prix',
         'add_cart' => 'Ajouter au panier',
@@ -26,6 +27,7 @@ $txt = [
         'message' => 'Connectez-vous pour demander un devis.',
     ],
     'en' => [
+        'service_prefix' => 'Service',
         'category' => 'Category',
         'price' => 'Price',
         'add_cart' => 'Add to cart',
@@ -40,16 +42,16 @@ $t = $txt[$lang];
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
         <article class="catalogue-detail-card panier-shell">
-            <h1 class="titre-texte"><span>P</span>restation: <?= e($prestation['nom']) ?></h1>
+            <h1 class="titre-texte"><?= e($t['service_prefix']) ?>: <?= e($prestation['nom']) ?></h1>
 
             <?php if (!empty($media['media_url'])): ?>
                 <div class="event-media-slot panier-media-slot">
                     <?php if (($media['media_type'] ?? 'image') === 'video'): ?>
                         <video class="event-video" controls preload="metadata">
-                            <source src="<?= e($media['media_url']) ?>">
+                            <source src="<?= e(img_url((string)$media['media_url'])) ?>">
                         </video>
                     <?php else: ?>
-                        <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
+                        <img src="<?= e(img_url((string)$media['media_url'])) ?>" alt="<?= e($media['title'] ?? $prestation['nom']) ?>">
                     <?php endif; ?>
                 </div>
             <?php endif; ?>

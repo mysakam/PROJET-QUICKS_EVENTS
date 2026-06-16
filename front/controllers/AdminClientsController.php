@@ -5,7 +5,7 @@ class AdminClientsController extends AdminBaseController
     private ClientModel $clientModel;
     private DevisModel $devisModel;
     private FactureModel $factureModel;
-// Constructeur pour initialiser les modèles nécessaires// pour les opérations sur les clients, devis et factures
+    // Constructeur pour initialiser les modèles nécessaires// pour les opérations sur les clients, devis et factures
     public function __construct()
     {
         $this->clientModel = new ClientModel();
@@ -18,10 +18,10 @@ class AdminClientsController extends AdminBaseController
         if (!$this->ensureAdmin()) {
             return;
         }
-// Récupérer la requête de recherche et les clients avec leur résumé de parcours (nombre de devis, factures, etc.)
+        // Récupérer la requête de recherche et les clients avec leur résumé de parcours (nombre de devis, factures, etc.)
         $searchQuery = trim($_GET['q'] ?? '');
         $clients = $this->clientModel->findAllWithJourneySummary();
-// Filtrer les clients en fonction de la requête de recherche
+        // Filtrer les clients en fonction de la requête de recherche
         if ($searchQuery !== '') {
             $needle = mb_strtolower($searchQuery, 'UTF-8');
             $clients = array_values(array_filter($clients, static function (array $client) use ($needle): bool {
@@ -35,7 +35,7 @@ class AdminClientsController extends AdminBaseController
                 return str_contains($haystack, $needle);
             }));
         }
-// Enrichir chaque client avec son historique de devis et factures
+        // Enrichir chaque client avec son historique de devis et factures
         foreach ($clients as &$client) {
             $idClient = (int) ($client['id_client'] ?? 0);
             $client['devis_history'] = $this->devisModel->findByClientId($idClient);
@@ -51,7 +51,7 @@ class AdminClientsController extends AdminBaseController
             'lang' => $this->getLang(),
         ]);
     }
-// Afficher le formulaire de création d'un nouveau client
+    // Afficher le formulaire de création d'un nouveau client
     public function create(): void
     {
         if (!$this->ensureAdmin()) {
@@ -63,7 +63,7 @@ class AdminClientsController extends AdminBaseController
             'lang' => $this->getLang(),
         ]);
     }
-// Afficher les détails d'un client, y compris son historique de devis et factures, avec des options de filtrage
+    // Afficher les détails d'un client, y compris son historique de devis et factures, avec des options de filtrage
     public function show(int $id): void
     {
         if (!$this->ensureAdmin()) {
@@ -76,7 +76,7 @@ class AdminClientsController extends AdminBaseController
             echo 'Client introuvable.';
             return;
         }
-// Récupérer les filtres de la requête pour les devis et factures
+        // Récupérer les filtres de la requête pour les devis et factures
         $filters = [
             'devis_statut' => trim((string) ($_GET['devis_statut'] ?? '')),
             'facture_statut' => trim((string) ($_GET['facture_statut'] ?? '')),
@@ -85,7 +85,7 @@ class AdminClientsController extends AdminBaseController
         ];
 
         $history = $this->devisModel->findJourneyByClientId($id, $filters);
-// Récupérer les statuts de devis disponibles pour ce client
+        // Récupérer les statuts de devis disponibles pour ce client
         $devisStatusOptions = [];
         foreach ($this->devisModel->findByClientId($id) as $devis) {
             $status = (string) ($devis['statut'] ?? '');
@@ -93,7 +93,7 @@ class AdminClientsController extends AdminBaseController
                 $devisStatusOptions[] = $status;
             }
         }
-// Récupérer les statuts de factures disponibles pour ce client
+        // Récupérer les statuts de factures disponibles pour ce client
         $factureStatusOptions = $this->factureModel->statuses();
         $totalDevis = 0.0;
         $totalFactures = 0.0;
@@ -134,25 +134,25 @@ class AdminClientsController extends AdminBaseController
 
         if ($data['nom'] === '' || $data['prenom'] === '' || $data['email'] === '' || $data['password'] === '') {
             $_SESSION['error'] = 'Nom, prenom, email et mot de passe sont obligatoires.';
-            redirect(route('admin_clients_create'));
+            redirect($this->routeWithLang('admin_clients_create'));
             return;
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Email invalide.';
-            redirect(route('admin_clients_create'));
+            redirect($this->routeWithLang('admin_clients_create'));
             return;
         }
 
         if ($this->clientModel->findByEmail($data['email'])) {
             $_SESSION['error'] = 'Cet email existe deja.';
-            redirect(route('admin_clients_create'));
+            redirect($this->routeWithLang('admin_clients_create'));
             return;
         }
 
         $this->clientModel->createWithProfile($data);
         $_SESSION['success'] = 'Client ajoute avec succes.';
-        redirect(route('admin_clients_index'));
+        redirect($this->routeWithLang('admin_clients_index'));
     }
 
     public function edit(int $id): void
@@ -197,26 +197,26 @@ class AdminClientsController extends AdminBaseController
 
         if ($data['nom'] === '' || $data['prenom'] === '' || $data['email'] === '') {
             $_SESSION['error'] = 'Nom, prenom et email sont obligatoires.';
-            redirect(route('admin_clients_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_clients_edit', ['id' => $id]));
             return;
         }
 
         if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $_SESSION['error'] = 'Email invalide.';
-            redirect(route('admin_clients_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_clients_edit', ['id' => $id]));
             return;
         }
 
         $emailOwner = $this->clientModel->findByEmail($data['email']);
         if ($emailOwner && (int) $emailOwner['id_client'] !== $id) {
             $_SESSION['error'] = 'Cet email appartient deja a un autre client.';
-            redirect(route('admin_clients_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_clients_edit', ['id' => $id]));
             return;
         }
 
         $this->clientModel->updateProfile($id, $data);
         $_SESSION['success'] = 'Client modifie avec succes.';
-        redirect(route('admin_clients_index'));
+        redirect($this->routeWithLang('admin_clients_index'));
     }
 
     public function delete(int $id): void
@@ -227,6 +227,6 @@ class AdminClientsController extends AdminBaseController
 
         $this->clientModel->delete($id);
         $_SESSION['success'] = 'Client supprime avec succes.';
-        redirect(route('admin_clients_index'));
+        redirect($this->routeWithLang('admin_clients_index'));
     }
 }

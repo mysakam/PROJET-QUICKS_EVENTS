@@ -50,7 +50,7 @@ $t = $txt[$lang];
     <div class="admin-media-shell dashboard-shell">
         <div class="dashboard-copy">
             <p class="auth-kicker">QUICK'EVENTS</p>
-            <h2 class="titre-texte"><span><?= $lang === 'fr' ? 'B' : 'W' ?></span><?= $lang === 'fr' ? 'ienvenue' : 'elcome' ?> <?= e($clientName) ?></h2>
+            <h2 class="titre-texte"><?= e($t['welcome']) ?> <?= e($clientName) ?></h2>
             <p><?= e($t['intro']) ?></p>
 
             <div class="auth-highlights">

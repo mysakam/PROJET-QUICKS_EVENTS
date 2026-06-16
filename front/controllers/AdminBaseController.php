@@ -13,10 +13,21 @@ abstract class AdminBaseController extends Controller
         }
 
         return true;
-    }// Méthode pour récupérer la langue de l'utilisateur
+    } // Méthode pour récupérer la langue de l'utilisateur
 
     protected function getLang(): string
     {
         return (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr';
-    }// Méthode pour récupérer les traductions de l'interface admin
+    }
+
+    protected function withLang(string $url): string
+    {
+        $separator = str_contains($url, '?') ? '&' : '?';
+        return $url . $separator . 'lang=' . rawurlencode($this->getLang());
+    }
+
+    protected function routeWithLang(string $name, array $params = []): string
+    {
+        return $this->withLang(route($name, $params));
+    }
 }

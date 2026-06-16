@@ -4,7 +4,7 @@ if (!isset($total)) $total = 0;
 ?>
 <section class="apropos">
     <div class="admin-media-shell">
-        <h1 class="titre-texte"><span>M</span>on panier</h1>
+        <h1 class="titre-texte">Mon panier</h1>
 
         <div class="admin-media-actions">
             <a class="btn" href="<?= route('catalogues') ?>">Continuer mes choix</a>

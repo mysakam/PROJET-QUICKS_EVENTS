@@ -84,7 +84,7 @@ $statusLabel = static function (?string $status) use ($lang): string {
 
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
-        <h2 class="titre-texte"><span><?= $lang === 'fr' ? 'M' : 'M' ?></span><?= $lang === 'fr' ? 'on compte client' : 'y client account' ?></h2>
+        <h2 class="titre-texte"><?= e($t['title']) ?></h2>
 
         <div class="admin-table-wrap">
             <table class="admin-table" style="min-width: 0;">

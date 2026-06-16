@@ -66,6 +66,10 @@ $t = $txt[$lang];
                 <div class="admin-form-row">
                     <label for="password"><?= e($t['password']) ?></label>
                     <input type="password" name="password" id="password" required>
+                    <p style="margin-top:8px;font-size:.88rem;">
+                        <?= e(t('auth.forgot_pw', $lang)) ?>
+                        <a href="mailto:akamsamy69@gmail.com">akamsamy69@gmail.com</a>
+                    </p>
                 </div>
 
                 <div class="admin-form-actions">

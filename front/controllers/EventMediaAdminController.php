@@ -26,6 +26,17 @@ class EventMediaAdminController extends Controller
         return true;
     }
 
+    private function getLang(): string
+    {
+        return (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr';
+    }
+
+    private function withLang(string $url): string
+    {
+        $separator = str_contains($url, '?') ? '&' : '?';
+        return $url . $separator . 'lang=' . rawurlencode($this->getLang());
+    }
+
     private function themes(): array
     {
         return array_keys($this->themeOptions());
@@ -109,7 +120,7 @@ class EventMediaAdminController extends Controller
             'searchQuery' => $searchQuery,
             'activeFilter' => $activeFilter,
             'pageTitle' => 'Admin medias evenement',
-            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
+            'lang' => $this->getLang(),
         ]);
     }
 
@@ -123,7 +134,7 @@ class EventMediaAdminController extends Controller
             'themes' => $this->themes(),
             'themeOptions' => $this->themeOptions(),
             'pageTitle' => 'Ajouter un media evenement',
-            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
+            'lang' => $this->getLang(),
         ]);
     }
 
@@ -153,7 +164,7 @@ class EventMediaAdminController extends Controller
             $data['title_en'] === ''
         ) {
             $_SESSION['error'] = 'Champs invalides. Merci de verifier le formulaire.';
-            redirect(route('admin_event_medias_create'));
+            redirect($this->withLang(route('admin_event_medias_create')));
             return;
         }
 
@@ -162,10 +173,10 @@ class EventMediaAdminController extends Controller
             $_SESSION['success'] = 'Media ajoute avec succes.';
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
-            redirect(route('admin_event_medias_create'));
+            redirect($this->withLang(route('admin_event_medias_create')));
             return;
         }
-        redirect(route('admin_event_medias'));
+        redirect($this->withLang(route('admin_event_medias')));
     }
 
     public function edit(int $id): void
@@ -178,7 +189,7 @@ class EventMediaAdminController extends Controller
             $media = $this->eventMediaModel->findById($id);
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
-            redirect(route('admin_event_medias'));
+            redirect($this->withLang(route('admin_event_medias')));
             return;
         }
 
@@ -193,7 +204,7 @@ class EventMediaAdminController extends Controller
             'themes' => $this->themes(),
             'themeOptions' => $this->themeOptions(),
             'pageTitle' => 'Modifier un media evenement',
-            'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
+            'lang' => $this->getLang(),
         ]);
     }
 
@@ -207,7 +218,7 @@ class EventMediaAdminController extends Controller
             $existing = $this->eventMediaModel->findById($id);
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
-            redirect(route('admin_event_medias'));
+            redirect($this->withLang(route('admin_event_medias')));
             return;
         }
         if (!$existing) {
@@ -236,7 +247,7 @@ class EventMediaAdminController extends Controller
             $data['title_en'] === ''
         ) {
             $_SESSION['error'] = 'Champs invalides. Merci de verifier le formulaire.';
-            redirect(route('admin_event_medias_edit', ['id' => $id]));
+            redirect($this->withLang(route('admin_event_medias_edit', ['id' => $id])));
             return;
         }
 
@@ -245,10 +256,10 @@ class EventMediaAdminController extends Controller
             $_SESSION['success'] = 'Media modifie avec succes.';
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
-            redirect(route('admin_event_medias_edit', ['id' => $id]));
+            redirect($this->withLang(route('admin_event_medias_edit', ['id' => $id])));
             return;
         }
-        redirect(route('admin_event_medias'));
+        redirect($this->withLang(route('admin_event_medias')));
     }
 
     public function delete(int $id): void
@@ -263,6 +274,6 @@ class EventMediaAdminController extends Controller
         } catch (Throwable $e) {
             $_SESSION['error'] = $this->dbErrorMessage();
         }
-        redirect(route('admin_event_medias'));
+        redirect($this->withLang(route('admin_event_medias')));
     }
 }

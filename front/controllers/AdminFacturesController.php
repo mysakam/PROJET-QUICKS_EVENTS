@@ -74,18 +74,18 @@ class AdminFacturesController extends AdminBaseController
             $data['montant_ttc'] < 0
         ) {
             $_SESSION['error'] = 'Champs facture invalides.';
-            redirect(route('admin_factures_create'));
+            redirect($this->routeWithLang('admin_factures_create'));
             return;
         }
 
         try {
             $this->factureModel->create($data);
             $_SESSION['success'] = 'Facture ajoutee avec succes.';
-            redirect(route('admin_factures_index'));
+            redirect($this->routeWithLang('admin_factures_index'));
             return;
         } catch (Throwable $e) {
             $_SESSION['error'] = 'Impossible de creer la facture (devis deja facture ou reference deja utilisee).';
-            redirect(route('admin_factures_create'));
+            redirect($this->routeWithLang('admin_factures_create'));
             return;
         }
     }
@@ -155,13 +155,13 @@ class AdminFacturesController extends AdminBaseController
 
         if (!in_array($data['statut'], $this->factureModel->statuses(), true) || $data['montant_ttc'] < 0) {
             $_SESSION['error'] = 'Champs facture invalides.';
-            redirect(route('admin_factures_edit', ['id' => $id]));
+            redirect($this->routeWithLang('admin_factures_edit', ['id' => $id]));
             return;
         }
 
         $this->factureModel->update($id, $data);
         $_SESSION['success'] = 'Facture modifiee avec succes.';
-        redirect(route('admin_factures_index'));
+        redirect($this->routeWithLang('admin_factures_index'));
     }
 
     public function delete(int $id): void
@@ -172,7 +172,7 @@ class AdminFacturesController extends AdminBaseController
 
         $this->factureModel->delete($id);
         $_SESSION['success'] = 'Facture supprimee avec succes.';
-        redirect(route('admin_factures_index'));
+        redirect($this->routeWithLang('admin_factures_index'));
     }
 
     public function sendMail(int $id): void
@@ -190,7 +190,7 @@ class AdminFacturesController extends AdminBaseController
 
         if (empty($facture['client_email'])) {
             $_SESSION['error'] = 'Aucun email client disponible pour cette facture.';
-            redirect(route('admin_factures_show', ['id' => $id]));
+            redirect($this->routeWithLang('admin_factures_show', ['id' => $id]));
             return;
         }
 
@@ -201,13 +201,13 @@ class AdminFacturesController extends AdminBaseController
 
         if (!send_html_mail($facture['client_email'], $subject, $body)) {
             $_SESSION['error'] = 'Envoi mail impossible pour le moment.';
-            redirect(route('admin_factures_show', ['id' => $id]));
+            redirect($this->routeWithLang('admin_factures_show', ['id' => $id]));
             return;
         }
 
         $this->factureModel->markAsSent($id);
         $_SESSION['success'] = 'Facture envoyee par mail avec succes.';
-        redirect(route('admin_factures_show', ['id' => $id]));
+        redirect($this->routeWithLang('admin_factures_show', ['id' => $id]));
     }
 
     private function buildMailBody(array $facture, string $adminMessage = ''): string

@@ -1,20 +1,21 @@
 <?php
 $themes = $themes ?? [];
 $themeOptions = $themeOptions ?? [];
+$lang = $lang ?? current_lang();
 ?>
 
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
-        <h2 class="titre-texte"><span>A</span>jouter un média événement</h2>
+        <h2 class="titre-texte"><?= e(t('admin.media.create_title', $lang)) ?></h2>
 
         <?php if (!empty($_SESSION['error'])): ?>
             <p class="admin-alert admin-alert-error"><?= e($_SESSION['error']) ?></p>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
-        <form class="admin-form" method="POST" action="<?= route('admin_event_medias_store') ?>">
+        <form class="admin-form" method="POST" action="<?= route('admin_event_medias_store') ?>?lang=<?= e($lang) ?>">
             <div class="admin-form-row">
-                <label for="theme_slug">Thème</label>
+                <label for="theme_slug"><?= e(t('admin.media.theme', $lang)) ?></label>
                 <select name="theme_slug" id="theme_slug" required>
                     <?php foreach ($themes as $theme): ?>
                         <option value="<?= e($theme) ?>"><?= e($themeOptions[$theme] ?? $theme) ?></option>
@@ -23,7 +24,7 @@ $themeOptions = $themeOptions ?? [];
             </div>
 
             <div class="admin-form-row">
-                <label for="media_type">Type</label>
+                <label for="media_type"><?= e(t('admin.media.type', $lang)) ?></label>
                 <select name="media_type" id="media_type" required>
                     <option value="image">image</option>
                     <option value="video">video</option>
@@ -31,45 +32,45 @@ $themeOptions = $themeOptions ?? [];
             </div>
 
             <div class="admin-form-row">
-                <label for="media_url">URL du média</label>
+                <label for="media_url"><?= e(t('admin.media.media_url', $lang)) ?></label>
                 <input type="text" name="media_url" id="media_url" required>
             </div>
 
             <div class="admin-form-row">
-                <label for="title_fr">Titre FR</label>
+                <label for="title_fr"><?= e(t('admin.media.title_fr', $lang)) ?></label>
                 <input type="text" name="title_fr" id="title_fr" required>
             </div>
 
             <div class="admin-form-row">
-                <label for="title_en">Titre EN</label>
+                <label for="title_en"><?= e(t('admin.media.title_en', $lang)) ?></label>
                 <input type="text" name="title_en" id="title_en" required>
             </div>
 
             <div class="admin-form-row">
-                <label for="description_fr">Description FR</label>
+                <label for="description_fr"><?= e(t('admin.media.desc_fr', $lang)) ?></label>
                 <textarea name="description_fr" id="description_fr" rows="4"></textarea>
             </div>
 
             <div class="admin-form-row">
-                <label for="description_en">Description EN</label>
+                <label for="description_en"><?= e(t('admin.media.desc_en', $lang)) ?></label>
                 <textarea name="description_en" id="description_en" rows="4"></textarea>
             </div>
 
             <div class="admin-form-row">
-                <label for="position">Position</label>
+                <label for="position"><?= e(t('admin.media.position', $lang)) ?></label>
                 <input type="number" min="1" name="position" id="position" value="1" required>
             </div>
 
             <div class="admin-form-row admin-checkbox-row">
                 <label>
                     <input type="checkbox" name="is_active" checked>
-                    Actif
+                    <?= e(t('admin.media.active', $lang)) ?>
                 </label>
             </div>
 
             <div class="admin-form-actions">
-                <button class="admin-btn" type="submit">Enregistrer</button>
-                <a class="btn" href="<?= route('admin_event_medias') ?>">Retour</a>
+                <button class="admin-btn" type="submit"><?= e(t('admin.media.save', $lang)) ?></button>
+                <a class="btn" href="<?= route('admin_event_medias') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.back', $lang)) ?></a>
             </div>
         </form>
     </div>

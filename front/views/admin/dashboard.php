@@ -1,33 +1,34 @@
 <section class="apropos">
     <div class="admin-media-shell">
-        <h2 class="titre-texte"><span>D</span>ashboard admin</h2>
-        <p>Choisissez un module pour gérer les données.</p>
+        <?php $lang = $lang ?? current_lang(); ?>
+        <h2 class="titre-texte"><?= e(t('admin.dashboard.title', $lang)) ?></h2>
+        <p><?= e(t('admin.dashboard.subtitle', $lang)) ?></p>
 
         <div class="theme-grid">
             <article class="polaroid event-polaroid">
-                <h3>Médias</h3>
-                <p class="card-text">Gérer les photos/vidéos des pages événements.</p>
-                <a class="btn" href="<?= route('admin_event_medias') ?>">Ouvrir</a>
+                <h3><?= e(t('admin.dashboard.medias_title', $lang)) ?></h3>
+                <p class="card-text"><?= e(t('admin.dashboard.medias_text', $lang)) ?></p>
+                <a class="btn" href="<?= route('admin_event_medias') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
             <article class="polaroid event-polaroid">
-                <h3>Prestataires</h3>
-                <p class="card-text">CRUD des prestataires et leurs informations.</p>
-                <a class="btn" href="<?= route('admin_prestataires_index') ?>">Ouvrir</a>
+                <h3><?= e(t('admin.dashboard.providers_title', $lang)) ?></h3>
+                <p class="card-text"><?= e(t('admin.dashboard.providers_text', $lang)) ?></p>
+                <a class="btn" href="<?= route('admin_prestataires_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
             <article class="polaroid event-polaroid">
-                <h3>Factures</h3>
-                <p class="card-text">Gestion des factures liées aux devis et aux prestataires.</p>
-                <a class="btn" href="<?= route('admin_factures_index') ?>">Ouvrir</a>
+                <h3><?= e(t('admin.dashboard.invoices_title', $lang)) ?></h3>
+                <p class="card-text"><?= e(t('admin.dashboard.invoices_text', $lang)) ?></p>
+                <a class="btn" href="<?= route('admin_factures_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
             <article class="polaroid event-polaroid">
-                <h3>Clients</h3>
-                <p class="card-text">CRUD des comptes clients.</p>
-                <a class="btn" href="<?= route('admin_clients_index') ?>">Ouvrir</a>
+                <h3><?= e(t('admin.dashboard.clients_title', $lang)) ?></h3>
+                <p class="card-text"><?= e(t('admin.dashboard.clients_text', $lang)) ?></p>
+                <a class="btn" href="<?= route('admin_clients_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
             <article class="polaroid event-polaroid">
-                <h3>Statistiques</h3>
-                <p class="card-text">Devis, CA, statuts et tops par entité.</p>
-                <a class="btn" href="<?= route('admin_stats_index') ?>">Ouvrir</a>
+                <h3><?= e(t('admin.dashboard.stats_title', $lang)) ?></h3>
+                <p class="card-text"><?= e(t('admin.dashboard.stats_text', $lang)) ?></p>
+                <a class="btn" href="<?= route('admin_stats_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
         </div>
     </div>

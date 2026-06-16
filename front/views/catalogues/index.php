@@ -25,7 +25,7 @@ $t = $txt[$lang];
 
 <section class="apropos">
     <div class="admin-media-shell">
-        <h1 class="titre-texte"><span>C</span><?= $lang === 'fr' ? 'atalogues' : 'atalogues' ?></h1>
+        <h1 class="titre-texte"><?= e($t['title']) ?></h1>
         <p><?= e($t['intro']) ?></p>
 
         <?php if (empty($categories)): ?>
@@ -42,10 +42,10 @@ $t = $txt[$lang];
                             <?php if (!empty($media['media_url'])): ?>
                                 <?php if (($media['media_type'] ?? 'image') === 'video'): ?>
                                     <video class="event-video" controls preload="metadata">
-                                        <source src="<?= e($media['media_url']) ?>">
+                                        <source src="<?= e(img_url((string)$media['media_url'])) ?>">
                                     </video>
                                 <?php else: ?>
-                                    <img src="<?= e($media['media_url']) ?>" alt="<?= e($media['title'] ?? $category['nom']) ?>">
+                                    <img src="<?= e(img_url((string)$media['media_url'])) ?>" alt="<?= e($media['title'] ?? $category['nom']) ?>">
                                 <?php endif; ?>
                             <?php else: ?>
                                 <span><?= e($t['media']) ?></span>

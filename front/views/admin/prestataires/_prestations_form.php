@@ -7,17 +7,18 @@ $prestationsFormData = $prestationsFormData ?? [[
     'description' => '',
     'prix_unitaire' => '',
 ]];
+$lang = $lang ?? current_lang();
 ?>
 <div class="admin-form-row">
-    <label>Prestations associées</label>
+    <label><?= e(t('admin.prestataires.services_label', $lang)) ?></label>
     <div data-prestations-list>
         <?php foreach ($prestationsFormData as $index => $prestation): ?>
             <div class="admin-table-wrap" data-prestation-item style="padding: 14px; margin-bottom: 12px;">
                 <input type="hidden" name="prestation_id[]" value="<?= (int) ($prestation['id_prestation'] ?? 0) ?>">
                 <div class="admin-form-row">
-                    <label>Catégorie de prestation</label>
+                    <label><?= e(t('admin.prestataires.service_category', $lang)) ?></label>
                     <select name="prestation_category_id[]">
-                        <option value="">-- Sélectionner --</option>
+                        <option value=""><?= e(t('admin.prestataires.service_select', $lang)) ?></option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?= (int) $category['id_categorie'] ?>" <?= ((int) ($prestation['id_categorie'] ?? 0) === (int) $category['id_categorie']) ? 'selected' : '' ?>>
                                 <?= e($category['nom']) ?>
@@ -26,49 +27,49 @@ $prestationsFormData = $prestationsFormData ?? [[
                     </select>
                 </div>
                 <div class="admin-form-row">
-                    <label>Nom de la prestation</label>
-                    <input name="prestation_nom[]" type="text" value="<?= e($prestation['nom'] ?? '') ?>" placeholder="Ex: Buffet premium">
+                    <label><?= e(t('admin.prestataires.service_name', $lang)) ?></label>
+                    <input name="prestation_nom[]" type="text" value="<?= e($prestation['nom'] ?? '') ?>" placeholder="<?= e(t('admin.prestataires.service_name_ph', $lang)) ?>">
                 </div>
                 <div class="admin-form-row">
-                    <label>Prix unitaire prestation</label>
-                    <input name="prestation_prix[]" type="number" min="0" step="0.01" value="<?= e((string) ($prestation['prix_unitaire'] ?? '')) ?>" placeholder="Ex: 250">
+                    <label><?= e(t('admin.prestataires.service_price', $lang)) ?></label>
+                    <input name="prestation_prix[]" type="number" min="0" step="0.01" value="<?= e((string) ($prestation['prix_unitaire'] ?? '')) ?>" placeholder="<?= e(t('admin.prestataires.service_price_ph', $lang)) ?>">
                 </div>
                 <div class="admin-form-row">
-                    <label>Description prestation</label>
-                    <textarea name="prestation_description[]" rows="3" placeholder="Détails de la prestation..."><?= e($prestation['description'] ?? '') ?></textarea>
+                    <label><?= e(t('admin.prestataires.service_desc', $lang)) ?></label>
+                    <textarea name="prestation_description[]" rows="3" placeholder="<?= e(t('admin.prestataires.service_desc_ph', $lang)) ?>"><?= e($prestation['description'] ?? '') ?></textarea>
                 </div>
-                <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation>Retirer cette prestation</button>
+                <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation><?= e(t('admin.prestataires.remove_service', $lang)) ?></button>
             </div>
         <?php endforeach; ?>
     </div>
-    <button class="admin-btn" type="button" data-add-prestation>Ajouter une prestation</button>
+    <button class="admin-btn" type="button" data-add-prestation><?= e(t('admin.prestataires.add_service', $lang)) ?></button>
 </div>
 
 <template data-prestation-template>
     <div class="admin-table-wrap" data-prestation-item style="padding: 14px; margin-bottom: 12px;">
         <input type="hidden" name="prestation_id[]" value="0">
         <div class="admin-form-row">
-            <label>Catégorie de prestation</label>
+            <label><?= e(t('admin.prestataires.service_category', $lang)) ?></label>
             <select name="prestation_category_id[]">
-                <option value="">-- Sélectionner --</option>
+                <option value=""><?= e(t('admin.prestataires.service_select', $lang)) ?></option>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= (int) $category['id_categorie'] ?>"><?= e($category['nom']) ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
         <div class="admin-form-row">
-            <label>Nom de la prestation</label>
-            <input name="prestation_nom[]" type="text" value="" placeholder="Ex: Buffet premium">
+            <label><?= e(t('admin.prestataires.service_name', $lang)) ?></label>
+            <input name="prestation_nom[]" type="text" value="" placeholder="<?= e(t('admin.prestataires.service_name_ph', $lang)) ?>">
         </div>
         <div class="admin-form-row">
-            <label>Prix unitaire prestation</label>
-            <input name="prestation_prix[]" type="number" min="0" step="0.01" value="" placeholder="Ex: 250">
+            <label><?= e(t('admin.prestataires.service_price', $lang)) ?></label>
+            <input name="prestation_prix[]" type="number" min="0" step="0.01" value="" placeholder="<?= e(t('admin.prestataires.service_price_ph', $lang)) ?>">
         </div>
         <div class="admin-form-row">
-            <label>Description prestation</label>
-            <textarea name="prestation_description[]" rows="3" placeholder="Détails de la prestation..."></textarea>
+            <label><?= e(t('admin.prestataires.service_desc', $lang)) ?></label>
+            <textarea name="prestation_description[]" rows="3" placeholder="<?= e(t('admin.prestataires.service_desc_ph', $lang)) ?>"></textarea>
         </div>
-        <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation>Retirer cette prestation</button>
+        <button class="admin-btn admin-btn-danger" type="button" data-remove-prestation><?= e(t('admin.prestataires.remove_service', $lang)) ?></button>
     </div>
 </template>
 
