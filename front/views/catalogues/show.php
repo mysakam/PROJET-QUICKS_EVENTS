@@ -1,5 +1,6 @@
 <?php require_once __DIR__ . '/../../helpers/view.php'; ?>
 <?php
+$lang = ($lang ?? (($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr'));
 if (!isset($prestation)) {
     $prestation = [
         'nom' => '',
@@ -14,10 +15,28 @@ if (!isset($prestation)) {
 $prestationMediaMap = $prestationMediaMap ?? [];
 $mediaKey = 'catalogue-prestation-' . (int) ($prestation['id_prestation'] ?? 0);
 $media = $prestationMediaMap[$mediaKey] ?? null;
+
+$txt = [
+    'fr' => [
+        'category' => 'Catégorie',
+        'price' => 'Prix',
+        'add_cart' => 'Ajouter au panier',
+        'login' => 'Connexion pour ajouter',
+        'back' => 'Retour catégorie',
+        'message' => 'Connectez-vous pour demander un devis.',
+    ],
+    'en' => [
+        'category' => 'Category',
+        'price' => 'Price',
+        'add_cart' => 'Add to cart',
+        'login' => 'Login to add',
+        'back' => 'Back to category',
+        'message' => 'Log in to request a quote.',
+    ],
+];
+$t = $txt[$lang];
 ?>
-// Ce fichier affiche les détails d'une prestation, y compris son nom, sa catégorie, son prix, sa description et un
-média associé (image ou vidéo). Il propose également un bouton pour ajouter la prestation au panier si l'utilisateur est
-connecté, ou un lien de connexion sinon. Un lien de retour vers la catégorie de la prestation est également fourni.
+
 <section class="apropos">
     <div class="admin-media-shell admin-form-shell">
         <article class="catalogue-detail-card panier-shell">
@@ -36,27 +55,27 @@ connecté, ou un lien de connexion sinon. Un lien de retour vers la catégorie d
             <?php endif; ?>
 
             <div class="panier-summary-card">
-                <p class="card-text"><strong>Catégorie:</strong> <?= e($prestation['category_name']) ?></p>
-                <p class="card-text"><strong>Prix:</strong>
+                <p class="card-text"><strong><?= e($t['category']) ?>:</strong> <?= e($prestation['category_name']) ?></p>
+                <p class="card-text"><strong><?= e($t['price']) ?>:</strong>
                     <?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
                 <p class="card-text"><?= e($prestation['description']) ?></p>
             </div>
 
             <div class="admin-form-actions">
                 <?php if (!empty($_SESSION['client'])): ?>
-                    <form action="<?= route('panier_add', ['id' => $prestation['id_prestation']]) ?>" method="post" data-fetch-form>
-                        <button class="admin-btn" type="submit">Ajouter au panier</button>
+                    <form action="<?= route('panier_add', ['id' => $prestation['id_prestation']]) . '?lang=' . $lang ?>" method="post" data-fetch-form>
+                        <button class="admin-btn" type="submit"><?= e($t['add_cart']) ?></button>
                     </form>
                 <?php else: ?>
-                    <a class="btn" href="<?= route('login') ?>">Connexion pour ajouter</a>
+                    <a class="btn" href="<?= route('login') . '?lang=' . $lang ?>"><?= e($t['login']) ?></a>
                 <?php endif; ?>
 
-                <a class="btn" href="<?= route('catalogues_category', ['slug' => $prestation['category_slug']]) ?>">
-                    Retour catégorie
+                <a class="btn" href="<?= route('catalogues_category', ['slug' => $prestation['category_slug']]) . '?lang=' . $lang ?>">
+                    <?= e($t['back']) ?>
                 </a>
             </div>
             <?php if (empty($_SESSION['client'])): ?>
-                <p class="card-text">Connectez-vous pour demander un devis.</p>
+                <p class="card-text"><?= e($t['message']) ?></p>
             <?php endif; ?>
         </article>
     </div>

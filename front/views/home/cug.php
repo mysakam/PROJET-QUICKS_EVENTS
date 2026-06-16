@@ -3,7 +3,7 @@ $lang = ($lang ?? (($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr'));
 
 $t = [
     'fr' => [
-        'title' => "Conditions d'utilisation (CUG)",
+        'title' => "Conditions générales d'utilisation (CGU)",
         'intro' => "L'utilisation de QUICK'EVENTS implique l'acceptation des conditions ci-dessous.",
         'sections' => [
             [
@@ -29,7 +29,7 @@ $t = [
         ],
     ],
     'en' => [
-        'title' => 'Terms of use (CUG)',
+        'title' => 'Terms and conditions (CGU)',
         'intro' => "Using QUICK'EVENTS means accepting the terms below.",
         'sections' => [
             [

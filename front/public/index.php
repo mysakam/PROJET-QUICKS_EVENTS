@@ -57,6 +57,7 @@ require __DIR__ . '/../core/Database.php';
 require __DIR__ . '/../core/Csrf.php';
 require __DIR__ . '/../helpers/url.php';
 require __DIR__ . '/../helpers/view.php';
+require __DIR__ . '/../helpers/i18n.php';
 require __DIR__ . '/../../shared/mail/mailer.php';
 require_once __DIR__ . '/../middlewares/AuthMiddleware.php';
 
@@ -80,7 +81,7 @@ $router = new Router();
 
 /* Pages */
 $router->get('/', ['HomeController', 'index'], [], 'home');
-$router->get('/cug', ['HomeController', 'cug'], [], 'cug');
+$router->get('/cgu', ['HomeController', 'cgu'], [], 'cgu');
 $router->get('/dashboard', ['DashboardController', 'index'], ['AuthMiddleware'], 'dashboard');
 $router->get('/mariage', ['EventPagesController', 'mariage'], [], 'event_mariage');
 $router->get('/anniversaire', ['EventPagesController', 'anniversaire'], [], 'event_anniversaire');

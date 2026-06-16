@@ -9,7 +9,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         <h1><?= e($page['title_' . ($lang ?? 'fr')] ?? '') ?></h1>
         <p><?= e($page['subtitle_' . ($lang ?? 'fr')] ?? '') ?></p>
         <div class="theme-hero-actions">
-            <a href="<?= $catalogueUrl ?>" class="btn"><?= ($lang ?? 'fr') === 'fr' ? 'Voir le catalogue' : 'Browse catalogue' ?></a>
+            <a href="<?= $catalogueUrl ?>" class="btn"><?= e(t('events_page.see_catalogue', $lang ?? 'fr')) ?></a>
         </div>
     </div>
 </section>
@@ -18,7 +18,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
     <?php if (!empty($packages)): ?>
         <div class="event-packages">
             <h2 class="titre-texte event-packages-title">
-                <?= ($lang ?? 'fr') === 'fr' ? 'Packages recommandés pour cet événement' : 'Recommended packages for this event' ?>
+                <?= e(t('events_page.packages_title', $lang ?? 'fr')) ?>
             </h2>
 
             <div class="event-packages-grid">
@@ -32,17 +32,17 @@ $catalogueUrl = route('catalogues') . $langQuery;
                                         <?php foreach ($pkgImages as $imgSrc): ?>
                                             <div class="pkg-carousel-slide">
                                                 <img
-                                                    src="<?= e($imgSrc) ?>"
+                                                    src="<?= img_url($imgSrc) ?>"
                                                     alt="<?= e($package['theme']) ?>"
                                                     data-package-image
-                                                    data-image-src="<?= e($imgSrc) ?>"
+                                                    data-image-src="<?= img_url($imgSrc) ?>"
                                                     data-image-alt="<?= e($package['theme']) ?>">
                                             </div>
                                         <?php endforeach; ?>
                                     </div>
                                     <?php if (count($pkgImages) > 1): ?>
-                                        <button class="pkg-carousel-prev" type="button" aria-label="<?= ($lang ?? 'fr') === 'fr' ? 'Image précédente' : 'Previous image' ?>">&#8249;</button>
-                                        <button class="pkg-carousel-next" type="button" aria-label="<?= ($lang ?? 'fr') === 'fr' ? 'Image suivante' : 'Next image' ?>">&#8250;</button>
+                                        <button class="pkg-carousel-prev" type="button" aria-label="<?= e(t('events_page.prev_image', $lang ?? 'fr')) ?>">&#8249;</button>
+                                        <button class="pkg-carousel-next" type="button" aria-label="<?= e(t('events_page.next_image', $lang ?? 'fr')) ?>">&#8250;</button>
                                         <div class="pkg-carousel-dots" aria-hidden="true">
                                             <?php foreach ($pkgImages as $i => $_): ?>
                                                 <span class="pkg-carousel-dot<?= $i === 0 ? ' is-active' : '' ?>"></span>
@@ -51,7 +51,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
                                     <?php endif; ?>
                                 </div>
                             <?php else: ?>
-                                <span><?= ($lang ?? 'fr') === 'fr' ? 'Image du package' : 'Package image' ?></span>
+                                <span><?= e(t('events_page.package_image', $lang ?? 'fr')) ?></span>
                             <?php endif; ?>
                         </div>
 
@@ -60,7 +60,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
                             <p class="event-package-description"><?= e($package['description']) ?></p>
 
                             <h4 class="event-package-subtitle">
-                                <?= ($lang ?? 'fr') === 'fr' ? 'Contenu de l’offre' : 'Offer content' ?>
+                                <?= e(t('events_page.offer_content', $lang ?? 'fr')) ?>
                             </h4>
                             <ul class="event-package-list">
                                 <?php foreach (($package['offerItems'] ?? []) as $item): ?>
@@ -69,14 +69,14 @@ $catalogueUrl = route('catalogues') . $langQuery;
                             </ul>
 
                             <p class="event-package-price">
-                                <?= ($lang ?? 'fr') === 'fr' ? 'Prix global: ' : 'Global price: ' ?>
+                                <?= e(t('events_page.global_price', $lang ?? 'fr')) ?>
                                 <strong><?= e($package['price']) ?></strong>
                             </p>
 
                             <a
                                 class="btn"
                                 href="<?= route('event_package_select', ['slug' => $slug, 'index' => (int) ($package['index'] ?? 0)]) . $langQuery ?>">
-                                <?= ($lang ?? 'fr') === 'fr' ? 'Prendre ce package' : 'Take this package' ?>
+                                <?= e(t('events_page.take_package', $lang ?? 'fr')) ?>
                             </a>
                         </div>
                     </article>

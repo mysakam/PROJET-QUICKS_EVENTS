@@ -66,6 +66,8 @@ $t = [
         ],
         'events_title' => 'OUR EVENT CATEGORIES',
         'discover_label' => 'Browse catalogue',
+        'about_cta' => 'You can now prepare your event form and link it to your final quote.',
+        'about_cta_btn' => 'Create my event',
         'event_links' => [
             ['label' => 'Open Wedding page', 'route' => 'event_mariage'],
             ['label' => 'Open Birthday page', 'route' => 'event_anniversaire'],
@@ -108,7 +110,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         </div>
         <div class="col50">
             <div class="img">
-                <img src="/assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif"
+                <img src="<?= asset('assets/css/images/pouring-champagne-into-glass-wedding-celebration_921860-20817.avif') ?>"
                     alt="event image">
             </div>
         </div>
@@ -126,8 +128,8 @@ $catalogueUrl = route('catalogues') . $langQuery;
 
     <?php if (!empty($_SESSION['client'])): ?>
         <div class="about-cta">
-            <p>Vous pouvez maintenant préparer votre fiche événement et l'associer à votre devis final.</p>
-            <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>">Créer mon événement</a>
+            <p><?= e($txt['about_cta']) ?></p>
+            <a class="admin-btn about-cta-btn" href="<?= route('mon_evenement') . $langQuery ?>"><?= e($txt['about_cta_btn']) ?></a>
         </div>
     <?php endif; ?>
 </section>
@@ -137,7 +139,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         <div class="polaroid">
             <h3><?= $txt['cards'][0]['title'] ?></h3>
             <div class="image">
-                <img src="/assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp"
+                <img src="<?= asset('assets/css/images/grand-wedding-decoration-country-manor-floral-decor-event-celebration-flowers-aisle-tablescape-garden-english-350874308.webp') ?>"
                     alt="<?= $txt['cards'][0]['title'] ?>">
             </div>
             <div class="card-text"><?= $txt['cards'][0]['text'] ?></div>
@@ -146,7 +148,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         <div class="polaroid">
             <h3><?= $txt['cards'][1]['title'] ?></h3>
             <div class="image">
-                <img src="/assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg"
+                <img src="<?= asset('assets/css/images/bf2c558e260f6a735bc2346e5e5dff5a.jpg') ?>"
                     alt="<?= $txt['cards'][1]['title'] ?>">
             </div>
             <div class="card-text"><?= $txt['cards'][1]['text'] ?></div>
@@ -156,7 +158,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         <div class="polaroid">
             <h3><?= $txt['cards'][2]['title'] ?></h3>
             <div class="image">
-                <img src="/assets/css/images/image-45-768x768.jpeg" alt="<?= $txt['cards'][2]['title'] ?>">
+                <img src="<?= asset('assets/css/images/image-45-768x768.jpeg') ?>" alt="<?= $txt['cards'][2]['title'] ?>">
             </div>
             <div class="card-text"><?= $txt['cards'][2]['text'] ?></div>
             <a href="<?= route('event_soiree_theme') . $langQuery ?>"
@@ -165,7 +167,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
         <div class="polaroid">
             <h3><?= $txt['cards'][3]['title'] ?></h3>
 
-            <img src="/assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg"
+            <img src="<?= asset('assets/css/images/Soiree-vip-gala-soiree-nova-saint-malo-35-scaled.jpg') ?>"
                 alt="<?= $txt['cards'][3]['title'] ?>">
 
             <div class="card-text"><?= $txt['cards'][3]['text'] ?></div>

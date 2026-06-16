@@ -123,19 +123,23 @@ p {
   color: #164eb6;
 }
 .btn-transcription {
-  background: rgba(183, 206, 231, 0.9);
-  border: 1px solid rgba(4, 74, 121, 0.08);
+  background: #000;
+  border: 1px solid #000;
   padding: 6px 12px;
   border-radius: 20px;
   margin-top: 0;
   margin-right: 0;
   display: inline-block;
   font-size: 0.85rem;
-  color: #164eb6;
+  font-weight: 700;
+  color: #fff !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
 }
 .btn-transcription:hover {
-  background-color: #a5b4b9;
-  color: white;
+  background-color: #2a2a2a;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
   transition: ease-out 0.2s;
 }
 

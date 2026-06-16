@@ -174,6 +174,7 @@ class DevisController extends Controller
     public function store(): void
     {
         $cart = $this->getCart();
+        $langQuery = '?lang=' . ((($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
 
         if (empty($cart)) {
             redirect(route('panier'));
@@ -195,7 +196,7 @@ class DevisController extends Controller
                 'date_evenement' => '',
                 'message_client' => $messageClient,
             ];
-            redirect(route('devis_checkout'));
+            redirect(route('devis_checkout') . $langQuery);
             return;
         }
 
@@ -258,7 +259,7 @@ class DevisController extends Controller
             $this->clearCart();
             unset($_SESSION['event_request'], $_SESSION['old_event_request'], $_SESSION['selected_package']);
             $_SESSION['success'] = 'Votre proposition de devis a bien ete enregistree.';
-            redirect(route('devis_success', ['id' => $idDevis]));
+            redirect(route('devis_success', ['id' => $idDevis]) . $langQuery);
             return;
         } catch (Throwable $e) {
             if ($this->pdo->inTransaction()) {
@@ -357,6 +358,7 @@ class DevisController extends Controller
     public function validate(int $id): void
     {
         $sessionClient = $_SESSION['client'] ?? null;
+        $langQuery = '?lang=' . ((($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
 
         if (!$sessionClient) {
             redirect(route('login'));
@@ -404,12 +406,13 @@ class DevisController extends Controller
         }
 
         $this->devisModel->updateStatus($id, 'valide_client');
-        redirect(route('devis_success', ['id' => $id]));
+        redirect(route('devis_success', ['id' => $id]) . $langQuery);
     }
 
     public function cancel(int $id): void
     {
         $sessionClient = $_SESSION['client'] ?? null;
+        $langQuery = '?lang=' . ((($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
 
         if (!$sessionClient) {
             redirect(route('login'));
@@ -431,12 +434,13 @@ class DevisController extends Controller
 
         $this->devisModel->deleteByClient($id, (int) $sessionClient['id_client']);
         $_SESSION['success'] = 'La proposition de devis a bien ete annulee.';
-        redirect(route('devis_index'));
+        redirect(route('devis_index') . $langQuery);
     }
 
     public function reopen(int $id): void
     {
         $sessionClient = $_SESSION['client'] ?? null;
+        $langQuery = '?lang=' . ((($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
 
         if (!$sessionClient) {
             redirect(route('login'));
@@ -508,10 +512,10 @@ class DevisController extends Controller
         $_SESSION['success'] = 'Un nouveau panier a ete genere a partir de la proposition de devis.';
 
         if (empty($cart)) {
-            redirect(route('mon_evenement'));
+            redirect(route('mon_evenement') . $langQuery);
             return;
         }
 
-        redirect(route('devis_checkout'));
+        redirect(route('devis_checkout') . $langQuery);
     }
 }

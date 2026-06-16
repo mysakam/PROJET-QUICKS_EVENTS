@@ -6,13 +6,13 @@ class HomeController extends Controller
         $this->render('home/index');
     }
 
-    public function cug(): void
+    public function cgu(): void
     {
         $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
 
         $this->render('home/cug', [
             'lang' => $lang,
-            'pageTitle' => $lang === 'fr' ? 'Conditions d\'utilisation (CUG)' : 'Terms of use (CUG)',
+            'pageTitle' => $lang === 'fr' ? 'Conditions générales d\'utilisation (CGU)' : 'Terms and conditions (CGU)',
         ]);
     }
 }

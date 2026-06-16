@@ -39,6 +39,18 @@ class Router
     public function dispatch(string $method, string $uri): void
     {
         $path = parse_url($uri, PHP_URL_PATH) ?: '/';
+
+        // Retirer le préfixe BASE_URL pour que les routes fonctionnent en sous-dossier
+        if (defined('BASE_URL') && BASE_URL !== '' && BASE_URL !== '/') {
+            $base = rtrim(BASE_URL, '/');
+            if (str_starts_with($path, $base)) {
+                $path = substr($path, strlen($base));
+            }
+        }
+        if ($path === '' || $path[0] !== '/') {
+            $path = '/' . $path;
+        }
+
         foreach ($this->routes as $route) {
             if ($route['method'] !== $method) continue;
             $pattern = preg_replace('#\{[a-zA-Z_][a-zA-Z0-9_]*\}#', '([^/]+)', $route['path']);

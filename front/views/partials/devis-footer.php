@@ -6,7 +6,7 @@ $langQuery = '?lang=' . $lang;
 <footer class="devis-footer">
     <div class="devis-footer__inner">
         <div>
-            <h2 class="devis-footer__title">Réseaux sociaux</h2>
+            <h2 class="devis-footer__title"><?= e(t('footer.social', $lang)) ?></h2>
             <div class="devis-footer__socials">
                 <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                     <span class="devis-footer__icon" aria-hidden="true">
@@ -37,9 +37,9 @@ $langQuery = '?lang=' . $lang;
         </div>
 
         <div>
-            <h2 class="devis-footer__title">Informations</h2>
+            <h2 class="devis-footer__title"><?= e(t('footer.info', $lang)) ?></h2>
             <div class="devis-footer__links">
-                <a href="<?= route('cug') . $langQuery ?>">Conditions d'utilisation (CUG)</a>
+                <a href="<?= route('cgu') . $langQuery ?>"><?= e(t('footer.cgu', $lang)) ?></a>
                 <a href="tel:0603595028">Téléphone: 0603595028</a>
                 <a href="mailto:akamsamy69@gmail.com">Email: akamsamy69@gmail.com</a>
             </div>

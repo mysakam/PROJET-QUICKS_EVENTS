@@ -69,33 +69,33 @@ $hideMesDevis = $hideMesDevis || ($isClientLoggedIn && $currentPath === $devisPa
     </button>
     <ul class="navbar" id="main-nav">
         <?php if (!$isHome): ?>
-            <li><a href="<?= $homeUrl ?>" class="btn"><?= $lang === 'fr' ? 'ACCUEIL' : 'HOME' ?></a></li>
+            <li><a href="<?= $homeUrl ?>" class="btn"><?= e(t('nav.home', $lang)) ?></a></li>
         <?php endif; ?>
         <?php if (!$hideEvents): ?>
-            <li><a href="<?= $eventsLink ?>" class="btn"><?= $lang === 'fr' ? 'EVENEMENTS' : 'EVENTS' ?></a></li>
+            <li><a href="<?= $eventsLink ?>" class="btn"><?= e(t('nav.events', $lang)) ?></a></li>
         <?php endif; ?>
         <?php if (!$hideCatalogues): ?>
-            <li><a href="<?= $catalogueUrl ?>" class="btn"><?= $lang === 'fr' ? 'CATALOGUES' : 'CATALOGUES' ?></a></li>
+            <li><a href="<?= $catalogueUrl ?>" class="btn"><?= e(t('nav.catalogues', $lang)) ?></a></li>
         <?php endif; ?>
 
         <?php if ($isClientLoggedIn): ?>
             <?php if (!$hidePanier): ?>
-                <li><a href="<?= route('panier') ?>" class="btn"><?= $lang === 'fr' ? 'PANIER' : 'CART' ?></a></li>
+                <li><a href="<?= route('panier') . $langQuery ?>" class="btn"><?= e(t('nav.cart', $lang)) ?></a></li>
             <?php endif; ?>
             <?php if (!$hideMesDevis): ?>
-                <li><a href="<?= route('devis_index') ?>" class="btn"><?= $lang === 'fr' ? 'MES DEVIS' : 'MY QUOTES' ?></a></li>
+                <li><a href="<?= route('devis_index') . $langQuery ?>" class="btn"><?= e(t('nav.my_quotes', $lang)) ?></a></li>
             <?php endif; ?>
             <?php if (!$hideMonCompte): ?>
-                <li><a href="<?= route('account') ?>" class="btn"><?= $lang === 'fr' ? 'MON COMPTE' : 'MY ACCOUNT' ?></a></li>
+                <li><a href="<?= route('account') . $langQuery ?>" class="btn"><?= e(t('nav.my_account', $lang)) ?></a></li>
             <?php endif; ?>
             <?php if ($isAdmin && !$hideAdminDashboard): ?>
-                <li><a href="<?= route('admin_dashboard') ?>" class="btn"><?= $lang === 'fr' ? 'DASHBOARD ADMIN' : 'ADMIN DASHBOARD' ?></a></li>
+                <li><a href="<?= route('admin_dashboard') . $langQuery ?>" class="btn"><?= e(t('nav.admin', $lang)) ?></a></li>
             <?php endif; ?>
-            <li><a href="<?= route('logout') ?>" class="btn"><?= $lang === 'fr' ? 'DECONNEXION' : 'LOG OUT' ?></a></li>
+            <li><a href="<?= route('logout') . $langQuery ?>" class="btn"><?= e(t('nav.logout', $lang)) ?></a></li>
         <?php else: ?>
-            <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= $lang === 'fr' ? 'CONNEXION' : 'LOGIN' ?></a></li>
-            <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= $lang === 'fr' ? 'INSCRIPTION' : 'REGISTER' ?></a></li>
+            <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= e(t('nav.login', $lang)) ?></a></li>
+            <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= e(t('nav.register', $lang)) ?></a></li>
         <?php endif; ?>
-        <li><a href="<?= route('home') . '?lang=' . $toggleLang ?>" class="btn-transcription"><?= $lang === 'fr' ? 'FR/EN' : 'EN/FR' ?></a></li>
+        <li><a href="<?= route('home') . '?lang=' . $toggleLang ?>" class="btn-transcription"><?= e(t('nav.toggle', $lang)) ?></a></li>
     </ul>
 </header>
