@@ -10,7 +10,7 @@ $oldEventRequest = $oldEventRequest ?? [];
         <div class="auth-copy">
             <p class="auth-kicker">QUICK'EVENTS</p>
             <h2 class="titre-texte"><span>C</span>réer mon événement</h2>
-            <p>Décrivez votre événement une première fois. Ces informations seront reprises dans votre devis final et vous permettront de préparer une demande plus précise.</p>
+            <p>Décrivez votre événement une première fois. Ces informations seront reprises dans votre proposition de devis finale et vous permettront de préparer une demande plus précise.</p>
 
             <div class="auth-highlights">
                 <div class="auth-highlight">Type d'événement souhaité</div>
@@ -19,7 +19,7 @@ $oldEventRequest = $oldEventRequest ?? [];
             </div>
 
             <div class="event-request-note">
-                Votre fiche est enregistrée pour votre compte client et pourra être utilisée au moment du devis.
+                Votre fiche est enregistrée pour votre compte client et pourra être utilisée au moment de la proposition de devis.
             </div>
         </div>
 

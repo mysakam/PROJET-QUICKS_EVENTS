@@ -44,7 +44,7 @@ $oldMessageClient = (string) ($oldDevisForm['message_client'] ?? '');
             </section>
 
             <section class="checkout-card">
-                <h2>Finaliser le devis</h2>
+                <h2>Finaliser la proposition de devis</h2>
 
                 <form method="POST" action="<?= route('devis_store') ?>" data-fetch-form>
                     <div class="form-group">

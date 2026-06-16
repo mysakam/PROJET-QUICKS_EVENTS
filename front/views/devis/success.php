@@ -10,18 +10,18 @@ $facture = $facture ?? null;
 ?>
 
 <div class="success-box">
-    <div class="success-message">Votre devis a bien été enregistré</div>
+    <div class="success-message">Votre proposition de devis a bien ete enregistree</div>
 
     <section class="success-meta">
         <p><strong>Référence :</strong> <?= e($devis['reference'] ?? $devis['id_devis'] ?? '') ?></p>
         <p><strong>Client :</strong> <?= e($clientNom ?: 'CLIENT') ?></p>
-        <p><strong>Date de création du devis :</strong> <?= e($dateCreationDevis) ?></p>
+        <p><strong>Date de création de la proposition :</strong> <?= e($dateCreationDevis) ?></p>
         <p><strong>Date de réservation de l'événement :</strong> <?= e($dateReservation) ?></p>
         <p><strong>Statut :</strong> <?= e($devis['statut'] ?? 'en_attente') ?></p>
     </section>
 
     <section class="success-lines">
-        <p><strong>Détail du devis :</strong></p>
+        <p><strong>Détail de la proposition de devis :</strong></p>
         <ul>
             <?php foreach ($lignes as $ligne): ?>
                 <li>
@@ -50,7 +50,7 @@ $facture = $facture ?? null;
     <?php endif; ?>
 
     <section class="success-total">
-        <p><strong>Total devis :</strong> <?= number_format($total, 2, ',', ' ') ?> €</p>
+        <p><strong>Total proposition :</strong> <?= number_format($total, 2, ',', ' ') ?> €</p>
     </section>
 
     <section class="success-actions">

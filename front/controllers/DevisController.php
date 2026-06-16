@@ -115,7 +115,7 @@ class DevisController extends Controller
             'total' => $total,
             'eventRequest' => $_SESSION['event_request'] ?? [],
             'oldDevisForm' => $_SESSION['old_devis_form'] ?? [],
-            'pageTitle' => 'DEVIS',
+            'pageTitle' => 'DEVIS PROPOSE',
             'pageCss' => 'devis-checkout.css',
             'backUrl' => route('panier'),
         ], 'devis');
@@ -190,7 +190,7 @@ class DevisController extends Controller
         $eventSummary = [];
 
         if ($dateEvenement === '') {
-            $_SESSION['error'] = "La date de l'evenement est obligatoire pour enregistrer un devis.";
+            $_SESSION['error'] = "La date de l'evenement est obligatoire pour enregistrer une proposition de devis.";
             $_SESSION['old_devis_form'] = [
                 'date_evenement' => '',
                 'message_client' => $messageClient,
@@ -257,7 +257,7 @@ class DevisController extends Controller
             $this->pdo->commit();
             $this->clearCart();
             unset($_SESSION['event_request'], $_SESSION['old_event_request'], $_SESSION['selected_package']);
-            $_SESSION['success'] = 'Votre devis a bien ete enregistre.';
+            $_SESSION['success'] = 'Votre proposition de devis a bien ete enregistree.';
             redirect(route('devis_success', ['id' => $idDevis]));
             return;
         } catch (Throwable $e) {
@@ -266,7 +266,7 @@ class DevisController extends Controller
             }
 
             http_response_code(500);
-            echo 'Erreur lors de l\'enregistrement du devis.';
+            echo 'Erreur lors de l\'enregistrement de la proposition de devis.';
         }
     }
 
@@ -276,7 +276,7 @@ class DevisController extends Controller
 
         if (!$devis) {
             http_response_code(404);
-            echo 'Devis introuvable';
+            echo 'Proposition de devis introuvable';
             return;
         }
 
@@ -293,7 +293,7 @@ class DevisController extends Controller
             'devis' => $devis,
             'lignes' => $lignes,
             'facture' => $facture,
-            'pageTitle' => 'DEVIS',
+            'pageTitle' => 'DEVIS PROPOSE',
             'pageCss' => 'devis-success.css',
             'backUrl' => route('devis_index'),
         ], 'devis');
@@ -306,7 +306,7 @@ class DevisController extends Controller
 
         $this->render('devis/index', [
             'devisList' => $devisList,
-            'pageTitle' => 'MES DEVIS',
+            'pageTitle' => 'LES DEVIS PROPOSES',
             'pageCss' => 'devis-index.css',
             'backUrl' => route('account'),
         ], 'devis');
@@ -331,7 +331,7 @@ class DevisController extends Controller
 
         if (!$devis) {
             http_response_code(404);
-            echo 'Devis introuvable';
+            echo 'Proposition de devis introuvable';
             return;
         }
 
@@ -348,7 +348,7 @@ class DevisController extends Controller
             'devis' => $devis,
             'lignes' => $lignes,
             'facture' => $facture,
-            'pageTitle' => 'DEVIS',
+            'pageTitle' => 'DEVIS PROPOSE',
             'pageCss' => 'devis-show.css',
             'backUrl' => route('devis_index'),
         ], 'devis');
@@ -366,7 +366,7 @@ class DevisController extends Controller
         $devis = $this->devisModel->findById($id);
         if (!$devis) {
             http_response_code(404);
-            echo 'Devis introuvable';
+            echo 'Proposition de devis introuvable';
             return;
         }
 
@@ -419,7 +419,7 @@ class DevisController extends Controller
         $devis = $this->devisModel->findById($id);
         if (!$devis) {
             http_response_code(404);
-            echo 'Devis introuvable';
+            echo 'Proposition de devis introuvable';
             return;
         }
 
@@ -430,7 +430,7 @@ class DevisController extends Controller
         }
 
         $this->devisModel->deleteByClient($id, (int) $sessionClient['id_client']);
-        $_SESSION['success'] = 'Le devis a bien ete annule.';
+        $_SESSION['success'] = 'La proposition de devis a bien ete annulee.';
         redirect(route('devis_index'));
     }
 
@@ -446,7 +446,7 @@ class DevisController extends Controller
         $devis = $this->devisModel->findById($id);
         if (!$devis) {
             http_response_code(404);
-            echo 'Devis introuvable';
+            echo 'Proposition de devis introuvable';
             return;
         }
 
@@ -505,7 +505,7 @@ class DevisController extends Controller
             $_SESSION['selected_package'] = $selectedPackage;
         }
 
-        $_SESSION['success'] = 'Un nouveau panier a ete genere a partir du devis.';
+        $_SESSION['success'] = 'Un nouveau panier a ete genere a partir de la proposition de devis.';
 
         if (empty($cart)) {
             redirect(route('mon_evenement'));

@@ -159,7 +159,7 @@ class AuthController extends Controller
         ];
         unset($_SESSION['old_login_email']);
 
-        redirect(route('catalogues') . $langQuery);
+        redirect(route('home') . $langQuery);
         return;
     }
 

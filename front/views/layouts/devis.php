@@ -10,7 +10,7 @@ if (!headers_sent()) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="<?= e(Csrf::token()) ?>">
-    <title><?= htmlspecialchars($pageTitle ?? 'Devis', ENT_QUOTES, 'UTF-8') ?> | QUICK'EVENTS</title>
+    <title><?= htmlspecialchars($pageTitle ?? 'Devis propose', ENT_QUOTES, 'UTF-8') ?> | QUICK'EVENTS</title>
     <link rel="stylesheet" href="<?= asset('assets/css/style.css') ?>">
     <link rel="stylesheet" href="<?= asset('assets/css/devis.css') ?>">
     <?php if (!empty($pageCss)): ?>

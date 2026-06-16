@@ -1,6 +1,6 @@
 <?php if (empty($devisList)): ?>
     <div class="empty-box">
-        <p>Aucun devis trouvé.</p>
+        <p>Aucune proposition de devis trouvee.</p>
     </div>
 <?php else: ?>
     <section class="devis-index-list">
@@ -18,7 +18,7 @@
                     </div>
 
                     <div>
-                        <span class="devis-card-label">Date de création du devis</span>
+                        <span class="devis-card-label">Date de creation de la proposition</span>
                         <div class="devis-card-value">
                             <?= !empty($devis['created_at']) ? date('d/m/Y', strtotime($devis['created_at'])) : '-' ?>
                         </div>
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="devis-card-actions">
-                    <a class="pill-link" href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">VOIR LE DEVIS</a>
+                    <a class="pill-link" href="<?= route('devis_show', ['id' => $devis['id_devis']]) ?>">VOIR LA PROPOSITION</a>
                 </div>
             </article>
         <?php endforeach; ?>

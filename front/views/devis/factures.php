@@ -32,14 +32,14 @@
                     </div>
 
                     <div>
-                        <span class="devis-card-label">Devis lie</span>
+                        <span class="devis-card-label">Proposition liee</span>
                         <div class="devis-card-value"><?= e((string) ($facture['devis_reference'] ?? '-')) ?></div>
                     </div>
                 </div>
 
                 <div class="devis-card-actions">
                     <?php if (!empty($facture['id_devis'])): ?>
-                        <a class="pill-link" href="<?= route('devis_show', ['id' => (int) $facture['id_devis']]) ?>">VOIR LE DEVIS</a>
+                        <a class="pill-link" href="<?= route('devis_show', ['id' => (int) $facture['id_devis']]) ?>">VOIR LA PROPOSITION</a>
                     <?php endif; ?>
                 </div>
             </article>

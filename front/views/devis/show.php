@@ -10,16 +10,16 @@ $isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
 ?>
 
 <section class="devis-meta">
-    <div>DEVIS N° <?= e($devis['reference'] ?? $devis['id_devis'] ?? '') ?></div>
+    <div>PROPOSITION DE DEVIS N° <?= e($devis['reference'] ?? $devis['id_devis'] ?? '') ?></div>
     <div>NOM ET PRENOMS DU CLIENT: <?= e($clientNom ?: 'CLIENT') ?></div>
-    <div>DATE DE CRÉATION DU DEVIS: <?= e($dateCreationDevis) ?></div>
+    <div>DATE DE CREATION DE LA PROPOSITION: <?= e($dateCreationDevis) ?></div>
     <div>DATE DE RÉSERVATION DE L'ÉVÉNEMENT: <?= e($dateReservation) ?></div>
 </section>
 
 <section class="devis-content">
     <div>
         <div class="bloc">
-            <h2 class="bloc-title">DETAIL DU DEVIS</h2>
+            <h2 class="bloc-title">DETAIL DE LA PROPOSITION DE DEVIS</h2>
             <ul>
                 <?php foreach ($lignes as $ligne): ?>
                     <li>
@@ -64,7 +64,7 @@ $isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
         <?php endforeach; ?>
 
         <p class="grand-total">
-            TOTAL DEVIS (Hors taxes) :
+            TOTAL PROPOSITION (Hors taxes) :
             <?= number_format($total, 2, ',', ' ') ?> €
         </p>
     </div>
@@ -80,7 +80,7 @@ $isValidatedByClient = (($devis['statut'] ?? '') === 'valide_client');
 
         <div class="action-center">
             <form method="POST" action="<?= route('devis_reopen', ['id' => $devis['id_devis']]) ?>" data-fetch-form>
-                <button type="submit" class="pill-link">REPRENDRE LE DEVIS</button>
+                <button type="submit" class="pill-link">REPRENDRE LA PROPOSITION</button>
             </form>
         </div>
     <?php else: ?>
