@@ -16,7 +16,6 @@ $txt = [
         'password' => 'Mot de passe',
         'password_confirm' => 'Confirmer le mot de passe',
         'submit' => 'Créer mon compte',
-        'back' => 'Retour accueil',
     ],
     'en' => [
         'title' => 'Register',
@@ -31,7 +30,6 @@ $txt = [
         'password' => 'Password',
         'password_confirm' => 'Confirm password',
         'submit' => 'Create my account',
-        'back' => 'Back to home',
     ],
 ];
 $t = $txt[$lang];
@@ -92,7 +90,6 @@ $t = $txt[$lang];
 
                 <div class="admin-form-actions">
                     <button class="admin-btn" type="submit"><?= e($t['submit']) ?></button>
-                    <a class="btn" href="<?= route('home') . $langQuery ?>"><?= e($t['back']) ?></a>
                 </div>
             </form>
         </div>

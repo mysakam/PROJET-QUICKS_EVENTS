@@ -24,6 +24,8 @@ $cataloguesPath = $normalizePath(route('catalogues'));
 $panierPath = $normalizePath(route('panier'));
 $devisPath = $normalizePath(route('devis_index'));
 $adminDashboardPath = $normalizePath(route('admin_dashboard'));
+$loginPath = $normalizePath(route('login'));
+$registerPath = $normalizePath(route('register'));
 $clientEventPaths = [
     $normalizePath(route('event_mariage')),
     $normalizePath(route('event_anniversaire')),
@@ -41,6 +43,8 @@ $isAdminDashboard = $isAdmin && $currentPath === $adminDashboardPath;
 $isAdminModulePage = $isAdmin && strpos($currentPath, '/admin/') === 0;
 $isAdminCataloguesPage = $isAdmin && $currentPath === $cataloguesPath;
 $isClientAccountPage = $isClientLoggedIn && $currentPath === $accountPath;
+$isEventContextPage = in_array($currentPath, $clientEventPaths, true)
+    || strpos($currentPath, '/events/') === 0;
 $isClientCatalogPage = $isClientLoggedIn && !$isAdmin && (
     $currentPath === $cataloguesPath
     || strpos($currentPath, $cataloguesPath . '/') === 0
@@ -48,7 +52,7 @@ $isClientCatalogPage = $isClientLoggedIn && !$isAdmin && (
 );
 $isClientEventPage = $isClientLoggedIn && !$isAdmin && in_array($currentPath, $clientEventPaths, true);
 
-$hideEvents = $isAdminHome || $isAdminDashboard || $isAdminModulePage || $isAdminCataloguesPage || $isClientAccountPage || $isClientCatalogPage || $isClientEventPage;
+$hideEvents = $isAdminHome || $isAdminDashboard || $isAdminModulePage || $isAdminCataloguesPage || $isClientAccountPage || $isClientCatalogPage || $isClientEventPage || $isEventContextPage;
 $hideCatalogues = $isAdminModulePage || $isAdminCataloguesPage || $isClientAccountPage || $isClientCatalogPage || $isClientEventPage;
 $hidePanier = $isAdminHome || $isAdminDashboard || $isAdminModulePage || $isAdminCataloguesPage || $isClientAccountPage || $isClientCatalogPage || $isClientEventPage;
 $hideMesDevis = $hidePanier;
@@ -58,6 +62,14 @@ $hideAdminDashboard = $isAdminDashboard;
 // Garder un comportement propre en évitant d'afficher un lien vers la page courante.
 $hidePanier = $hidePanier || ($isClientLoggedIn && $currentPath === $panierPath);
 $hideMesDevis = $hideMesDevis || ($isClientLoggedIn && $currentPath === $devisPath);
+
+// Côté invité: masquer aussi les liens vers la page déjà ouverte.
+$hideGuestLogin = !$isClientLoggedIn && ($currentPath === $loginPath);
+$hideGuestRegister = !$isClientLoggedIn && ($currentPath === $registerPath);
+$hideCatalogues = $hideCatalogues
+    || ($currentPath === $cataloguesPath)
+    || (strpos($currentPath, $cataloguesPath . '/') === 0)
+    || (strpos($currentPath, '/prestations/') === 0);
 ?>
 
 <header class="site-header">
@@ -93,8 +105,12 @@ $hideMesDevis = $hideMesDevis || ($isClientLoggedIn && $currentPath === $devisPa
             <?php endif; ?>
             <li><a href="<?= route('logout') . $langQuery ?>" class="btn"><?= e(t('nav.logout', $lang)) ?></a></li>
         <?php else: ?>
-            <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= e(t('nav.login', $lang)) ?></a></li>
-            <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= e(t('nav.register', $lang)) ?></a></li>
+            <?php if (!$hideGuestLogin): ?>
+                <li><a href="<?= route('login') . $langQuery ?>" class="btn"><?= e(t('nav.login', $lang)) ?></a></li>
+            <?php endif; ?>
+            <?php if (!$hideGuestRegister): ?>
+                <li><a href="<?= route('register') . $langQuery ?>" class="btn"><?= e(t('nav.register', $lang)) ?></a></li>
+            <?php endif; ?>
         <?php endif; ?>
         <li><a href="<?= route('home') . '?lang=' . $toggleLang ?>" class="btn-transcription"><?= e(t('nav.toggle', $lang)) ?></a></li>
     </ul>

@@ -12,7 +12,6 @@ $txt = [
         'email' => 'Email',
         'password' => 'Mot de passe',
         'submit' => 'Se connecter',
-        'back' => 'Retour accueil',
     ],
     'en' => [
         'title' => 'Login',
@@ -23,7 +22,6 @@ $txt = [
         'email' => 'Email',
         'password' => 'Password',
         'submit' => 'Login',
-        'back' => 'Back to home',
     ],
 ];
 $t = $txt[$lang];
@@ -74,7 +72,6 @@ $t = $txt[$lang];
 
                 <div class="admin-form-actions">
                     <button class="admin-btn" type="submit"><?= e($t['submit']) ?></button>
-                    <a class="btn" href="<?= route('home') . $langQuery ?>"><?= e($t['back']) ?></a>
                 </div>
             </form>
         </div>

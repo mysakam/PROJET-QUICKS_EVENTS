@@ -34,17 +34,17 @@ $isDevisView = $normalizedViewPath !== '' && strpos($normalizedViewPath, '/views
     </main>
 
     <?php if (!empty($_SESSION['success'])): ?>
-        <div class="flash-toast flash-toast-success" role="status" aria-live="polite" data-flash-toast>
-            <?= e($_SESSION['success']) ?>
-        </div>
-        <?php unset($_SESSION['success']); ?>
+    <div class="flash-toast flash-toast-success" role="status" aria-live="polite" data-flash-toast>
+        <?= e($_SESSION['success']) ?>
+    </div>
+    <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
     <?php if (!empty($_SESSION['error'])): ?>
-        <div class="flash-toast flash-toast-error" role="alert" aria-live="assertive" data-flash-toast>
-            <?= e($_SESSION['error']) ?>
-        </div>
-        <?php unset($_SESSION['error']); ?>
+    <div class="flash-toast flash-toast-error" role="alert" aria-live="assertive" data-flash-toast>
+        <?= e($_SESSION['error']) ?>
+    </div>
+    <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
     <?php

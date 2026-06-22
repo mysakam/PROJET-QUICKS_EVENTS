@@ -1,6 +1,5 @@
 <?php
 $langQuery = '?lang=' . ($lang ?? 'fr');
-$homeUrl = route('home') . $langQuery;
 $catalogueUrl = route('catalogues') . $langQuery;
 ?>
 
@@ -93,7 +92,4 @@ $catalogueUrl = route('catalogues') . $langQuery;
         </div>
     </div>
 
-    <div class="action theme-actions">
-        <a href="<?= $homeUrl ?>" class="btn theme-back-btn"><?= e($page['back_label_' . ($lang ?? 'fr')] ?? (($lang ?? 'fr') === 'fr' ? 'Retour à l\'accueil' : 'Back to home')) ?></a>
-    </div>
 </section>

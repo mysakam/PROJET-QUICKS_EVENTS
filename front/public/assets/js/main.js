@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 	var csrfMeta = document.querySelector('meta[name="csrf-token"]');
 	var csrfToken = csrfMeta ? csrfMeta.getAttribute("content") || "" : "";
-
+//selectionner tous les formulaires et ajouter le token CSRF si nécessaire
 	if (csrfToken) {
 		document.querySelectorAll("form").forEach(function (form) {
 			if ((form.method || "get").toUpperCase() !== "POST") {
@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	var toast = document.querySelector("[data-flash-toast]");
-
+//
 	if (toast) {
 		window.setTimeout(function () {
 			toast.classList.add("is-hiding");
