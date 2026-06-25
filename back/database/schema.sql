@@ -60,7 +60,7 @@ CREATE TABLE prestations (
     is_active TINYINT(1) NOT NULL DEFAULT 1,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_prestations_categories FOREIGN KEY (id_categorie) REFERENCES categories (id_categorie),
-    CONSTRAINT fk_prestations_prestataires FOREIGN KEY (id_prestataire) REFERENCES prestataires (id_prestataire)
+    CONSTRAINT fk_prestations_prestataires FOREIGN KEY (id_prestataire) REFERENCES prestataires (id_prestataire) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE event_medias (
@@ -103,7 +103,7 @@ CREATE TABLE devis_lignes (
     prix_unitaire DECIMAL(10, 2) NOT NULL,
     montant_ligne DECIMAL(10, 2) NOT NULL,
     CONSTRAINT fk_devis_lignes_devis FOREIGN KEY (id_devis) REFERENCES devis (id_devis) ON DELETE CASCADE,
-    CONSTRAINT fk_devis_lignes_prestations FOREIGN KEY (id_prestation) REFERENCES prestations (id_prestation)
+    CONSTRAINT fk_devis_lignes_prestations FOREIGN KEY (id_prestation) REFERENCES prestations (id_prestation) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS event_medias (
