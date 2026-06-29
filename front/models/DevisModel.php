@@ -8,7 +8,7 @@ class DevisModel
     {
         $this->pdo = Database::getPdo();
     }
-
+//assure que la référence du devis est unique
     public function create(array $data): int
     {
         $sql = "INSERT INTO devis (

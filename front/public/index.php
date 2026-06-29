@@ -90,10 +90,10 @@ $router->get('/repas-seminaire', ['EventPagesController', 'repasSeminaire'], [],
 $router->get('/events/{slug}/packages/{index}/select', ['EventPagesController', 'selectPackage'], ['AuthMiddleware'], 'event_package_select');
 
 /* Auth */
-$router->get('/login', ['AuthController', 'login'], [], 'login');
-$router->post('/login', ['AuthController', 'authenticate'], [], 'login_post');
-$router->get('/register', ['AuthController', 'register'], [], 'register');
-$router->post('/register', ['AuthController', 'store'], [], 'register_post');
+$router->get('/login', ['AuthController', 'login'], ['GuestMiddleware'], 'login');
+$router->post('/login', ['AuthController', 'authenticate'], ['GuestMiddleware'], 'login_post');
+$router->get('/register', ['AuthController', 'register'], ['GuestMiddleware'], 'register');
+$router->post('/register', ['AuthController', 'store'], ['GuestMiddleware'], 'register_post');
 $router->get('/logout', ['AuthController', 'logout'], [], 'logout');
 $router->get('/mon-compte', ['AuthController', 'account'], ['AuthMiddleware'], 'account');
 

@@ -17,17 +17,19 @@ class Database
                 $config['charset']
             );
 
+            // Assure que la connexion est unique
             self::$pdo = new PDO(
                 $dsn,
                 $config['user'],
                 $config['password'],
                 [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, // erreurs SQL en exception
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // fetch associatif
                 ]
             );
         }
 
+        // Configuration prête, retourne l’instance PDO
         return self::$pdo;
     }
 }
