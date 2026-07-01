@@ -91,7 +91,7 @@ class PrestationModel
 
         return $stmt->fetchAll();
     }
-
+//creation d'une prestation pour un prestataire
     public function createForPrestataire(array $data): int
     {
         $sql = "INSERT INTO prestations (
@@ -109,7 +109,7 @@ class PrestationModel
                     :prix_unitaire,
                     :is_active
                 )";
-
+//implementation de la création d'une prestation pour un prestataire
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
             'id_categorie' => (int) $data['id_categorie'],
