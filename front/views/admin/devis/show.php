@@ -3,6 +3,7 @@ $devis = $devis ?? [];
 $client = $client ?? null;
 $lignes = $lignes ?? [];
 $facture = $facture ?? null;
+$disponibiliteChecks = $disponibiliteChecks ?? [];
 $lang = $lang ?? current_lang();
 
 $statusLabel = static function (?string $status) use ($lang): string {
@@ -93,6 +94,59 @@ $statusLabel = static function (?string $status) use ($lang): string {
                 </tbody>
             </table>
         </div>
+
+        <div class="admin-table-wrap" style="margin-top: 24px;">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Prestation</th>
+                        <th>Prestataire</th>
+                        <th>Disponibilite a la date evenement</th>
+                        <th>Commentaire</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($disponibiliteChecks === []): ?>
+                        <tr>
+                            <td colspan="4">Aucune information de disponibilite a verifier pour ce devis.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($disponibiliteChecks as $check): ?>
+                            <tr>
+                                <td><?= e($check['prestation_nom'] ?? '-') ?></td>
+                                <td><?= e($check['prestataire_nom'] ?? '-') ?></td>
+                                <td>
+                                    <?php if (($check['statut'] ?? '') === 'indisponible'): ?>
+                                        <strong style="color:#b00020;">INDISPONIBLE</strong>
+                                    <?php elseif (($check['statut'] ?? '') === 'disponible'): ?>
+                                        <strong style="color:#0b6e3f;">DISPONIBLE</strong>
+                                    <?php else: ?>
+                                        <strong style="color:#7a5a00;">NON RENSEIGNE</strong>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= e($check['commentaire'] ?? '-') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <?php
+        $hasConflict = false;
+        foreach ($disponibiliteChecks as $check) {
+            if (($check['statut'] ?? '') === 'indisponible') {
+                $hasConflict = true;
+                break;
+            }
+        }
+        ?>
+
+        <?php if ($hasConflict): ?>
+            <p style="margin-top:12px; color:#b00020;"><strong>Attention:</strong> au moins un prestataire est indisponible a cette date. Contact client recommande avant validation finale.</p>
+        <?php elseif ($disponibiliteChecks !== []): ?>
+            <p style="margin-top:12px; color:#0b6e3f;"><strong>OK:</strong> aucun blocage declare sur les disponibilites pour cette date.</p>
+        <?php endif; ?>
 
         <?php if (!empty($facture)): ?>
             <div class="admin-table-wrap" style="margin-top: 24px;">

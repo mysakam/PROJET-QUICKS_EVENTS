@@ -103,6 +103,7 @@ require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
 require __DIR__ . '/../models/FactureModel.php';
 require __DIR__ . '/../models/NotificationModel.php';
+require __DIR__ . '/../models/PrestataireDisponibiliteModel.php';
 require __DIR__ . '/../models/ClientModel.php';
 require __DIR__ . '/../models/PrestataireModel.php';
 require __DIR__ . '/../models/EventMediaModel.php';
@@ -178,6 +179,7 @@ $router->get('/admin/prestataires/create', ['AdminPrestatairesController', 'crea
 $router->get('/admin/prestataires/{id}', ['AdminPrestatairesController', 'show'], ['AuthMiddleware'], 'admin_prestataires_show');
 $router->post('/admin/prestataires', ['AdminPrestatairesController', 'store'], ['AuthMiddleware'], 'admin_prestataires_store');
 $router->get('/admin/prestataires/{id}/edit', ['AdminPrestatairesController', 'edit'], ['AuthMiddleware'], 'admin_prestataires_edit');
+$router->post('/admin/prestataires/{id}/disponibilites', ['AdminPrestatairesController', 'saveDisponibilite'], ['AuthMiddleware'], 'admin_prestataires_disponibilites_save');
 $router->post('/admin/prestataires/{id}/update', ['AdminPrestatairesController', 'update'], ['AuthMiddleware'], 'admin_prestataires_update');
 $router->post('/admin/prestataires/{id}/delete', ['AdminPrestatairesController', 'delete'], ['AuthMiddleware'], 'admin_prestataires_delete');
 

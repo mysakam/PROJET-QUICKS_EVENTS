@@ -6,6 +6,9 @@ $devisByStatus = $devisByStatus ?? [];
 $facturesByStatus = $facturesByStatus ?? [];
 $recentDevis = $recentDevis ?? [];
 $recentFactures = $recentFactures ?? [];
+$selectedMonth = (int) ($selectedMonth ?? date('n'));
+$selectedYear = (int) ($selectedYear ?? date('Y'));
+$disponibilites = $disponibilites ?? [];
 $lang = $lang ?? current_lang();
 
 $statusLabel = static function (?string $status) use ($lang): string {
@@ -96,6 +99,75 @@ $statusLabel = static function (?string $status) use ($lang): string {
                         <th><?= e(t('admin.prestataires.th_description', $lang)) ?></th>
                         <td><?= nl2br(e($prestataire['description'] ?? '-')) ?></td>
                     </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Calendrier de disponibilite</h3>
+        <div class="admin-table-wrap">
+            <form method="post" action="<?= route('admin_prestataires_disponibilites_save', ['id' => (int) $prestataire['id_prestataire']]) ?>?lang=<?= e($lang) ?>">
+                <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
+                <table class="admin-table">
+                    <tbody>
+                        <tr>
+                            <th>Date</th>
+                            <td><input type="date" name="date_evenement" required></td>
+                        </tr>
+                        <tr>
+                            <th>Statut</th>
+                            <td>
+                                <select name="statut" required>
+                                    <option value="disponible">Disponible</option>
+                                    <option value="indisponible">Indisponible</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Commentaire</th>
+                            <td><input type="text" name="commentaire" maxlength="255" placeholder="ex: conges, deja reserve"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="admin-media-actions" style="margin-top:12px;">
+                    <button class="btn" type="submit">Enregistrer la date</button>
+                </div>
+            </form>
+        </div>
+
+        <h3>Disponibilites du mois <?= e((string) $selectedMonth) ?>/<?= e((string) $selectedYear) ?></h3>
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Statut</th>
+                        <th>Commentaire</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($disponibilites === []): ?>
+                        <tr>
+                            <td colspan="4">Aucune disponibilite renseignee pour ce mois.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($disponibilites as $item): ?>
+                            <tr>
+                                <td><?= e($item['date_evenement'] ?? '-') ?></td>
+                                <td><?= e(($item['statut'] ?? '') === 'indisponible' ? 'Indisponible' : 'Disponible') ?></td>
+                                <td><?= e($item['commentaire'] ?? '-') ?></td>
+                                <td>
+                                    <form method="post" action="<?= route('admin_prestataires_disponibilites_save', ['id' => (int) $prestataire['id_prestataire']]) ?>?lang=<?= e($lang) ?>" onsubmit="return confirm('Supprimer cette date du calendrier ?');">
+                                        <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
+                                        <input type="hidden" name="action_disponibilite" value="delete">
+                                        <input type="hidden" name="date_evenement" value="<?= e($item['date_evenement']) ?>">
+                                        <button class="btn" type="submit">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </div>

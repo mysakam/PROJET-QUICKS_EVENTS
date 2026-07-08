@@ -5,6 +5,7 @@ class AdminPrestatairesController extends AdminBaseController
     private PrestataireModel $prestataireModel;
     private CategoryModel $categoryModel;
     private PrestationModel $prestationModel;
+    private PrestataireDisponibiliteModel $disponibiliteModel;
 
     private function packDescription(array $data): string
     {
@@ -99,6 +100,7 @@ class AdminPrestatairesController extends AdminBaseController
         $this->prestataireModel = new PrestataireModel();
         $this->categoryModel = new CategoryModel();
         $this->prestationModel = new PrestationModel();
+        $this->disponibiliteModel = new PrestataireDisponibiliteModel();
     }
 
     public function index(): void
@@ -160,6 +162,9 @@ class AdminPrestatairesController extends AdminBaseController
             return;
         }
 
+        $month = (int) ($_GET['month'] ?? date('n'));
+        $year = (int) ($_GET['year'] ?? date('Y'));
+
         $this->render('admin/prestataires/show', [
             'prestataire' => $prestataire,
             'prestations' => $this->prestationModel->findByPrestataire($id),
@@ -168,9 +173,48 @@ class AdminPrestatairesController extends AdminBaseController
             'facturesByStatus' => $this->prestataireModel->getFacturesByStatus($id),
             'recentDevis' => $this->prestataireModel->getRecentDevis($id, 12),
             'recentFactures' => $this->prestataireModel->getRecentFactures($id, 12),
+            'selectedMonth' => $month,
+            'selectedYear' => $year,
+            'disponibilites' => $this->disponibiliteModel->findForPrestataireMonth($id, $year, $month),
             'pageTitle' => 'Fiche prestataire',
             'lang' => $this->getLang(),
         ]);
+    }
+
+    public function saveDisponibilite(int $id): void
+    {
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $prestataire = $this->prestataireModel->findById($id);
+        if (!$prestataire) {
+            http_response_code(404);
+            echo 'Prestataire introuvable.';
+            return;
+        }
+
+        $dateEvenement = trim((string) ($_POST['date_evenement'] ?? ''));
+        $statut = trim((string) ($_POST['statut'] ?? 'disponible'));
+        $commentaire = trim((string) ($_POST['commentaire'] ?? ''));
+        $action = trim((string) ($_POST['action_disponibilite'] ?? 'save'));
+
+        if ($dateEvenement === '' || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateEvenement)) {
+            $_SESSION['error'] = 'Date de disponibilite invalide.';
+            redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
+            return;
+        }
+
+        if ($action === 'delete') {
+            $this->disponibiliteModel->deleteForDate($id, $dateEvenement);
+            $_SESSION['success'] = 'Disponibilite supprimee.';
+            redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
+            return;
+        }
+
+        $this->disponibiliteModel->upsert($id, $dateEvenement, $statut, $commentaire);
+        $_SESSION['success'] = 'Disponibilite enregistree.';
+        redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
     }
 
     public function store(): void

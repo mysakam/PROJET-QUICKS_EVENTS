@@ -6,6 +6,7 @@ class DevisController extends Controller
     private DevisLigneModel $devisLigneModel;
     private FactureModel $factureModel;
     private NotificationModel $notificationModel;
+    private PrestataireDisponibiliteModel $disponibiliteModel;
     private PDO $pdo;
 
     public function __construct()
@@ -14,7 +15,61 @@ class DevisController extends Controller
         $this->devisLigneModel = new DevisLigneModel();
         $this->factureModel = new FactureModel();
         $this->notificationModel = new NotificationModel();
+        $this->disponibiliteModel = new PrestataireDisponibiliteModel();
         $this->pdo = Database::getPdo();
+    }
+
+    private function findUnavailableProvidersForQuoteDate(int $idDevis, string $dateEvenement): array
+    {
+        $dateEvenement = trim($dateEvenement);
+        if ($dateEvenement === '') {
+            return [];
+        }
+
+        $lignes = $this->devisLigneModel->findByDevisId($idDevis);
+        $prestationIds = [];
+        foreach ($lignes as $ligne) {
+            $idPrestation = (int) ($ligne['id_prestation'] ?? 0);
+            if ($idPrestation > 0) {
+                $prestationIds[] = $idPrestation;
+            }
+        }
+
+        $prestationIds = array_values(array_unique($prestationIds));
+        if ($prestationIds === []) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($prestationIds), '?'));
+        $sql = "SELECT p.id_prestation, p.id_prestataire, pr.nom AS prestataire_nom
+                FROM prestations p
+                INNER JOIN prestataires pr ON pr.id_prestataire = p.id_prestataire
+                WHERE p.id_prestation IN ($placeholders)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($prestationIds);
+
+        $providers = $stmt->fetchAll();
+        if ($providers === []) {
+            return [];
+        }
+
+        $providerIds = array_values(array_unique(array_map(static fn(array $row): int => (int) $row['id_prestataire'], $providers)));
+        $statuses = $this->disponibiliteModel->findStatusesForPrestatairesByDate($providerIds, $dateEvenement);
+
+        $blocked = [];
+        foreach ($providers as $provider) {
+            $idPrestataire = (int) $provider['id_prestataire'];
+            $status = $statuses[$idPrestataire]['statut'] ?? 'non_renseigne';
+            if ($status === 'indisponible') {
+                $blocked[$idPrestataire] = [
+                    'id_prestataire' => $idPrestataire,
+                    'nom' => $provider['prestataire_nom'] ?? ('Prestataire #' . $idPrestataire),
+                    'commentaire' => $statuses[$idPrestataire]['commentaire'] ?? null,
+                ];
+            }
+        }
+
+        return array_values($blocked);
     }
 
     private function notifyAdmin(string $type, string $title, string $message, array $payload = []): void
@@ -403,6 +458,18 @@ class DevisController extends Controller
         if ((int) $devis['id_client'] !== (int) $sessionClient['id_client']) {
             http_response_code(403);
             echo 'Acces refuse';
+            return;
+        }
+
+        $blockedProviders = $this->findUnavailableProvidersForQuoteDate(
+            $id,
+            (string) ($devis['date_evenement'] ?? '')
+        );
+
+        if ($blockedProviders !== []) {
+            $providerNames = implode(', ', array_map(static fn(array $provider): string => (string) $provider['nom'], $blockedProviders));
+            $_SESSION['error'] = 'Validation impossible: indisponibilite detectee pour la date de votre evenement (' . $providerNames . '). Merci de modifier la date ou contacter l\'administration.';
+            redirect(route('devis_show', ['id' => $id]) . $langQuery);
             return;
         }
 
