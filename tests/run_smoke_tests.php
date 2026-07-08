@@ -42,13 +42,39 @@ function assertStatus(string $label, int $expected, array $response): bool
     return true;
 }
 
+function healthCheck(string $label, string $baseUrl): bool
+{
+    $baseUrl = rtrim($baseUrl, '/');
+    $candidates = [
+        $baseUrl . '/health',
+        $baseUrl . '/index.php/health',
+    ];
+
+    foreach ($candidates as $candidate) {
+        $response = request('GET', $candidate);
+        if ($response['error'] === '' && $response['status'] === 200) {
+            echo "[OK] {$label}" . PHP_EOL;
+            return true;
+        }
+    }
+
+    $last = request('GET', end($candidates));
+    if ($last['error'] !== '') {
+        echo "[FAIL] {$label} - erreur cURL: {$last['error']}" . PHP_EOL;
+    } else {
+        echo "[FAIL] {$label} - endpoint /health introuvable sur les URLs candidates" . PHP_EOL;
+    }
+
+    return false;
+}
+
 $frontBase = $argv[1] ?? 'http://localhost/PROJET-QUICKS_EVENTS/front/public';
 $backBase = $argv[2] ?? 'http://localhost/PROJET-QUICKS_EVENTS/back/public';
 
 $testsOk = true;
 
-$testsOk = assertStatus('Front health', 200, request('GET', rtrim($frontBase, '/') . '/health')) && $testsOk;
-$testsOk = assertStatus('Back health', 200, request('GET', rtrim($backBase, '/') . '/health')) && $testsOk;
+$testsOk = healthCheck('Front health', $frontBase) && $testsOk;
+$testsOk = healthCheck('Back health', $backBase) && $testsOk;
 
 $corsHeaders = [
     'Origin: http://localhost:5173',

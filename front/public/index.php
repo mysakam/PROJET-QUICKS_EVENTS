@@ -76,7 +76,7 @@ header('Referrer-Policy: strict-origin-when-cross-origin');
 header("Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline';");
 
 $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-if ($uri === '/health') {
+if ($uri === '/health' || str_ends_with($uri, '/health')) {
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode([
         'status' => 'ok',
