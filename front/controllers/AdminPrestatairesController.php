@@ -6,6 +6,7 @@ class AdminPrestatairesController extends AdminBaseController
     private CategoryModel $categoryModel;
     private PrestationModel $prestationModel;
     private PrestataireDisponibiliteModel $disponibiliteModel;
+    private EventMediaModel $eventMediaModel;
 
     private function packDescription(array $data): string
     {
@@ -111,6 +112,7 @@ class AdminPrestatairesController extends AdminBaseController
         $this->categoryModel = new CategoryModel();
         $this->prestationModel = new PrestationModel();
         $this->disponibiliteModel = new PrestataireDisponibiliteModel();
+        $this->eventMediaModel = new EventMediaModel();
     }
 
     public function index(): void
@@ -177,6 +179,7 @@ class AdminPrestatairesController extends AdminBaseController
 
         $month = (int) ($_GET['month'] ?? date('n'));
         $year = (int) ($_GET['year'] ?? date('Y'));
+        $mediaThemeSlug = 'prestataire-' . $id;
 
         $this->render('admin/prestataires/show', [
             'prestataire' => $prestataire,
@@ -189,9 +192,72 @@ class AdminPrestatairesController extends AdminBaseController
             'selectedMonth' => $month,
             'selectedYear' => $year,
             'disponibilites' => $this->disponibiliteModel->findForPrestataireMonth($id, $year, $month),
+            'providerMediaThemeSlug' => $mediaThemeSlug,
+            'providerMedias' => $this->eventMediaModel->findByTheme($mediaThemeSlug, $this->getLang()),
             'pageTitle' => 'Fiche prestataire',
             'lang' => $this->getLang(),
         ]);
+    }
+
+    public function saveMedia(int $id): void
+    {
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $prestataire = $this->prestataireModel->findById($id);
+        if (!$prestataire) {
+            http_response_code(404);
+            echo 'Prestataire introuvable.';
+            return;
+        }
+
+        $data = [
+            'theme_slug' => 'prestataire-' . $id,
+            'media_type' => trim((string) ($_POST['media_type'] ?? 'image')),
+            'media_url' => trim((string) ($_POST['media_url'] ?? '')),
+            'title_fr' => trim((string) ($_POST['title_fr'] ?? '')),
+            'title_en' => trim((string) ($_POST['title_en'] ?? '')),
+            'description_fr' => trim((string) ($_POST['description_fr'] ?? '')),
+            'description_en' => trim((string) ($_POST['description_en'] ?? '')),
+            'position' => (int) ($_POST['position'] ?? 1),
+            'is_active' => isset($_POST['is_active']) ? 1 : 0,
+        ];
+
+        if (!in_array($data['media_type'], ['image', 'video'], true) || $data['media_url'] === '' || $data['title_fr'] === '' || $data['title_en'] === '') {
+            $_SESSION['error'] = 'Champs media invalides. Merci de verifier le formulaire.';
+            redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
+            return;
+        }
+
+        $this->eventMediaModel->create($data);
+        $_SESSION['success'] = 'Media prestataire ajoute avec succes.';
+        redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
+    }
+
+    public function deleteMedia(int $id, int $mediaId): void
+    {
+        if (!$this->ensureAdmin()) {
+            return;
+        }
+
+        $prestataire = $this->prestataireModel->findById($id);
+        if (!$prestataire) {
+            http_response_code(404);
+            echo 'Prestataire introuvable.';
+            return;
+        }
+
+        $media = $this->eventMediaModel->findById($mediaId);
+        if (!$media || (string) ($media['theme_slug'] ?? '') !== 'prestataire-' . $id) {
+            $_SESSION['error'] = 'Media introuvable pour ce prestataire.';
+            redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
+            return;
+        }
+
+        $this->eventMediaModel->delete($mediaId);
+        $_SESSION['success'] = 'Media prestataire supprime avec succes.';
+        redirect($this->routeWithLang('admin_prestataires_show', ['id' => $id]));
     }
 
     public function saveDisponibilite(int $id): void

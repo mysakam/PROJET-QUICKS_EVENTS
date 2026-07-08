@@ -9,6 +9,8 @@ $recentFactures = $recentFactures ?? [];
 $selectedMonth = (int) ($selectedMonth ?? date('n'));
 $selectedYear = (int) ($selectedYear ?? date('Y'));
 $disponibilites = $disponibilites ?? [];
+$providerMedias = $providerMedias ?? [];
+$providerMediaThemeSlug = $providerMediaThemeSlug ?? ('prestataire-' . (int) ($prestataire['id_prestataire'] ?? 0));
 $lang = $lang ?? current_lang();
 
 $statusLabel = static function (?string $status) use ($lang): string {
@@ -31,6 +33,15 @@ $statusLabel = static function (?string $status) use ($lang): string {
 <section class="apropos">
     <div class="admin-media-shell">
         <h2 class="titre-texte"><?= e(t('admin.prestataires.show_title', $lang)) ?></h2>
+
+        <?php if (!empty($_SESSION['success'])): ?>
+            <p class="admin-alert admin-alert-success\"><?= e($_SESSION['success']) ?></p>
+            <?php unset($_SESSION['success']); ?>
+        <?php endif; ?>
+        <?php if (!empty($_SESSION['error'])): ?>
+            <p class="admin-alert admin-alert-error\"><?= e($_SESSION['error']) ?></p>
+            <?php unset($_SESSION['error']); ?>
+        <?php endif; ?>
 
         <div class="admin-media-actions">
             <a class="btn" href="<?= route('admin_prestataires_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.prestataires.back_list', $lang)) ?></a>
@@ -162,6 +173,107 @@ $statusLabel = static function (?string $status) use ($lang): string {
                                         <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
                                         <input type="hidden" name="action_disponibilite" value="delete">
                                         <input type="hidden" name="date_evenement" value="<?= e($item['date_evenement']) ?>">
+                                        <button class="btn" type="submit">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Medias du prestataire</h3>
+        <div class="admin-table-wrap">
+            <form method="post" action="<?= route('admin_prestataires_medias_save', ['id' => (int) $prestataire['id_prestataire']]) ?>?lang=<?= e($lang) ?>">
+                <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
+                <table class="admin-table">
+                    <tbody>
+                        <tr>
+                            <th>Theme</th>
+                            <td><input type="text" value="<?= e($providerMediaThemeSlug) ?>" readonly></td>
+                        </tr>
+                        <tr>
+                            <th>Type media</th>
+                            <td>
+                                <select name="media_type" required>
+                                    <option value="image">Image</option>
+                                    <option value="video">Video</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>URL media</th>
+                            <td><input type="text" name="media_url" required placeholder="/assets/... ou https://..."></td>
+                        </tr>
+                        <tr>
+                            <th>Titre FR</th>
+                            <td><input type="text" name="title_fr" required></td>
+                        </tr>
+                        <tr>
+                            <th>Titre EN</th>
+                            <td><input type="text" name="title_en" required></td>
+                        </tr>
+                        <tr>
+                            <th>Description FR</th>
+                            <td><input type="text" name="description_fr" maxlength="255"></td>
+                        </tr>
+                        <tr>
+                            <th>Description EN</th>
+                            <td><input type="text" name="description_en" maxlength="255"></td>
+                        </tr>
+                        <tr>
+                            <th>Position</th>
+                            <td><input type="number" name="position" min="1" value="1"></td>
+                        </tr>
+                        <tr>
+                            <th>Actif</th>
+                            <td><label><input type="checkbox" name="is_active" checked> Oui</label></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="admin-media-actions" style="margin-top:12px;">
+                    <button class="btn" type="submit">Ajouter le media</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Apercu</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Position</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($providerMedias === []): ?>
+                        <tr>
+                            <td colspan="7">Aucun media associe a ce prestataire.</td>
+                        </tr>
+                    <?php else: ?>
+                        <?php foreach ($providerMedias as $media): ?>
+                            <tr>
+                                <td><?= (int) ($media['id_media'] ?? 0) ?></td>
+                                <td><?= e($media['media_type'] ?? '-') ?></td>
+                                <td>
+                                    <?php if (($media['media_type'] ?? 'image') === 'video'): ?>
+                                        <a class="btn" href="<?= e(img_url((string) ($media['media_url'] ?? ''))) ?>" target="_blank" rel="noopener noreferrer">Voir video</a>
+                                    <?php else: ?>
+                                        <a class="btn" href="<?= e(img_url((string) ($media['media_url'] ?? ''))) ?>" target="_blank" rel="noopener noreferrer">Voir image</a>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?= e($media['title'] ?? '-') ?></td>
+                                <td><?= e($media['description'] ?? '-') ?></td>
+                                <td><?= (int) ($media['position'] ?? 0) ?></td>
+                                <td>
+                                    <form method="post" action="<?= route('admin_prestataires_medias_delete', ['id' => (int) $prestataire['id_prestataire'], 'mediaId' => (int) ($media['id_media'] ?? 0)]) ?>?lang=<?= e($lang) ?>" onsubmit="return confirm('Supprimer ce media ?');">
+                                        <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
                                         <button class="btn" type="submit">Supprimer</button>
                                     </form>
                                 </td>

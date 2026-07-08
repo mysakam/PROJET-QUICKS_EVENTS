@@ -13,6 +13,7 @@ class PrestationModel
     {
         $sql = "SELECT 
                     p.id_prestation,
+                    p.id_prestataire,
                     p.nom,
                     p.description,
                     p.prix_unitaire,
@@ -42,6 +43,7 @@ class PrestationModel
     {
         $sql = "SELECT 
                     p.id_prestation,
+                    p.id_prestataire,
                     p.nom,
                     p.description,
                     p.prix_unitaire,
@@ -72,6 +74,7 @@ class PrestationModel
     {
         $sql = "SELECT 
                     p.id_prestation,
+                    p.id_prestataire,
                     p.nom,
                     p.description,
                     p.prix_unitaire,

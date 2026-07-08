@@ -309,6 +309,11 @@ class EventPagesController extends Controller
     {
         $candidates = $this->prestataireModel->findEventPackageCandidates();
         $defaultImage = $this->staticDefaultImageForSlug($slug);
+        $providerThemeSlugs = array_map(
+            static fn(array $candidate): string => 'prestataire-' . (int) ($candidate['id_prestataire'] ?? 0),
+            $candidates
+        );
+        $providerMediaMap = $this->eventMediaModel->findFirstByThemes($providerThemeSlugs, $lang);
         $packages = [];
 
         foreach ($candidates as $candidate) {
@@ -334,8 +339,10 @@ class EventPagesController extends Controller
             $packages[] = [
                 'theme' => (string) ($candidate['nom'] ?? 'Package evenement'),
                 'description' => $description,
-                'imageSrc' => $defaultImage,
-                'images' => $defaultImage !== null ? [$defaultImage] : [],
+                'imageSrc' => (($providerMediaMap['prestataire-' . (int) ($candidate['id_prestataire'] ?? 0)]['media_url'] ?? null) ?: $defaultImage),
+                'images' => (((($providerMediaMap['prestataire-' . (int) ($candidate['id_prestataire'] ?? 0)]['media_url'] ?? null) ?: $defaultImage)) !== null)
+                    ? [((string) (($providerMediaMap['prestataire-' . (int) ($candidate['id_prestataire'] ?? 0)]['media_url'] ?? null) ?: $defaultImage))]
+                    : [],
                 'offerItems' => $offerItems,
                 'price' => $this->formatAmount($amount, $lang),
                 'amount' => $amount,

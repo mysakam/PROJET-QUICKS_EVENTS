@@ -72,10 +72,13 @@ class CatalogueController extends Controller
 
         $prestationThemeSlug = 'catalogue-prestation-' . (int) $prestation['id_prestation'];
         $prestationMediaMap = $this->eventMediaModel->findFirstByThemes([$prestationThemeSlug]);
+        $providerThemeSlug = 'prestataire-' . (int) ($prestation['id_prestataire'] ?? 0);
+        $providerMedias = $this->eventMediaModel->findByTheme($providerThemeSlug, (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr');
 
         $this->render('catalogues/show', [
             'prestation' => $prestation,
             'prestationMediaMap' => $prestationMediaMap,
+            'providerMedias' => $providerMedias,
             'pageTitle' => $prestation['nom'],
             'lang' => (($_GET['lang'] ?? 'fr') === 'en') ? 'en' : 'fr',
         ]);

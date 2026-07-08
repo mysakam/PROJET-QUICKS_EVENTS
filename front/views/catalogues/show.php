@@ -13,6 +13,7 @@ if (!isset($prestation)) {
 }
 
 $prestationMediaMap = $prestationMediaMap ?? [];
+$providerMedias = $providerMedias ?? [];
 $mediaKey = 'catalogue-prestation-' . (int) ($prestation['id_prestation'] ?? 0);
 $media = $prestationMediaMap[$mediaKey] ?? null;
 
@@ -62,6 +63,31 @@ $t = $txt[$lang];
                     <?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
                 <p class="card-text"><?= e($prestation['description']) ?></p>
             </div>
+
+            <?php if ($providerMedias !== []): ?>
+                <div class="panier-summary-card" style="margin-top: 12px;">
+                    <h3 style="margin-top:0;">Realisations du prestataire</h3>
+                    <div class="theme-grid catalogue-grid" style="margin-top:10px;">
+                        <?php foreach ($providerMedias as $providerMedia): ?>
+                            <article class="polaroid event-polaroid">
+                                <div class="event-media-slot">
+                                    <?php if (($providerMedia['media_type'] ?? 'image') === 'video'): ?>
+                                        <video class="event-video" controls preload="metadata">
+                                            <source src="<?= e(img_url((string) ($providerMedia['media_url'] ?? ''))) ?>">
+                                        </video>
+                                    <?php else: ?>
+                                        <img src="<?= e(img_url((string) ($providerMedia['media_url'] ?? ''))) ?>" alt="<?= e($providerMedia['title'] ?? 'Media prestataire') ?>">
+                                    <?php endif; ?>
+                                </div>
+                                <h3><?= e($providerMedia['title'] ?? 'Media') ?></h3>
+                                <?php if (!empty($providerMedia['description'])): ?>
+                                    <p class="card-text"><?= e($providerMedia['description']) ?></p>
+                                <?php endif; ?>
+                            </article>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
 
             <div class="admin-form-actions">
                 <?php if (!empty($_SESSION['client'])): ?>

@@ -181,6 +181,8 @@ $router->get('/admin/prestataires/{id}', ['AdminPrestatairesController', 'show']
 $router->post('/admin/prestataires', ['AdminPrestatairesController', 'store'], ['AuthMiddleware'], 'admin_prestataires_store');
 $router->get('/admin/prestataires/{id}/edit', ['AdminPrestatairesController', 'edit'], ['AuthMiddleware'], 'admin_prestataires_edit');
 $router->post('/admin/prestataires/{id}/disponibilites', ['AdminPrestatairesController', 'saveDisponibilite'], ['AuthMiddleware'], 'admin_prestataires_disponibilites_save');
+$router->post('/admin/prestataires/{id}/medias', ['AdminPrestatairesController', 'saveMedia'], ['AuthMiddleware'], 'admin_prestataires_medias_save');
+$router->post('/admin/prestataires/{id}/medias/{mediaId}/delete', ['AdminPrestatairesController', 'deleteMedia'], ['AuthMiddleware'], 'admin_prestataires_medias_delete');
 $router->post('/admin/prestataires/{id}/update', ['AdminPrestatairesController', 'update'], ['AuthMiddleware'], 'admin_prestataires_update');
 $router->post('/admin/prestataires/{id}/delete', ['AdminPrestatairesController', 'delete'], ['AuthMiddleware'], 'admin_prestataires_delete');
 
