@@ -2,6 +2,22 @@
 
 class PanierController extends Controller
 {
+    private function ensureEventRequestCompleted(): bool
+    {
+        $eventRequest = $_SESSION['event_request'] ?? [];
+        $typeEvenement = trim((string) ($eventRequest['type_evenement'] ?? ''));
+        $nbPersonnes = trim((string) ($eventRequest['nb_personnes'] ?? ''));
+        $budget = trim((string) ($eventRequest['budget'] ?? ''));
+
+        if ($typeEvenement !== '' && $nbPersonnes !== '' && $budget !== '') {
+            return true;
+        }
+
+        $_SESSION['error'] = "Veuillez d'abord renseigner le formulaire de creation d'un evenement avant de constituer votre panier.";
+        redirect(route('mon_evenement'));
+        return false;
+    }
+
     private function getCart(): array
     {
         return $_SESSION['cart'] ?? [];
@@ -14,6 +30,10 @@ class PanierController extends Controller
 
     public function index(): void
     {
+        if (!$this->ensureEventRequestCompleted()) {
+            return;
+        }
+
         $cart = $this->getCart();
         $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
@@ -22,6 +42,10 @@ class PanierController extends Controller
 
     public function add(int $id): void
     {
+        if (!$this->ensureEventRequestCompleted()) {
+            return;
+        }
+
         $prestationModel = new PrestationModel();
         $prestation = $prestationModel->findById($id);
 
@@ -50,6 +74,10 @@ class PanierController extends Controller
 
     public function remove(int $id): void
     {
+        if (!$this->ensureEventRequestCompleted()) {
+            return;
+        }
+
         $cart = $this->getCart();
 
         if (isset($cart[$id])) {
@@ -62,6 +90,10 @@ class PanierController extends Controller
 
     public function clear(): void
     {
+        if (!$this->ensureEventRequestCompleted()) {
+            return;
+        }
+
         unset($_SESSION['cart']);
         redirect(route('panier'));
     }

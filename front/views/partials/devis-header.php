@@ -2,7 +2,7 @@
 <header class="devis-header">
     <div class="devis-header-inner">
         <div class="brand">
-            <img src="<?= img_url('/assets/images/logo.png') ?>" alt="Quick'Events">
+            <img src="<?= asset('assets/images/logo-qe.png') ?>" alt="Quick'Events">
             <div class="brand-name">QUICK'EVENTS</div>
         </div>
 

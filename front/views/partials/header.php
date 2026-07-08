@@ -73,7 +73,10 @@ $hideCatalogues = $hideCatalogues
 ?>
 
 <header class="site-header">
-    <a href="<?= $homeUrl ?>" class="logo"><span> QUICK'EVENTS </span></a>
+    <a href="<?= $homeUrl ?>" class="logo" aria-label="Accueil QUICK'EVENTS">
+        <img src="<?= asset('assets/images/logo-qe.png') ?>" alt="Logo QUICK'EVENTS" class="logo-image">
+        <span> QUICK'EVENTS </span>
+    </a>
     <button class="menu-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="main-nav">
         <span></span>
         <span></span>
