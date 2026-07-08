@@ -132,6 +132,17 @@ class PrestataireModel
             $params['prestation_id'] = (int) $filters['prestation_id'];
         }
 
+        if (!empty($filters['availability_date'])) {
+            $sql .= " AND EXISTS (
+                SELECT 1
+                FROM prestataire_disponibilites pd
+                WHERE pd.id_prestataire = p.id_prestataire
+                  AND pd.date_evenement = :availability_date
+                  AND pd.statut = 'disponible'
+            )";
+            $params['availability_date'] = $filters['availability_date'];
+        }
+
         $sql .= " GROUP BY p.id_prestataire
                   ORDER BY p.created_at DESC, p.id_prestataire DESC";
 

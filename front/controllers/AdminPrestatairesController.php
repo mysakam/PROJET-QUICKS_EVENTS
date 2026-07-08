@@ -113,12 +113,14 @@ class AdminPrestatairesController extends AdminBaseController
         $categoryId = (int) ($_GET['category_id'] ?? 0);
         $prestationId = (int) ($_GET['prestation_id'] ?? 0);
         $typeEvenement = trim($_GET['type_evenement'] ?? '');
+        $availabilityDate = trim($_GET['availability_date'] ?? '');
 
         $prestataires = $this->prestataireModel->findAllWithFilters([
             'q' => $searchQuery,
             'category_id' => $categoryId > 0 ? $categoryId : null,
             'prestation_id' => $prestationId > 0 ? $prestationId : null,
             'type_evenement' => $typeEvenement !== '' ? $typeEvenement : null,
+            'availability_date' => preg_match('/^\d{4}-\d{2}-\d{2}$/', $availabilityDate) ? $availabilityDate : null,
         ]);
 
         $this->render('admin/prestataires/index', [
@@ -130,6 +132,7 @@ class AdminPrestatairesController extends AdminBaseController
             'categoryId' => $categoryId,
             'prestationId' => $prestationId,
             'typeEvenement' => $typeEvenement,
+            'availabilityDate' => $availabilityDate,
             'pageTitle' => 'Admin prestataires',
             'lang' => $this->getLang(),
         ]);

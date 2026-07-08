@@ -7,6 +7,7 @@ $typeEvenementOptions = $typeEvenementOptions ?? [];
 $categoryId = (int) ($categoryId ?? 0);
 $prestationId = (int) ($prestationId ?? 0);
 $typeEvenement = $typeEvenement ?? '';
+$availabilityDate = $availabilityDate ?? '';
 $lang = $lang ?? current_lang();
 ?>
 <section class="apropos">
@@ -56,6 +57,8 @@ $lang = $lang ?? current_lang();
                     </option>
                 <?php endforeach; ?>
             </select>
+            <label for="availability_date">Disponibles le</label>
+            <input id="availability_date" name="availability_date" type="date" value="<?= e($availabilityDate) ?>">
             <button class="admin-btn" type="submit"><?= e(t('admin.prestataires.filter', $lang)) ?></button>
             <a class="btn" href="<?= route('admin_prestataires_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.prestataires.reset', $lang)) ?></a>
         </form>

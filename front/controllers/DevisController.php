@@ -72,6 +72,49 @@ class DevisController extends Controller
         return array_values($blocked);
     }
 
+    private function findUnavailableProvidersForPrestations(array $prestationIds, string $dateEvenement): array
+    {
+        $dateEvenement = trim($dateEvenement);
+        if ($dateEvenement === '') {
+            return [];
+        }
+
+        $prestationIds = array_values(array_unique(array_filter(array_map('intval', $prestationIds), static fn(int $id): bool => $id > 0)));
+        if ($prestationIds === []) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($prestationIds), '?'));
+        $sql = "SELECT p.id_prestation, p.id_prestataire, pr.nom AS prestataire_nom
+                FROM prestations p
+                INNER JOIN prestataires pr ON pr.id_prestataire = p.id_prestataire
+                WHERE p.id_prestation IN ($placeholders)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($prestationIds);
+
+        $providers = $stmt->fetchAll();
+        if ($providers === []) {
+            return [];
+        }
+
+        $providerIds = array_values(array_unique(array_map(static fn(array $row): int => (int) $row['id_prestataire'], $providers)));
+        $statuses = $this->disponibiliteModel->findStatusesForPrestatairesByDate($providerIds, $dateEvenement);
+
+        $blocked = [];
+        foreach ($providers as $provider) {
+            $idPrestataire = (int) $provider['id_prestataire'];
+            if (($statuses[$idPrestataire]['statut'] ?? 'non_renseigne') === 'indisponible') {
+                $blocked[$idPrestataire] = [
+                    'id_prestataire' => $idPrestataire,
+                    'nom' => $provider['prestataire_nom'] ?? ('Prestataire #' . $idPrestataire),
+                    'commentaire' => $statuses[$idPrestataire]['commentaire'] ?? null,
+                ];
+            }
+        }
+
+        return array_values($blocked);
+    }
+
     private function notifyAdmin(string $type, string $title, string $message, array $payload = []): void
     {
         try {
@@ -260,6 +303,26 @@ class DevisController extends Controller
             $_SESSION['error'] = "La date de l'evenement est obligatoire pour enregistrer une proposition de devis.";
             $_SESSION['old_devis_form'] = [
                 'date_evenement' => '',
+                'message_client' => $messageClient,
+            ];
+            redirect(route('devis_checkout') . $langQuery);
+            return;
+        }
+
+        $prestationIds = [];
+        foreach ($cart as $item) {
+            $idPrestation = (int) ($item['prestation_id'] ?? 0);
+            if ($idPrestation > 0) {
+                $prestationIds[] = $idPrestation;
+            }
+        }
+
+        $blockedProviders = $this->findUnavailableProvidersForPrestations($prestationIds, $dateEvenement);
+        if ($blockedProviders !== []) {
+            $providerNames = implode(', ', array_map(static fn(array $provider): string => (string) $provider['nom'], $blockedProviders));
+            $_SESSION['error'] = 'Creation du devis impossible: indisponibilite detectee pour cette date (' . $providerNames . '). Merci de choisir une autre date.';
+            $_SESSION['old_devis_form'] = [
+                'date_evenement' => $dateEvenement,
                 'message_client' => $messageClient,
             ];
             redirect(route('devis_checkout') . $langQuery);
