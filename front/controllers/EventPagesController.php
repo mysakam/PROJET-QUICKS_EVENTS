@@ -297,6 +297,10 @@ class EventPagesController extends Controller
 
     private function staticDefaultImageForSlug(string $slug): ?string
     {
+        if (!isset($this->pages[$slug])) {
+            return null;
+        }
+
         $image = $this->pages[$slug]['packages'][0]['image_src'] ?? null;
         return is_string($image) ? $image : null;
     }
@@ -429,7 +433,7 @@ class EventPagesController extends Controller
             return;
         }
 
-        $theme = (string) ($package['theme_' . $lang] ?? 'Package');
+        $theme = (string) ($package['theme_' . $lang] ?? ($package['theme'] ?? 'Package'));
         $priceLabel = (string) ($package['price_' . $lang] ?? ($package['price'] ?? ($package['price_fr'] ?? '0 EUR')));
         $priceValue = (float) ($package['amount'] ?? self::priceToFloat($priceLabel));
 
