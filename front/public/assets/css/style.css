@@ -264,6 +264,112 @@ p {
   padding: 130px 20px 70px;
 }
 
+.admin-notifications-shell {
+  margin-top: 28px;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 12px 30px rgba(8, 70, 120, 0.12);
+  border: 1px solid rgba(4, 74, 121, 0.08);
+}
+
+.admin-notifications-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-notifications-head h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #044a79;
+}
+
+.admin-notifications-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #0f6ad1;
+  color: #fff;
+  font-weight: 800;
+}
+
+.admin-notifications-list {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-notification-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(4, 74, 121, 0.1);
+  background: #fff;
+}
+
+.admin-notification-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.admin-notification-link:hover .admin-notification-card {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(8, 70, 120, 0.12);
+}
+
+.admin-notification-card.is-unread {
+  border-left: 5px solid #0f6ad1;
+  box-shadow: 0 8px 18px rgba(15, 106, 209, 0.08);
+}
+
+.admin-notification-card.is-read {
+  opacity: 0.82;
+}
+
+.admin-notification-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.admin-notification-meta strong {
+  color: #042f4f;
+}
+
+.admin-notification-meta span,
+.admin-notification-card small {
+  color: #5c7084;
+}
+
+.admin-notification-card p {
+  margin: 0 0 8px;
+  line-height: 1.55;
+}
+
+.admin-notification-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-notification-actions form {
+  margin: 0;
+}
+
+.admin-notifications-empty {
+  margin: 0;
+  color: #5c7084;
+}
+
 .cug-shell {
   width: min(980px, 100%);
   margin: 0 auto;

@@ -22,6 +22,7 @@ $txt = [
         'waiting' => "Elle sera vérifiée/modifiée par l'administration avant envoi par mail.",
         'total' => 'Total proposition :',
         'back' => 'MES DEVIS',
+        'validate_now' => 'VALIDER ET DEMANDER LA FACTURE',
     ],
     'en' => [
         'message' => 'Your quote proposal has been saved',
@@ -36,6 +37,7 @@ $txt = [
         'waiting' => 'It will be checked/updated by administration before being emailed.',
         'total' => 'Proposal total:',
         'back' => 'MY QUOTES',
+        'validate_now' => 'VALIDATE AND REQUEST INVOICE',
     ],
 ];
 $t = $txt[$lang];
@@ -87,6 +89,12 @@ $t = $txt[$lang];
 
     <section class="success-actions">
         <div class="action-center">
+            <?php if (($devis['statut'] ?? '') !== 'valide_client'): ?>
+                <form method="post" action="<?= route('devis_validate', ['id' => (int) ($devis['id_devis'] ?? 0)]) . '?lang=' . $lang ?>" style="display:inline-block; margin-right: 10px;">
+                    <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
+                    <button class="pill-link" type="submit"><?= e($t['validate_now']) ?></button>
+                </form>
+            <?php endif; ?>
             <a class="pill-link" href="<?= route('devis_index') . '?lang=' . $lang ?>"><?= e($t['back']) ?></a>
         </div>
     </section>

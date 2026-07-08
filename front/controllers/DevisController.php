@@ -5,6 +5,7 @@ class DevisController extends Controller
     private DevisModel $devisModel;
     private DevisLigneModel $devisLigneModel;
     private FactureModel $factureModel;
+    private NotificationModel $notificationModel;
     private PDO $pdo;
 
     public function __construct()
@@ -12,7 +13,17 @@ class DevisController extends Controller
         $this->devisModel = new DevisModel();
         $this->devisLigneModel = new DevisLigneModel();
         $this->factureModel = new FactureModel();
+        $this->notificationModel = new NotificationModel();
         $this->pdo = Database::getPdo();
+    }
+
+    private function notifyAdmin(string $type, string $title, string $message, array $payload = []): void
+    {
+        try {
+            $this->notificationModel->createForAdmin($type, $title, $message, $payload);
+        } catch (Throwable $exception) {
+            // Les notifications ne doivent pas bloquer le flux devis.
+        }
     }
 
     private function currentClientId(): int
@@ -258,6 +269,23 @@ class DevisController extends Controller
             $this->pdo->commit();
             $this->clearCart();
             unset($_SESSION['event_request'], $_SESSION['old_event_request'], $_SESSION['selected_package']);
+
+            $client = $_SESSION['client'] ?? [];
+            $this->notifyAdmin(
+                'devis_created',
+                'Nouveau devis client',
+                'Un nouveau devis a ete cree par ' . trim((string) ($client['prenom'] ?? '')) . ' ' . trim((string) ($client['nom'] ?? '')) . ' (' . ($client['email'] ?? 'client inconnu') . ')' .
+                    ' - reference ' . $reference,
+                [
+                    'id_devis' => $idDevis,
+                    'id_client' => $idClient,
+                    'reference' => $reference,
+                    'montant_total' => $total,
+                    'statut' => 'en_attente',
+                    'target_url' => route('admin_devis_show', ['id' => $idDevis]) . '?lang=' . current_lang(),
+                ]
+            );
+
             $_SESSION['success'] = 'Votre proposition de devis a bien ete enregistree.';
             redirect(route('devis_success', ['id' => $idDevis]) . $langQuery);
             return;
@@ -406,6 +434,21 @@ class DevisController extends Controller
         }
 
         $this->devisModel->updateStatus($id, 'valide_client');
+
+        $client = $_SESSION['client'] ?? [];
+        $this->notifyAdmin(
+            'devis_validated',
+            'Devis valide par le client',
+            'Le client ' . trim((string) ($client['prenom'] ?? '')) . ' ' . trim((string) ($client['nom'] ?? '')) . ' a valide le devis ' . ($devis['reference'] ?? ('#' . $id)) . '.',
+            [
+                'id_devis' => $id,
+                'id_client' => (int) $sessionClient['id_client'],
+                'reference' => $devis['reference'] ?? null,
+                'statut' => 'valide_client',
+                'target_url' => route('admin_devis_show', ['id' => $id]) . '?lang=' . current_lang(),
+            ]
+        );
+
         redirect(route('devis_success', ['id' => $id]) . $langQuery);
     }
 
@@ -515,6 +558,20 @@ class DevisController extends Controller
             redirect(route('mon_evenement') . $langQuery);
             return;
         }
+
+        $client = $_SESSION['client'] ?? [];
+        $this->notifyAdmin(
+            'devis_modified',
+            'Devis modifie par le client',
+            'Le client ' . trim((string) ($client['prenom'] ?? '')) . ' ' . trim((string) ($client['nom'] ?? '')) . ' a repris et modifie son devis ' . ($devis['reference'] ?? ('#' . $id)) . '.',
+            [
+                'id_devis' => $id,
+                'id_client' => (int) $sessionClient['id_client'],
+                'reference' => $devis['reference'] ?? null,
+                'source' => 'reopen',
+                'target_url' => route('admin_devis_show', ['id' => $id]) . '?lang=' . current_lang(),
+            ]
+        );
 
         redirect(route('devis_checkout') . $langQuery);
     }

@@ -1,0 +1,22 @@
+# Sensitive runtime configuration
+front/config/app.php
+front/config/database.php
+back/config/app.php
+back/config/database.php
+!back/config/*.example.php
+!front/config/*.example.php
+
+# Environment overrides
+.env
+.env.*
+!.env.example
+
+# Local logs and diagnostics
+*.log
+auth_debug.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

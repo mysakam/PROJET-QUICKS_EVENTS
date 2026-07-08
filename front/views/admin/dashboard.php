@@ -31,5 +31,45 @@
                 <a class="btn" href="<?= route('admin_stats_index') ?>?lang=<?= e($lang) ?>"><?= e(t('admin.open', $lang)) ?></a>
             </article>
         </div>
+
+        <div class="admin-notifications-shell">
+            <div class="admin-notifications-head">
+                <h3>Notifications recentes</h3>
+                <?php $unreadNotificationsCount = (int) ($unreadNotificationsCount ?? 0); ?>
+                <span class="admin-notifications-badge"><?= e((string) $unreadNotificationsCount) ?></span>
+            </div>
+
+            <?php $deleteConfirmText = $lang === 'en' ? 'Delete this notification permanently?' : 'Supprimer cette notification definitivement ?'; ?>
+
+            <?php $notifications = $notifications ?? []; ?>
+            <?php if ($notifications !== []): ?>
+                <div class="admin-notifications-list">
+                    <?php foreach ($notifications as $notification): ?>
+                        <article class="admin-notification-card <?= !empty($notification['is_read']) ? 'is-read' : 'is-unread' ?>">
+                            <a class="admin-notification-link" href="<?= route('admin_notifications_open', ['id' => (int) $notification['id_notification']]) ?>">
+                                <div class="admin-notification-meta">
+                                    <strong><?= e($notification['title'] ?? 'Notification') ?></strong>
+                                    <span><?= e($notification['created_at'] ?? '') ?></span>
+                                </div>
+                                <p><?= e($notification['message'] ?? '') ?></p>
+                                <?php if (!empty($notification['payload']['reference'])): ?>
+                                    <small>Référence : <?= e($notification['payload']['reference']) ?></small>
+                                <?php endif; ?>
+                            </a>
+
+                            <div class="admin-notification-actions">
+                                <a class="btn" href="<?= route('admin_notifications_open', ['id' => (int) $notification['id_notification']]) ?>">Ouvrir le devis</a>
+                                <form method="post" action="<?= route('admin_notifications_delete', ['id' => (int) $notification['id_notification']]) ?>" onsubmit="return confirm('<?= e($deleteConfirmText) ?>');">
+                                    <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
+                                    <button class="btn" type="submit">Supprimer</button>
+                                </form>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p class="admin-notifications-empty">Aucune notification pour le moment.</p>
+            <?php endif; ?>
+        </div>
     </div>
 </section>

@@ -102,12 +102,14 @@ require __DIR__ . '/../models/PrestationModel.php';
 require __DIR__ . '/../models/DevisModel.php';
 require __DIR__ . '/../models/DevisLigneModel.php';
 require __DIR__ . '/../models/FactureModel.php';
+require __DIR__ . '/../models/NotificationModel.php';
 require __DIR__ . '/../models/ClientModel.php';
 require __DIR__ . '/../models/PrestataireModel.php';
 require __DIR__ . '/../models/EventMediaModel.php';
 
 require __DIR__ . '/../controllers/AdminBaseController.php';
 require __DIR__ . '/../controllers/AdminDashboardController.php';
+require __DIR__ . '/../controllers/AdminDevisController.php';
 require __DIR__ . '/../controllers/AdminPrestatairesController.php';
 require __DIR__ . '/../controllers/AdminFacturesController.php';
 require __DIR__ . '/../controllers/AdminClientsController.php';
@@ -159,6 +161,10 @@ $router->get('/devis/{id}', ['DevisController', 'show'], ['AuthMiddleware'], 'de
 
 /* Admin medias evenements */
 $router->get('/admin', ['AdminDashboardController', 'index'], ['AuthMiddleware'], 'admin_dashboard');
+$router->post('/admin/notifications/{id}/read', ['AdminDashboardController', 'markNotificationAsRead'], ['AuthMiddleware'], 'admin_notifications_read');
+$router->get('/admin/notifications/{id}/open', ['AdminDashboardController', 'openNotification'], ['AuthMiddleware'], 'admin_notifications_open');
+$router->post('/admin/notifications/{id}/delete', ['AdminDashboardController', 'deleteNotification'], ['AuthMiddleware'], 'admin_notifications_delete');
+$router->get('/admin/devis/{id}', ['AdminDevisController', 'show'], ['AuthMiddleware'], 'admin_devis_show');
 
 $router->get('/admin/event-medias', ['EventMediaAdminController', 'index'], ['AuthMiddleware'], 'admin_event_medias');
 $router->get('/admin/event-medias/create', ['EventMediaAdminController', 'create'], ['AuthMiddleware'], 'admin_event_medias_create');
