@@ -160,6 +160,37 @@ class PrestataireModel
         return $stmt->fetch();
     }
 
+    public function existsByEmail(string $email): bool
+    {
+        $this->ensureExtendedColumns();
+        $email = trim($email);
+        if ($email === '') {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare('SELECT 1 FROM prestataires WHERE email = :email LIMIT 1');
+        $stmt->execute(['email' => $email]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
+    public function existsByEmailForAnotherPrestataire(string $email, int $excludePrestataireId): bool
+    {
+        $this->ensureExtendedColumns();
+        $email = trim($email);
+        if ($email === '') {
+            return false;
+        }
+
+        $stmt = $this->pdo->prepare('SELECT 1 FROM prestataires WHERE email = :email AND id_prestataire <> :id LIMIT 1');
+        $stmt->execute([
+            'email' => $email,
+            'id' => $excludePrestataireId,
+        ]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
     public function create(array $data): int
     {
         $this->ensureExtendedColumns();
@@ -338,6 +369,32 @@ class PrestataireModel
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute(['id_prestataire' => $idPrestataire]);
 
+        return $stmt->fetchAll();
+    }
+
+    public function findEventPackageCandidates(): array
+    {
+        $this->ensureExtendedColumns();
+
+        $sql = "SELECT
+                    p.id_prestataire,
+                    p.nom,
+                    p.type_evenement,
+                    p.description,
+                    COUNT(pr.id_prestation) AS prestations_count,
+                    COALESCE(SUM(pr.prix_unitaire), 0) AS total_amount,
+                    GROUP_CONCAT(pr.id_prestation ORDER BY pr.id_prestation SEPARATOR ',') AS prestation_ids,
+                    GROUP_CONCAT(pr.nom ORDER BY pr.nom SEPARATOR '||') AS prestation_names
+                FROM prestataires p
+                INNER JOIN prestations pr ON pr.id_prestataire = p.id_prestataire
+                WHERE pr.is_active = 1
+                  AND p.type_evenement IS NOT NULL
+                  AND TRIM(p.type_evenement) <> ''
+                GROUP BY p.id_prestataire, p.nom, p.type_evenement, p.description
+                HAVING COUNT(pr.id_prestation) > 1
+                ORDER BY p.created_at DESC, p.id_prestataire DESC";
+
+        $stmt = $this->pdo->query($sql);
         return $stmt->fetchAll();
     }
 

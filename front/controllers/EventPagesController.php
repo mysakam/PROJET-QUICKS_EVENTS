@@ -3,6 +3,8 @@
 class EventPagesController extends Controller
 {
     private EventMediaModel $eventMediaModel;
+    private PrestataireModel $prestataireModel;
+    private PrestationModel $prestationModel;
 
     private array $pages = [
         'mariage' => [
@@ -202,6 +204,143 @@ class EventPagesController extends Controller
     public function __construct()
     {
         $this->eventMediaModel = new EventMediaModel();
+        $this->prestataireModel = new PrestataireModel();
+        $this->prestationModel = new PrestationModel();
+    }
+
+    private static function normalizeEventType(string $value): string
+    {
+        $value = trim(function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value));
+        if ($value === '') {
+            return '';
+        }
+
+        $transliterated = @iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $value);
+        if (is_string($transliterated) && $transliterated !== '') {
+            $value = strtolower($transliterated);
+        }
+
+        $value = preg_replace('/[^a-z0-9]+/', '-', $value) ?? '';
+        return trim($value, '-');
+    }
+
+    private static function slugAliases(string $slug): array
+    {
+        return match ($slug) {
+            'mariage' => ['mariage', 'mariages', 'wedding', 'weddings'],
+            'anniversaire' => ['anniversaire', 'anniversaires', 'birthday', 'birthdays'],
+            'soiree-theme' => ['soiree-theme', 'soiree-a-theme', 'soirees-a-theme', 'soiree-themee', 'theme-party', 'theme-parties'],
+            'repas-seminaire' => ['repas-seminaire', 'seminaire', 'seminaires', 'seminar', 'seminars'],
+            default => [$slug],
+        };
+    }
+
+    private function resolvePage(string $slug): ?array
+    {
+        if (isset($this->pages[$slug])) {
+            return $this->pages[$slug];
+        }
+
+        $candidates = $this->prestataireModel->findEventPackageCandidates();
+        foreach ($candidates as $candidate) {
+            $typeEvenement = trim((string) ($candidate['type_evenement'] ?? ''));
+            if ($typeEvenement === '') {
+                continue;
+            }
+
+            if (self::normalizeEventType($typeEvenement) !== $slug) {
+                continue;
+            }
+
+            return [
+                'title_fr' => $typeEvenement,
+                'title_en' => $typeEvenement,
+                'subtitle_fr' => 'Packages disponibles pour ce type d\'evenement.',
+                'subtitle_en' => 'Available packages for this event type.',
+                'back_label_fr' => 'Retour a l\'accueil',
+                'back_label_en' => 'Back to home',
+                'packages' => [],
+            ];
+        }
+
+        return null;
+    }
+
+    private function matchesEventSlug(string $slug, string $typeEvenement): bool
+    {
+        $normalizedType = self::normalizeEventType($typeEvenement);
+        if ($normalizedType === '') {
+            return false;
+        }
+
+        foreach (self::slugAliases($slug) as $alias) {
+            if ($normalizedType === self::normalizeEventType($alias)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function formatAmount(float $amount, string $lang): string
+    {
+        if ($amount <= 0) {
+            return $lang === 'fr' ? 'Sur devis' : 'Quoted on request';
+        }
+
+        if ($lang === 'fr') {
+            return number_format($amount, 0, ',', ' ') . ' EUR';
+        }
+
+        return 'EUR ' . number_format($amount, 0, '.', ',');
+    }
+
+    private function staticDefaultImageForSlug(string $slug): ?string
+    {
+        $image = $this->pages[$slug]['packages'][0]['image_src'] ?? null;
+        return is_string($image) ? $image : null;
+    }
+
+    private function dbPackagesForSlug(string $slug, string $lang): array
+    {
+        $candidates = $this->prestataireModel->findEventPackageCandidates();
+        $defaultImage = $this->staticDefaultImageForSlug($slug);
+        $packages = [];
+
+        foreach ($candidates as $candidate) {
+            $typeEvenement = (string) ($candidate['type_evenement'] ?? '');
+            if (!$this->matchesEventSlug($slug, $typeEvenement)) {
+                continue;
+            }
+
+            $prestationNamesRaw = (string) ($candidate['prestation_names'] ?? '');
+            $offerItems = array_values(array_filter(array_map('trim', explode('||', $prestationNamesRaw)), static fn(string $item): bool => $item !== ''));
+
+            $prestationIdsRaw = (string) ($candidate['prestation_ids'] ?? '');
+            $prestationIds = array_values(array_filter(array_map('intval', explode(',', $prestationIdsRaw)), static fn(int $id): bool => $id > 0));
+
+            $amount = (float) ($candidate['total_amount'] ?? 0);
+            $description = trim((string) ($candidate['description'] ?? ''));
+            if ($description === '') {
+                $description = $lang === 'fr'
+                    ? 'Package compose de plusieurs prestations pour cet evenement.'
+                    : 'Package including multiple services for this event.';
+            }
+
+            $packages[] = [
+                'theme' => (string) ($candidate['nom'] ?? 'Package evenement'),
+                'description' => $description,
+                'imageSrc' => $defaultImage,
+                'images' => $defaultImage !== null ? [$defaultImage] : [],
+                'offerItems' => $offerItems,
+                'price' => $this->formatAmount($amount, $lang),
+                'amount' => $amount,
+                'source' => 'db',
+                'prestationIds' => $prestationIds,
+            ];
+        }
+
+        return $packages;
     }
 
     private function mapStaticPolaroids(array $staticPolaroids, string $lang): array
@@ -260,6 +399,11 @@ class EventPagesController extends Controller
 
     private function findPackage(string $slug, int $index): ?array
     {
+        $sessionPackages = $_SESSION['event_page_packages'][$slug] ?? [];
+        if (isset($sessionPackages[$index])) {
+            return $sessionPackages[$index];
+        }
+
         if (!isset($this->pages[$slug]['packages'][$index])) {
             return null;
         }
@@ -269,7 +413,8 @@ class EventPagesController extends Controller
 
     public function selectPackage(string $slug, int $index): void
     {
-        if (!isset($this->pages[$slug])) {
+        $page = $this->resolvePage($slug);
+        if ($page === null) {
             http_response_code(404);
             echo 'Page introuvable';
             return;
@@ -285,29 +430,53 @@ class EventPagesController extends Controller
         }
 
         $theme = (string) ($package['theme_' . $lang] ?? 'Package');
-        $priceLabel = (string) ($package['price_' . $lang] ?? ($package['price_fr'] ?? '0 EUR'));
-        $priceValue = self::priceToFloat($priceLabel);
-        $packageKey = (int) (900000 + (abs(crc32($slug . '-' . $index)) % 90000));
+        $priceLabel = (string) ($package['price_' . $lang] ?? ($package['price'] ?? ($package['price_fr'] ?? '0 EUR')));
+        $priceValue = (float) ($package['amount'] ?? self::priceToFloat($priceLabel));
 
         $cart = $_SESSION['cart'] ?? [];
-        if (isset($cart[$packageKey])) {
-            $cart[$packageKey]['quantity']++;
+        $packagePrestationIds = array_values(array_filter(array_map('intval', $package['prestationIds'] ?? []), static fn(int $id): bool => $id > 0));
+
+        if ($packagePrestationIds !== []) {
+            foreach ($packagePrestationIds as $prestationId) {
+                $prestation = $this->prestationModel->findByIdForAny($prestationId);
+                if (!$prestation) {
+                    continue;
+                }
+
+                if (isset($cart[$prestationId])) {
+                    $cart[$prestationId]['quantity']++;
+                    continue;
+                }
+
+                $cart[$prestationId] = [
+                    'prestation_id' => (int) $prestation['id_prestation'],
+                    'name' => (string) $prestation['nom'],
+                    'category' => (string) ($prestation['category_name'] ?? ''),
+                    'price' => (float) $prestation['prix_unitaire'],
+                    'quantity' => 1,
+                ];
+            }
         } else {
-            $cart[$packageKey] = [
-                'prestation_id' => null,
-                'name' => 'Package - ' . $theme,
-                'category' => ($lang === 'fr') ? 'Package événementiel' : 'Event package',
-                'price' => $priceValue,
-                'quantity' => 1,
-                'is_package' => true,
-                'package_theme' => $theme,
-            ];
+            $packageKey = (int) (900000 + (abs(crc32($slug . '-' . $index)) % 90000));
+            if (isset($cart[$packageKey])) {
+                $cart[$packageKey]['quantity']++;
+            } else {
+                $cart[$packageKey] = [
+                    'prestation_id' => null,
+                    'name' => 'Package - ' . $theme,
+                    'category' => ($lang === 'fr') ? 'Package événementiel' : 'Event package',
+                    'price' => $priceValue,
+                    'quantity' => 1,
+                    'is_package' => true,
+                    'package_theme' => $theme,
+                ];
+            }
         }
 
         $_SESSION['cart'] = $cart;
 
         $eventRequest = $_SESSION['event_request'] ?? [];
-        $eventRequest['type_evenement'] = $theme;
+        $eventRequest['type_evenement'] = (string) ($page['title_' . $lang] ?? $theme);
         $eventRequest['nb_personnes'] = $eventRequest['nb_personnes'] ?? '100';
         $eventRequest['budget'] = $priceLabel;
         $_SESSION['event_request'] = $eventRequest;
@@ -326,16 +495,30 @@ class EventPagesController extends Controller
 
     private function renderPage(string $slug): void
     {
-        if (!isset($this->pages[$slug])) {
+        $page = $this->resolvePage($slug);
+        if ($page === null) {
             http_response_code(404);
             echo 'Page introuvable';
             return;
         }
 
         $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
-        $page = $this->pages[$slug];
 
-        $packages = $this->mapPackages($page['packages'] ?? [], $lang);
+        $packages = $this->dbPackagesForSlug($slug, $lang);
+        if ($packages === []) {
+            $packages = $this->mapPackages($page['packages'] ?? [], $lang);
+        }
+
+        $packages = array_values(array_map(
+            static function (array $package, int $idx): array {
+                $package['index'] = $idx;
+                return $package;
+            },
+            $packages,
+            array_keys($packages)
+        ));
+
+        $_SESSION['event_page_packages'][$slug] = $packages;
 
         $this->render('events/show', [
             'lang' => $lang,
@@ -344,6 +527,11 @@ class EventPagesController extends Controller
             'slug' => $slug,
             'pageTitle' => $page['title_' . $lang],
         ], 'main');
+    }
+
+    public function show(string $slug): void
+    {
+        $this->renderPage($slug);
     }
 
     public function mariage(): void

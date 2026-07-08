@@ -5,7 +5,7 @@ $catalogueUrl = route('catalogues') . $langQuery;
 // Les tableaux (who_lines, how_lines, cards…) sont lus depuis le dictionnaire centralisé
 $_allT       = require dirname(__DIR__, 2) . '/lang/translations.php';
 $_home       = $_allT[$lang]['home'];
-$eventRoutes = ['event_mariage', 'event_anniversaire', 'event_soiree_theme', 'event_repas_seminaire'];
+$eventSlugs = ['mariage', 'anniversaire', 'soiree-theme', 'repas-seminaire'];
 ?>
 
 <section class="banniere" id="banniere">
@@ -68,7 +68,7 @@ $eventRoutes = ['event_mariage', 'event_anniversaire', 'event_soiree_theme', 'ev
                     <img src="<?= $_imgHome[$_i] ?>" alt="<?= e($_card['title']) ?>">
                 </div>
                 <div class="card-text"><?= e($_card['text']) ?></div>
-                <a href="<?= route($eventRoutes[$_i]) . $langQuery ?>" class="btn"><?= e($_home['event_links'][$_i]) ?></a>
+                <a href="<?= route('event_show', ['slug' => $eventSlugs[$_i]]) . $langQuery ?>" class="btn"><?= e($_home['event_links'][$_i]) ?></a>
             </div>
         <?php endforeach; ?>
     </div>

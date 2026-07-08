@@ -126,6 +126,7 @@ $router->get('/mariage', ['EventPagesController', 'mariage'], [], 'event_mariage
 $router->get('/anniversaire', ['EventPagesController', 'anniversaire'], [], 'event_anniversaire');
 $router->get('/soiree-theme', ['EventPagesController', 'soireeTheme'], [], 'event_soiree_theme');
 $router->get('/repas-seminaire', ['EventPagesController', 'repasSeminaire'], [], 'event_repas_seminaire');
+$router->get('/events/{slug}', ['EventPagesController', 'show'], [], 'event_show');
 $router->get('/events/{slug}/packages/{index}/select', ['EventPagesController', 'selectPackage'], ['AuthMiddleware'], 'event_package_select');
 
 /* Auth */

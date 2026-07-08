@@ -95,6 +95,16 @@ class AdminPrestatairesController extends AdminBaseController
         return null;
     }
 
+    private function isDuplicateEmailException(Throwable $exception): bool
+    {
+        if (!($exception instanceof PDOException)) {
+            return false;
+        }
+
+        $message = strtolower($exception->getMessage());
+        return str_contains($message, 'prestataires.email') || str_contains($message, 'duplicate') || str_contains($message, 'duplicata');
+    }
+
     public function __construct()
     {
         $this->prestataireModel = new PrestataireModel();
@@ -248,6 +258,18 @@ class AdminPrestatairesController extends AdminBaseController
             return;
         }
 
+        if ($data['email'] !== '' && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['error'] = 'Email invalide.';
+            redirect($this->routeWithLang('admin_prestataires_create'));
+            return;
+        }
+
+        if ($data['email'] !== '' && $this->prestataireModel->existsByEmail($data['email'])) {
+            $_SESSION['error'] = 'Ce mail est deja utilise par un autre prestataire.';
+            redirect($this->routeWithLang('admin_prestataires_create'));
+            return;
+        }
+
         $prestationsData = $this->filterPrestationsPayload($this->collectPrestationsData());
         $prestationError = $this->validatePrestationsPayload($prestationsData);
         if ($prestationError !== null) {
@@ -257,10 +279,21 @@ class AdminPrestatairesController extends AdminBaseController
         }
 
         $data['description'] = $this->packDescription($data);
-        $newPrestataireId = $this->prestataireModel->create($data);
 
-        if ($prestationsData !== []) {
-            $this->prestationModel->syncForPrestataire($newPrestataireId, $prestationsData);
+        try {
+            $newPrestataireId = $this->prestataireModel->create($data);
+
+            if ($prestationsData !== []) {
+                $this->prestationModel->syncForPrestataire($newPrestataireId, $prestationsData);
+            }
+        } catch (Throwable $exception) {
+            if ($this->isDuplicateEmailException($exception)) {
+                $_SESSION['error'] = 'Ce mail est deja utilise par un autre prestataire.';
+                redirect($this->routeWithLang('admin_prestataires_create'));
+                return;
+            }
+
+            throw $exception;
         }
 
         $_SESSION['success'] = 'Prestataire ajoute avec succes.';
@@ -325,6 +358,18 @@ class AdminPrestatairesController extends AdminBaseController
             return;
         }
 
+        if ($data['email'] !== '' && !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['error'] = 'Email invalide.';
+            redirect($this->routeWithLang('admin_prestataires_edit', ['id' => $id]));
+            return;
+        }
+
+        if ($data['email'] !== '' && $this->prestataireModel->existsByEmailForAnotherPrestataire($data['email'], $id)) {
+            $_SESSION['error'] = 'Ce mail est deja utilise par un autre prestataire.';
+            redirect($this->routeWithLang('admin_prestataires_edit', ['id' => $id]));
+            return;
+        }
+
         $prestationsData = $this->filterPrestationsPayload($this->collectPrestationsData());
         $prestationError = $this->validatePrestationsPayload($prestationsData);
         if ($prestationError !== null) {
@@ -334,9 +379,19 @@ class AdminPrestatairesController extends AdminBaseController
         }
 
         $data['description'] = $this->packDescription($data);
-        $this->prestataireModel->update($id, $data);
 
-        $this->prestationModel->syncForPrestataire($id, $prestationsData);
+        try {
+            $this->prestataireModel->update($id, $data);
+            $this->prestationModel->syncForPrestataire($id, $prestationsData);
+        } catch (Throwable $exception) {
+            if ($this->isDuplicateEmailException($exception)) {
+                $_SESSION['error'] = 'Ce mail est deja utilise par un autre prestataire.';
+                redirect($this->routeWithLang('admin_prestataires_edit', ['id' => $id]));
+                return;
+            }
+
+            throw $exception;
+        }
 
         $_SESSION['success'] = 'Prestataire modifie avec succes.';
         redirect($this->routeWithLang('admin_prestataires_index'));
