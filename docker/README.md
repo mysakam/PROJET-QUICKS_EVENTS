@@ -7,3 +7,10 @@
 5. Base MySQL exposée sur localhost:3307.
 
 La base est initialisée automatiquement depuis back/database/schema.sql et back/database/seeds.sql au premier démarrage.
+
+## Production
+
+1. Copier .env.production.example vers .env.production.
+2. Ajuster les secrets et le domaine.
+3. Lancer `bash tools/deploy_prod.sh`.
+4. Voir la procédure détaillée dans docker/PRODUCTION_DEPLOYMENT.md.
