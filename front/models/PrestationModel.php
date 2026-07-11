@@ -24,13 +24,7 @@ class PrestationModel
                 INNER JOIN categories c ON p.id_categorie = c.id_categorie
                 INNER JOIN prestataires pr ON p.id_prestataire = pr.id_prestataire
                 WHERE c.slug = :slug
-                  AND p.is_active = 1
-                                    AND (
-                                                SELECT COUNT(*)
-                                                FROM prestations p2
-                                                WHERE p2.id_prestataire = p.id_prestataire
-                                                    AND p2.is_active = 1
-                                    ) = 1
+                                    AND p.is_active = 1
                 ORDER BY p.nom ASC";
 
         $stmt = $this->pdo->prepare($sql);
@@ -54,12 +48,6 @@ class PrestationModel
                 INNER JOIN categories c ON p.id_categorie = c.id_categorie
                 INNER JOIN prestataires pr ON p.id_prestataire = pr.id_prestataire
                 WHERE p.id_prestation = :id
-                                    AND (
-                                                SELECT COUNT(*)
-                                                FROM prestations p2
-                                                WHERE p2.id_prestataire = p.id_prestataire
-                                                    AND p2.is_active = 1
-                                    ) = 1
                 LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);

@@ -1,0 +1,1 @@
+{"version":2,"defects":[],"times":{"QuickEvents\\Tests\\HttpSmokeTest::testFrontHealth":0.061,"QuickEvents\\Tests\\HttpSmokeTest::testBackHealth":0.061,"QuickEvents\\Tests\\HttpSmokeTest::testFrontPreflightCors":0.018,"QuickEvents\\Tests\\HttpSmokeTest::testBackPreflightCors":0.01}}

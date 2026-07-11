@@ -515,10 +515,9 @@ class EventPagesController extends Controller
 
         $lang = ($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr';
 
-        $packages = $this->dbPackagesForSlug($slug, $lang);
-        if ($packages === []) {
-            $packages = $this->mapPackages($page['packages'] ?? [], $lang);
-        }
+        $staticPackages = $this->mapPackages($page['packages'] ?? [], $lang);
+        $dbPackages = $this->dbPackagesForSlug($slug, $lang);
+        $packages = array_merge($staticPackages, $dbPackages);
 
         $packages = array_values(array_map(
             static function (array $package, int $idx): array {

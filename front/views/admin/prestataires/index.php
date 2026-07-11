@@ -96,6 +96,7 @@ $lang = $lang ?? current_lang();
                                 <td><?= e($p['prestations_labels'] ?? '-') ?></td>
                                 <td class="admin-table-actions">
                                     <a class="admin-link" href="<?= route('admin_prestataires_show', ['id' => $p['id_prestataire']]) ?>?lang=<?= e($lang) ?>"><?= e(t('admin.prestataires.view', $lang)) ?></a>
+                                    <a class="admin-link" href="<?= route('admin_prestataires_show', ['id' => $p['id_prestataire']]) ?>?lang=<?= e($lang) ?>#prestataire-medias">Medias</a>
                                     <a class="admin-link" href="<?= route('admin_prestataires_edit', ['id' => $p['id_prestataire']]) ?>?lang=<?= e($lang) ?>"><?= e(t('admin.prestataires.edit', $lang)) ?></a>
                                     <form method="POST" action="<?= route('admin_prestataires_delete', ['id' => $p['id_prestataire']]) ?>?lang=<?= e($lang) ?>" onsubmit="return confirm('<?= e(t('admin.prestataires.delete_confirm', $lang)) ?>');">
                                         <button type="submit" class="admin-btn admin-btn-danger"><?= e(t('admin.prestataires.delete', $lang)) ?></button>

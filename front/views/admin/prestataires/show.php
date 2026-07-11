@@ -183,16 +183,13 @@ $statusLabel = static function (?string $status) use ($lang): string {
             </table>
         </div>
 
-        <h3>Medias du prestataire</h3>
+        <h3 id="prestataire-medias">Medias du prestataire</h3>
+        <p>Associez ici une ou plusieurs images/videos a ce prestataire. Ces medias seront visibles par les clients sur ses prestations.</p>
         <div class="admin-table-wrap">
             <form method="post" action="<?= route('admin_prestataires_medias_save', ['id' => (int) $prestataire['id_prestataire']]) ?>?lang=<?= e($lang) ?>">
                 <input type="hidden" name="_csrf_token" value="<?= e(Csrf::token()) ?>">
                 <table class="admin-table">
                     <tbody>
-                        <tr>
-                            <th>Theme</th>
-                            <td><input type="text" value="<?= e($providerMediaThemeSlug) ?>" readonly></td>
-                        </tr>
                         <tr>
                             <th>Type media</th>
                             <td>

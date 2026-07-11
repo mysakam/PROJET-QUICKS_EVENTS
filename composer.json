@@ -1,0 +1,19 @@
+{
+    "name": "quickevents/app",
+    "description": "Quick'Events test tooling",
+    "type": "project",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "QuickEvents\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "@php tools/run_tests.php",
+        "test-functional": "@php functional_runner.php functional",
+        "bootstrap-local": "@php tools/bootstrap_local.php"
+    }
+}

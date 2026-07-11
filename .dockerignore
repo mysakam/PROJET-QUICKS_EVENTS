@@ -1,0 +1,9 @@
+.git
+.phpunit.cache
+vendor
+node_modules
+tests
+tools
+*.log
+docker/mysql
+tmp
