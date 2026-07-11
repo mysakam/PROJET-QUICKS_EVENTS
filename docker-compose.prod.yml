@@ -1,13 +1,23 @@
 services:
-  proxy:
-    image: nginx:1.27-alpine
-    container_name: quickevents-proxy
-    depends_on:
-      - front
+  traefik:
+    image: traefik:v3.1
+    container_name: quickevents-traefik
+    command:
+      - --api.dashboard=false
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
     ports:
       - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
     volumes:
-      - ./docker/nginx/prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./docker/traefik/acme.json:/letsencrypt/acme.json
     restart: unless-stopped
 
   front:
@@ -28,6 +38,17 @@ services:
       DB_CHARSET: ${DB_CHARSET}
       APP_ENV: ${APP_ENV}
       APP_DEBUG: ${APP_DEBUG}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.quickevents-front.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.quickevents-front.entrypoints=web,websecure
+      - traefik.http.routers.quickevents-front.tls=true
+      - traefik.http.routers.quickevents-front.tls.certresolver=letsencrypt
+      - traefik.http.services.quickevents-front.loadbalancer.server.port=80
+      - traefik.http.routers.quickevents-front-http.rule=Host(`${APP_DOMAIN}`)
+      - traefik.http.routers.quickevents-front-http.entrypoints=web
+      - traefik.http.routers.quickevents-front-http.middlewares=redirect-to-https
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
     depends_on:
       db:
         condition: service_healthy
@@ -51,6 +72,16 @@ services:
       DB_CHARSET: ${DB_CHARSET}
       APP_ENV: ${APP_ENV}
       APP_DEBUG: ${APP_DEBUG}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.quickevents-back.rule=Host(`${ADMIN_DOMAIN}`)
+      - traefik.http.routers.quickevents-back.entrypoints=web,websecure
+      - traefik.http.routers.quickevents-back.tls=true
+      - traefik.http.routers.quickevents-back.tls.certresolver=letsencrypt
+      - traefik.http.services.quickevents-back.loadbalancer.server.port=80
+      - traefik.http.routers.quickevents-back-http.rule=Host(`${ADMIN_DOMAIN}`)
+      - traefik.http.routers.quickevents-back-http.entrypoints=web
+      - traefik.http.routers.quickevents-back-http.middlewares=redirect-to-https
     depends_on:
       db:
         condition: service_healthy

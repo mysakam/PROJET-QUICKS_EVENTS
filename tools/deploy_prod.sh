@@ -9,6 +9,10 @@ if [[ ! -f .env.production ]]; then
   exit 1
 fi
 
+mkdir -p docker/traefik
+touch docker/traefik/acme.json
+chmod 600 docker/traefik/acme.json 2>/dev/null || true
+
 docker compose -f docker-compose.prod.yml --env-file .env.production pull || true
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 docker compose -f docker-compose.prod.yml --env-file .env.production ps

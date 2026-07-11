@@ -11,7 +11,7 @@
 
 1. Cloner le dépôt sur le serveur.
 2. Copier `.env.production.example` vers `.env.production`.
-3. Modifier les mots de passe, le domaine et les variables sensibles.
+3. Modifier les mots de passe, `APP_DOMAIN`, `ADMIN_DOMAIN`, `ACME_EMAIL` et les variables sensibles.
 
 ## 3. Lancer l'application
 
@@ -27,6 +27,8 @@ Commande équivalente :
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 ```
 
+Le script crée automatiquement `docker/traefik/acme.json`, utilisé par Let's Encrypt.
+
 ## 4. Vérifier l'état
 
 ```bash
@@ -34,15 +36,22 @@ docker compose -f docker-compose.prod.yml --env-file .env.production ps
 docker compose -f docker-compose.prod.yml --env-file .env.production logs -f
 ```
 
-## 5. Ajouter HTTPS
+## 5. HTTPS et domaines
 
-Cette version fournit le reverse proxy HTTP. Pour la production Internet, il faut ajouter :
+Cette version intègre Traefik avec certificats Let's Encrypt automatiques.
 
-1. un nom de domaine pointant sur le VPS ;
-2. un certificat TLS ;
-3. une redirection HTTP -> HTTPS.
+Pré-requis :
 
-Le plus simple est d'ajouter Traefik ou Nginx Proxy Manager avec Let's Encrypt.
+1. `APP_DOMAIN` doit pointer vers l'IP du VPS.
+2. `ADMIN_DOMAIN` doit pointer vers la même IP.
+3. Les ports 80 et 443 doivent être ouverts.
+4. Le serveur doit être accessible publiquement depuis Internet.
+
+Routage prévu :
+
+1. `https://APP_DOMAIN` vers le front.
+2. `https://ADMIN_DOMAIN` vers le back.
+3. Redirection automatique HTTP vers HTTPS.
 
 ## 6. Bonnes pratiques
 

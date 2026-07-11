@@ -11,6 +11,8 @@ La base est initialisée automatiquement depuis back/database/schema.sql et back
 ## Production
 
 1. Copier .env.production.example vers .env.production.
-2. Ajuster les secrets et le domaine.
+2. Ajuster les secrets, `APP_DOMAIN`, `ADMIN_DOMAIN` et `ACME_EMAIL`.
 3. Lancer `bash tools/deploy_prod.sh`.
 4. Voir la procédure détaillée dans docker/PRODUCTION_DEPLOYMENT.md.
+
+La version production utilise Traefik avec HTTPS automatique via Let's Encrypt.
