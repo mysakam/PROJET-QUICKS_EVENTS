@@ -1,6 +1,5 @@
 <?php
 $viewPath = $viewPath ?? null;
-$flashError = Session::flash('error');
 $title = $pageTitle ?? 'Back Office';
 ?>
 <!doctype html>
@@ -30,10 +29,6 @@ $title = $pageTitle ?? 'Back Office';
     </header>
 
     <main class="container">
-        <?php if (!empty($flashError)): ?>
-            <div class="alert error"><?= e($flashError) ?></div>
-        <?php endif; ?>
-
         <?php if (is_string($viewPath) && file_exists($viewPath)) require $viewPath; ?>
     </main>
 

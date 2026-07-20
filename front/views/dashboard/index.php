@@ -2,6 +2,24 @@
 $lang = ($lang ?? (($_GET['lang'] ?? 'fr') === 'en' ? 'en' : 'fr'));
 $clientName = e($_SESSION['client']['prenom'] ?? $_SESSION['client']['nom'] ?? 'client');
 $isAdmin = !empty($_SESSION['client']['is_admin']);
+$activityStats = $activityStats ?? [];
+
+$formatDate = static function (?string $value): string {
+    if (!$value) {
+        return '-';
+    }
+
+    $timestamp = strtotime($value);
+    if ($timestamp === false) {
+        return '-';
+    }
+
+    return date('d/m/Y', $timestamp);
+};
+
+$formatAmount = static function (float $value): string {
+    return number_format($value, 2, ',', ' ') . ' EUR';
+};
 
 $txt = [
     'fr' => [
@@ -22,6 +40,19 @@ $txt = [
         'shortcut_devis' => 'Relire mes devis',
         'shortcut_account' => 'Mettre à jour mon profil',
         'shortcut_admin' => 'Ouvrir le dashboard admin',
+        'quotes_card' => 'Devis',
+        'quotes_total' => 'devis créés',
+        'quotes_pending' => 'en attente de traitement',
+        'quotes_validated' => 'validés côté client',
+        'quotes_last' => 'Dernier devis',
+        'quotes_amount' => 'Montant cumulé devis',
+        'invoices_card' => 'Factures',
+        'invoices_total' => 'factures disponibles',
+        'invoices_paid' => 'factures réglées',
+        'invoices_last' => 'Dernière facture',
+        'invoices_amount' => 'Montant cumulé factures',
+        'activity_card' => 'Activité',
+        'activity_empty' => 'Aucune activité enregistrée pour le moment.',
     ],
     'en' => [
         'welcome' => 'Welcome',
@@ -41,6 +72,19 @@ $txt = [
         'shortcut_devis' => 'Review my quotes',
         'shortcut_account' => 'Update my profile',
         'shortcut_admin' => 'Open admin dashboard',
+        'quotes_card' => 'Quotes',
+        'quotes_total' => 'quotes created',
+        'quotes_pending' => 'pending processing',
+        'quotes_validated' => 'validated by client',
+        'quotes_last' => 'Latest quote',
+        'quotes_amount' => 'Cumulative quote amount',
+        'invoices_card' => 'Invoices',
+        'invoices_total' => 'available invoices',
+        'invoices_paid' => 'paid invoices',
+        'invoices_last' => 'Latest invoice',
+        'invoices_amount' => 'Cumulative invoice amount',
+        'activity_card' => 'Activity',
+        'activity_empty' => 'No activity recorded yet.',
     ],
 ];
 $t = $txt[$lang];
@@ -74,9 +118,32 @@ $t = $txt[$lang];
             </article>
 
             <article class="auth-card dashboard-stat-card">
-                <p class="dashboard-stat-label"><?= e($t['space_card']) ?></p>
-                <strong><?= e($t['space_value']) ?></strong>
-                <span><?= e($t['space_desc']) ?></span>
+                <p class="dashboard-stat-label"><?= e($t['quotes_card']) ?></p>
+                <strong><?= e((string) ($activityStats['devis_total'] ?? 0)) ?></strong>
+                <span><?= e($t['quotes_total']) ?></span>
+                <span><?= e((string) ($activityStats['devis_pending'] ?? 0)) ?> <?= e($t['quotes_pending']) ?></span>
+                <span><?= e((string) ($activityStats['devis_validated'] ?? 0)) ?> <?= e($t['quotes_validated']) ?></span>
+            </article>
+
+            <article class="auth-card dashboard-stat-card">
+                <p class="dashboard-stat-label"><?= e($t['invoices_card']) ?></p>
+                <strong><?= e((string) ($activityStats['factures_total'] ?? 0)) ?></strong>
+                <span><?= e($t['invoices_total']) ?></span>
+                <span><?= e((string) ($activityStats['factures_paid'] ?? 0)) ?> <?= e($t['invoices_paid']) ?></span>
+                <span><?= e($t['invoices_last']) ?> : <?= e($formatDate($activityStats['last_invoice_created_at'] ?? null)) ?></span>
+            </article>
+
+            <article class="auth-card dashboard-stat-card">
+                <p class="dashboard-stat-label"><?= e($t['activity_card']) ?></p>
+                <?php if (($activityStats['devis_total'] ?? 0) === 0 && ($activityStats['factures_total'] ?? 0) === 0): ?>
+                    <strong>0</strong>
+                    <span><?= e($t['activity_empty']) ?></span>
+                <?php else: ?>
+                    <strong><?= e($formatAmount((float) ($activityStats['devis_total_amount'] ?? 0))) ?></strong>
+                    <span><?= e($t['quotes_amount']) ?></span>
+                    <span><?= e($t['invoices_amount']) ?> : <?= e($formatAmount((float) ($activityStats['factures_total_amount'] ?? 0))) ?></span>
+                    <span><?= e($t['quotes_last']) ?> : <?= e($formatDate($activityStats['last_quote_created_at'] ?? null)) ?></span>
+                <?php endif; ?>
             </article>
 
             <article class="auth-card dashboard-stat-card dashboard-stat-card-wide">

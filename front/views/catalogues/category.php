@@ -11,6 +11,7 @@ $txt = [
     'fr' => [
         'title_prefix' => 'Rubrique',
         'summary' => 'Les prestations disponibles pour cette rubrique sont affichees ci-dessous.',
+        'provider' => 'Prestataire',
         'back' => 'Retour catalogues',
         'cart' => 'Voir mon panier',
         'login' => 'Connexion',
@@ -18,10 +19,12 @@ $txt = [
         'media' => 'Image prestation a definir',
         'photo' => 'Voir la photo',
         'video' => 'Ouvrir la video',
+        'service_btn' => 'Voir la prestation',
     ],
     'en' => [
         'title_prefix' => 'Category',
         'summary' => 'Available services for this category are listed below.',
+        'provider' => 'Provider',
         'back' => 'Back to catalogues',
         'cart' => 'View my cart',
         'login' => 'Login',
@@ -29,6 +32,7 @@ $txt = [
         'media' => 'Service image to be set',
         'photo' => 'View photo',
         'video' => 'Open video',
+        'service_btn' => 'View service',
     ],
 ];
 $t = $txt[$lang];
@@ -94,13 +98,16 @@ $categoryMedia = $categoryMediaMap[$categoryKey] ?? null;
                             <?php endif; ?>
                         </div>
                         <h3><?= e($prestation['nom']) ?></h3>
+                        <?php if (!empty($prestation['prestataire_name'])): ?>
+                            <p class="card-text"><strong><?= e($t['provider']) ?>:</strong> <?= e($prestation['prestataire_name']) ?></p>
+                        <?php endif; ?>
                         <p class="card-text"><?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
                         <?php if (!empty($media['media_url']) && (($media['media_type'] ?? 'image') !== 'video')): ?>
                             <a class="btn" href="<?= e(img_url((string)$media['media_url'])) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['photo']) ?></a>
                         <?php elseif (!empty($media['media_url'])): ?>
                             <a class="btn" href="<?= e(img_url((string)$media['media_url'])) ?>" target="_blank" rel="noopener noreferrer"><?= e($t['video']) ?></a>
                         <?php endif; ?>
-                        <a class="btn" href="<?= route('prestations_show', ['id' => $prestation['id_prestation']]) . '?lang=' . $lang ?>">View service</a>
+                        <a class="btn" href="<?= route('prestations_show', ['id' => $prestation['id_prestation']]) . '?lang=' . $lang ?>"><?= e($t['service_btn']) ?></a>
                     </article>
                 <?php endforeach; ?>
             </div>

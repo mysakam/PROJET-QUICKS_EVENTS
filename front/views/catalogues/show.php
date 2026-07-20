@@ -21,6 +21,7 @@ $txt = [
     'fr' => [
         'service_prefix' => 'Prestation',
         'category' => 'Catégorie',
+        'provider' => 'Prestataire',
         'price' => 'Prix',
         'add_cart' => 'Ajouter au panier',
         'login' => 'Connexion pour ajouter',
@@ -30,6 +31,7 @@ $txt = [
     'en' => [
         'service_prefix' => 'Service',
         'category' => 'Category',
+        'provider' => 'Provider',
         'price' => 'Price',
         'add_cart' => 'Add to cart',
         'login' => 'Login to add',
@@ -59,6 +61,9 @@ $t = $txt[$lang];
 
             <div class="panier-summary-card">
                 <p class="card-text"><strong><?= e($t['category']) ?>:</strong> <?= e($prestation['category_name']) ?></p>
+                <?php if (!empty($prestation['prestataire_name'])): ?>
+                    <p class="card-text"><strong><?= e($t['provider']) ?>:</strong> <?= e($prestation['prestataire_name']) ?></p>
+                <?php endif; ?>
                 <p class="card-text"><strong><?= e($t['price']) ?>:</strong>
                     <?= e(number_format((float) $prestation['prix_unitaire'], 2, ',', ' ')) ?> EUR</p>
                 <p class="card-text"><?= e($prestation['description']) ?></p>

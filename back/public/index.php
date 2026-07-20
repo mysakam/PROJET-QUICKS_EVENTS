@@ -33,6 +33,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'OPTIONS') {
 $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
     || (($_SERVER['SERVER_PORT'] ?? null) === '443');
 
+session_name('QE_BACK_SESSID');
+
 session_set_cookie_params([
     'lifetime' => 0,
     'path' => '/',

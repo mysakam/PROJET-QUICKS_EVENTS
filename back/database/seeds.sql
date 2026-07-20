@@ -34,7 +34,7 @@ VALUES (
         'Akam',
         'Samy',
         'samy@test.com',
-        '$2y$10$ZZgidpiGw91yBWtrTFZAyeylNrgAN/RSCZZGRczpLzjE4fbAS9u2e',
+        '$2y$10$YpCrtfzQNk89vQHd66qiZ.c0tPylxdBFmt1Car1Si4w1.G2DYMNyi',
         '0600000001'
     );
 

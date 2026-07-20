@@ -1,8 +1,8 @@
 <?php
 
 $router->get('/', ['DashBoard', 'index'], [], 'back_home');
-$router->get('/admin-login', ['DashBoard', 'adminLogin'], [], 'admin_login');
-$router->post('/admin-login', ['DashBoard', 'adminAuthenticate'], [], 'admin_login_post');
+$router->get('/admin-login', ['DashBoard', 'login'], [], 'admin_login');
+$router->post('/admin-login', ['DashBoard', 'authenticate'], [], 'admin_login_post');
 $router->get('/logout', ['DashBoard', 'logout'], ['AuthMiddleware'], 'logout');
 
 $router->get('/dashboard', ['DashBoard', 'dashboard'], ['AuthMiddleware', 'AdminMiddleware'], 'dashboard');

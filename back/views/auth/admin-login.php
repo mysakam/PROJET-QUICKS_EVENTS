@@ -1,6 +1,7 @@
 <?php
 $error = Session::flash('error');
 $errors = Session::flash('errors') ?? [];
+$oldEmail = Session::flash('old_email') ?? '';
 ?>
 <section class="card">
     <h1>Connexion - Administrateur</h1>
@@ -12,7 +13,7 @@ $errors = Session::flash('errors') ?? [];
         <?= Csrf::field() ?>
 
         <label for="email">Email administrateur</label>
-        <input type="email" id="email" name="email" required value="<?= e($_POST['email'] ?? '') ?>">
+        <input type="email" id="email" name="email" required value="<?= e($oldEmail) ?>">
         <?php if (isset($errors['email'])): ?>
             <span class="error"><?= e($errors['email']) ?></span>
         <?php endif; ?>

@@ -8,6 +8,26 @@ class AuthController extends Controller
     private FactureModel $factureModel;
     private array $adminEmails = ['samy@test.com'];
 
+    private function loginFailureMessage(string $reason): string
+    {
+        $messages = [
+            'fr' => [
+                'missing_credentials' => 'Identifiants invalides. Motif: email et mot de passe obligatoires.',
+                'account_not_found' => 'Identifiants invalides. Motif: aucun compte trouvé pour cet email.',
+                'invalid_password' => 'Identifiants invalides. Motif: mot de passe incorrect.',
+            ],
+            'en' => [
+                'missing_credentials' => 'Invalid credentials. Reason: email and password are required.',
+                'account_not_found' => 'Invalid credentials. Reason: no account matches this email.',
+                'invalid_password' => 'Invalid credentials. Reason: incorrect password.',
+            ],
+        ];
+
+        $lang = $this->currentLang();
+
+        return $messages[$lang][$reason] ?? $messages[$lang]['invalid_password'];
+    }
+
     public function __construct()
     {
         $this->clientModel = new ClientModel();
@@ -139,11 +159,25 @@ class AuthController extends Controller
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
 
+        if ($email === '' || $password === '') {
+            $_SESSION['old_login_email'] = $email;
+            $_SESSION['error'] = $this->loginFailureMessage('missing_credentials');
+            redirect(route('login') . $langQuery);
+            return;
+        }
+
         $client = $this->clientModel->findByEmail($email);
 
-        if (!$client || !password_verify($password, $client['mot_de_passe'])) {
+        if (!$client) {
             $_SESSION['old_login_email'] = $email;
-            $_SESSION['error'] = 'Identifiants invalides';
+            $_SESSION['error'] = $this->loginFailureMessage('account_not_found');
+            redirect(route('login') . $langQuery);
+            return;
+        }
+
+        if (!password_verify($password, $client['mot_de_passe'])) {
+            $_SESSION['old_login_email'] = $email;
+            $_SESSION['error'] = $this->loginFailureMessage('invalid_password');
             redirect(route('login') . $langQuery);
             return;
         }

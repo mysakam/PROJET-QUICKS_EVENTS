@@ -2,6 +2,17 @@
 
 class DashBoard extends Controller
 {
+    private function loginFailureMessage(?string $reason): string
+    {
+        return match ($reason) {
+            'missing_credentials' => 'Identifiants invalides. Motif: email et mot de passe obligatoires.',
+            'account_not_found' => 'Identifiants invalides. Motif: aucun compte trouvé pour cet email.',
+            'invalid_password' => 'Identifiants invalides. Motif: mot de passe incorrect.',
+            'storage_error' => 'Connexion impossible. Motif: lecture du compte administrateur en échec.',
+            default => 'Identifiants invalides.',
+        };
+    }
+
     public function index(): void
     {
         if (Auth::check()) {
@@ -9,7 +20,7 @@ class DashBoard extends Controller
             return;
         }
 
-        redirect(route('login'));
+        redirect(route('admin_login'));
     }
 
     public function login(): void
@@ -19,7 +30,7 @@ class DashBoard extends Controller
             return;
         }
 
-        $this->render('auth/login', ['pageTitle' => 'Connexion back']);
+        $this->render('auth/admin-login', ['pageTitle' => 'Connexion administrateur']);
     }
 
     public function authenticate(): void
@@ -28,15 +39,17 @@ class DashBoard extends Controller
         $password = $_POST['password'] ?? '';
 
         if (!Auth::attempt($email, $password)) {
-            Session::flash('error', 'Identifiants invalides.');
-            redirect(route('login'));
+            Session::flash('error', $this->loginFailureMessage(Auth::failureReason()));
+            Session::flash('old_email', $email);
+            redirect(route('admin_login'));
             return;
         }
 
         if (!Auth::isAdmin()) {
             Auth::logout();
-            Session::flash('error', 'Compte non autorisé sur le back-office.');
-            redirect(route('login'));
+            Session::flash('error', 'Connexion refusée. Motif: ce compte n’est pas autorisé sur le back-office.');
+            Session::flash('old_email', $email);
+            redirect(route('admin_login'));
             return;
         }
 
@@ -46,7 +59,7 @@ class DashBoard extends Controller
     public function logout(): void
     {
         Auth::logout();
-        redirect(route('login'));
+        redirect(route('admin_login'));
     }
 
     public function dashboard(): void

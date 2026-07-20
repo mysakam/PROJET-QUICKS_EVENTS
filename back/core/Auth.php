@@ -2,6 +2,8 @@
 
 class Auth
 {
+    private static ?string $lastFailureReason = null;
+
     public static function check(): bool
     {
         return !empty($_SESSION['client']);
@@ -17,10 +19,17 @@ class Auth
         return !empty($_SESSION['client']['is_admin']);
     }
 
+    public static function failureReason(): ?string
+    {
+        return self::$lastFailureReason;
+    }
+
     public static function attempt(string $email, string $password): bool
     {
+        self::$lastFailureReason = null;
         $email = trim($email);
         if ($email === '' || $password === '') {
+            self::$lastFailureReason = 'missing_credentials';
             return false;
         }
 
@@ -29,10 +38,17 @@ class Auth
             $stmt->execute(['email' => $email]);
             $client = $stmt->fetch();
         } catch (Throwable) {
+            self::$lastFailureReason = 'storage_error';
             return false;
         }
 
-        if (!$client || !password_verify($password, (string) ($client['mot_de_passe'] ?? ''))) {
+        if (!$client) {
+            self::$lastFailureReason = 'account_not_found';
+            return false;
+        }
+
+        if (!password_verify($password, (string) ($client['mot_de_passe'] ?? ''))) {
+            self::$lastFailureReason = 'invalid_password';
             return false;
         }
 
@@ -53,5 +69,6 @@ class Auth
     public static function logout(): void
     {
         unset($_SESSION['client']);
+        self::$lastFailureReason = null;
     }
 }
