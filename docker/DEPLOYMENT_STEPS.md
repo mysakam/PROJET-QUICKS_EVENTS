@@ -130,11 +130,13 @@ Tables creees automatiquement par l'application si elles n'existent pas encore :
 2. Cloner le depot.
 3. Ouvrir les ports 80 et 443.
 4. Configurer les DNS de `APP_DOMAIN` et `ADMIN_DOMAIN` vers le serveur.
+5. Verifier que le compte qui lance le deploiement peut ecrire dans `docker/traefik/acme.json`.
 
 ### 5.2 Preparer l'environnement production
 
 1. Copier `.env.production.example` vers `.env.production`.
 2. Renseigner les domaines, mots de passe et secrets.
+3. Verifier que les valeurs de `APP_DOMAIN` et `ADMIN_DOMAIN` pointent vers le serveur public.
 
 Variables critiques :
 
@@ -168,12 +170,20 @@ Commande equivalente :
 docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
 ```
 
+Le script de deploiement verifie la presence de `.env.production`, prepare `docker/traefik/acme.json` si besoin, puis lance la pile prod.
+
 ### 5.4 Verifier apres deploiement
 
 ```bash
 docker compose -f docker-compose.prod.yml --env-file .env.production ps
 docker compose -f docker-compose.prod.yml --env-file .env.production logs -f
 ```
+
+Verifier aussi que :
+
+1. le front repond bien sur `APP_DOMAIN`
+2. le back repond bien sur `ADMIN_DOMAIN`
+3. aucun conteneur ne redemarre en boucle dans les logs
 
 ### 5.5 HTTPS et Traefik
 
