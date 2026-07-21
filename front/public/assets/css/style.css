@@ -440,16 +440,62 @@ p {
   text-align: center;
   color: white;
 }
-.banniere .contenu h1 {
-  color: black;
-  font-size: 3em;
-  text-transform: capitalize;
-  margin-bottom: 20px;
+
+.hero-glass-title,
+.hero-glass-subtitle {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 14px 26px;
+  color: #0b1f3a;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6),
+    0 0 18px rgba(255, 255, 255, 0.3), 0 2px 12px rgba(0, 0, 0, 0.45);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 30px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
 }
-.banniere .contenu p:nth-child(2) {
-  color: rgb(7, 15, 15);
-  font-size: 1.8em;
+
+.hero-glass-title {
+  position: relative;
+  font-size: clamp(2.2rem, 4.8vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.35);
+}
+
+.hero-glass-title::before,
+.hero-glass-subtitle::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.02)
+  );
+  filter: blur(12px);
+  z-index: -1;
+}
+
+.hero-glass-subtitle {
+  position: relative;
+  max-width: 900px;
+  font-size: clamp(1.1rem, 2.5vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.55;
   margin-bottom: 30px;
+}
+
+.banniere .contenu p:nth-child(2) {
+  margin-bottom: 0;
 }
 section {
   padding: 100px;
@@ -520,6 +566,53 @@ section {
   background-repeat: no-repeat;
   position: relative;
   z-index: 0;
+}
+
+.events-title-glass {
+  display: inline-block;
+  margin: 0 auto 28px;
+  padding: 14px 26px;
+  color: #0b1f3a;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.65),
+    0 0 18px rgba(255, 255, 255, 0.35), 0 2px 10px rgba(0, 0, 0, 0.35);
+  -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 10px 30px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+}
+
+.events-title-glass::before {
+  content: "";
+  position: absolute;
+  inset: -6px -10px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.18),
+    rgba(255, 255, 255, 0.02)
+  );
+  filter: blur(12px);
+  z-index: -1;
+}
+
+.evenements .events-title-glass {
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .events-title-glass {
+    padding: 12px 18px;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    letter-spacing: 0.05em;
+  }
 }
 .polaroid {
   width: 220px;

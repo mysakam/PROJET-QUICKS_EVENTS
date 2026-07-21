@@ -2,6 +2,10 @@ CREATE DATABASE IF NOT EXISTS quickevents CHARACTER SET utf8mb4 COLLATE utf8mb4_
 
 USE quickevents;
 
+DROP TABLE IF EXISTS prestataire_disponibilites;
+
+DROP TABLE IF EXISTS notifications;
+
 DROP TABLE IF EXISTS devis_lignes;
 
 DROP TABLE IF EXISTS factures;
@@ -106,26 +110,6 @@ CREATE TABLE devis_lignes (
     CONSTRAINT fk_devis_lignes_prestations FOREIGN KEY (id_prestation) REFERENCES prestations (id_prestation) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
-CREATE TABLE IF NOT EXISTS event_medias (
-    id_media INT AUTO_INCREMENT PRIMARY KEY,
-    theme_slug VARCHAR(80) NOT NULL,
-    media_type ENUM('image', 'video') NOT NULL DEFAULT 'image',
-    media_url VARCHAR(255) NOT NULL,
-    title_fr VARCHAR(150) NOT NULL,
-    title_en VARCHAR(150) NOT NULL,
-    description_fr TEXT DEFAULT NULL,
-    description_en TEXT DEFAULT NULL,
-    position INT NOT NULL DEFAULT 1,
-    is_active TINYINT(1) NOT NULL DEFAULT 1,
-    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_event_medias_theme_active_pos (
-        theme_slug,
-        is_active,
-        position
-    )
-) ENGINE = InnoDB;
-
 CREATE TABLE factures (
     id_facture INT AUTO_INCREMENT PRIMARY KEY,
     id_devis INT NOT NULL,
@@ -138,6 +122,44 @@ CREATE TABLE factures (
     date_envoi_mail DATETIME DEFAULT NULL,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_factures_devis FOREIGN KEY (id_devis) REFERENCES devis (id_devis) ON DELETE CASCADE,
+    UNIQUE KEY uniq_factures_devis (id_devis),
     INDEX idx_factures_statut (statut),
     INDEX idx_factures_created_at (created_at)
+) ENGINE = InnoDB;
+
+CREATE TABLE notifications (
+    id_notification INT AUTO_INCREMENT PRIMARY KEY,
+    recipient_role VARCHAR(50) NOT NULL DEFAULT 'admin',
+    type VARCHAR(60) NOT NULL,
+    title VARCHAR(180) NOT NULL,
+    message TEXT NOT NULL,
+    payload_json TEXT DEFAULT NULL,
+    is_read TINYINT(1) NOT NULL DEFAULT 0,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    read_at DATETIME DEFAULT NULL,
+    INDEX idx_notifications_recipient_read_created (
+        recipient_role,
+        is_read,
+        created_at
+    ),
+    INDEX idx_notifications_created_at (created_at)
+) ENGINE = InnoDB;
+
+CREATE TABLE prestataire_disponibilites (
+    id_disponibilite INT AUTO_INCREMENT PRIMARY KEY,
+    id_prestataire INT NOT NULL,
+    date_evenement DATE NOT NULL,
+    statut VARCHAR(20) NOT NULL DEFAULT 'disponible',
+    commentaire VARCHAR(255) DEFAULT NULL,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_disponibilites_prestataire FOREIGN KEY (id_prestataire) REFERENCES prestataires (id_prestataire) ON DELETE CASCADE,
+    CONSTRAINT chk_disponibilites_statut CHECK (
+        statut IN ('disponible', 'indisponible')
+    ),
+    UNIQUE KEY uniq_prestataire_date (
+        id_prestataire,
+        date_evenement
+    ),
+    INDEX idx_disponibilites_date (date_evenement)
 ) ENGINE = InnoDB;

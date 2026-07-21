@@ -8,7 +8,8 @@
 -- 2. Ajout de contraintes CHECK
 -- 3. Ajout de contrainte UNIQUE sur (id_devis, id_prestation) dans devis_lignes
 -- 4. Option: UNIQUE(id_devis) dans factures si règle métier = 1 facture/devis
--- 5. Amélioration des indexes pour les performances
+-- 5. Ajout des tables techniques notifications et prestataire_disponibilites
+-- 6. Amélioration des indexes pour les performances
 -- ============================================================================
 
 CREATE DATABASE IF NOT EXISTS quickevents CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -16,6 +17,10 @@ CREATE DATABASE IF NOT EXISTS quickevents CHARACTER SET utf8mb4 COLLATE utf8mb4_
 USE quickevents;
 
 -- Drop tables in correct order (respecter les dépendances FK)
+DROP TABLE IF EXISTS prestataire_disponibilites;
+
+DROP TABLE IF EXISTS notifications;
+
 DROP TABLE IF EXISTS factures;
 
 DROP TABLE IF EXISTS devis_lignes;
@@ -193,6 +198,51 @@ CREATE TABLE factures (
     INDEX idx_factures_created_at (created_at),
     INDEX idx_factures_date_paiement (date_paiement)
 ) ENGINE = InnoDB COMMENT = 'Table des factures';
+
+-- ============================================================================
+-- TABLE: notifications
+-- ============================================================================
+CREATE TABLE notifications (
+    id_notification INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifiant unique',
+    recipient_role VARCHAR(50) NOT NULL DEFAULT 'admin' COMMENT 'Role destinataire',
+    type VARCHAR(60) NOT NULL COMMENT 'Type de notification',
+    title VARCHAR(180) NOT NULL COMMENT 'Titre de notification',
+    message TEXT NOT NULL COMMENT 'Message de notification',
+    payload_json TEXT DEFAULT NULL COMMENT 'Charge utile optionnelle au format JSON',
+    is_read TINYINT(1) NOT NULL DEFAULT 0 COMMENT 'Etat de lecture (0/1)',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date de création',
+    read_at DATETIME DEFAULT NULL COMMENT 'Date de lecture',
+    INDEX idx_notifications_recipient_read_created (
+        recipient_role,
+        is_read,
+        created_at
+    ),
+    INDEX idx_notifications_created_at (created_at)
+) ENGINE = InnoDB COMMENT = 'Notifications techniques pour l administration';
+
+-- ============================================================================
+-- TABLE: prestataire_disponibilites
+-- ============================================================================
+CREATE TABLE prestataire_disponibilites (
+    id_disponibilite INT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identifiant unique',
+    id_prestataire INT NOT NULL COMMENT 'FK vers prestataire',
+    date_evenement DATE NOT NULL COMMENT 'Date concernée',
+    statut VARCHAR(20) NOT NULL DEFAULT 'disponible' COMMENT 'disponible ou indisponible',
+    commentaire VARCHAR(255) DEFAULT NULL COMMENT 'Commentaire optionnel',
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Dernière modification',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Date de création',
+    CONSTRAINT fk_disponibilites_prestataire FOREIGN KEY (id_prestataire) REFERENCES prestataires (id_prestataire) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT chk_disponibilites_statut CHECK (
+        statut IN ('disponible', 'indisponible')
+    ),
+    CONSTRAINT uk_prestataire_date UNIQUE KEY (
+        id_prestataire,
+        date_evenement
+    ) COMMENT 'Une disponibilité max par date et prestataire',
+    INDEX idx_disponibilites_prestataire (id_prestataire),
+    INDEX idx_disponibilites_date (date_evenement),
+    INDEX idx_disponibilites_statut (statut)
+) ENGINE = InnoDB COMMENT = 'Calendrier de disponibilité des prestataires';
 
 -- ============================================================================
 -- FIN DU SCRIPT

@@ -127,6 +127,37 @@
 
 ---
 
+### 9. PRESTATAIRE_DISPONIBILITE
+
+**Identifiant** : id_disponibilite  
+**Attributs** :
+
+- id_disponibilite (numerique, PK)
+- date_evenement (date, NN)
+- statut (chaine 20, NN, valeurs attendues : disponible ou indisponible)
+- commentaire (chaine 255)
+- updated_at (datetime, NN)
+- created_at (datetime, NN)
+
+---
+
+### 10. NOTIFICATION
+
+**Identifiant** : id_notification  
+**Attributs** :
+
+- id_notification (numerique, PK)
+- recipient_role (chaine 50, NN)
+- type (chaine 60, NN)
+- title (chaine 180, NN)
+- message (texte, NN)
+- payload_json (texte)
+- is_read (booleen, NN)
+- created_at (datetime, NN)
+- read_at (datetime)
+
+---
+
 ## Associations
 
 ### 1. FAIT (CLIENT - DEVIS)
@@ -163,8 +194,27 @@
 
 - **DEVIS** (0, N) --- GENERE --- (1, 1) **FACTURE**
 - **Sens** : Un devis génère zéro ou plusieurs factures ; une facture est générée par exactement un devis
-- **Note** : Métier recommandé = (0, 1) pour une facture unique par devis
+- **Note** : Metier recommande = (0, 1) pour une facture unique par devis ; l'application tend vers cette contrainte au niveau de l'implementation
 - **FK dans FACTURE** : id_devis
+
+### 7. DEFINIT (PRESTATAIRE - PRESTATAIRE_DISPONIBILITE)
+
+- **PRESTATAIRE** (0, N) --- DEFINIT --- (1, 1) **PRESTATAIRE_DISPONIBILITE**
+- **Sens** : Un prestataire definit zero ou plusieurs statuts de disponibilite par date ; une disponibilite appartient a exactement un prestataire
+- **FK dans PRESTATAIRE_DISPONIBILITE** : id_prestataire
+
+### 8. NOTIFIE (NOTIFICATION)
+
+- **NOTIFICATION** est une structure technique transversale utilisee pour les alertes d'administration
+- **Sens** : La table stocke des messages adresses a un role destinataire, sans cle etrangere metier directe dans le schema actuel
+
+---
+
+## Note de perimetre
+
+Le noyau metier principal repose sur CLIENT, CATEGORIE, PRESTATAIRE, PRESTATION, DEVIS, DEVIS_LIGNE, FACTURE et EVENT_MEDIA.
+
+PRESTATAIRE_DISPONIBILITE et NOTIFICATION sont des structures operationnelles complementaires effectivement utilisees par l'application et creees automatiquement si elles sont absentes.
 
 ---
 
@@ -190,7 +240,10 @@ CLIENT (0,N) --- FAIT --- (1,1) DEVIS
 
 DEVIS (0,N) --- GENERE --- (1,1) FACTURE
 
-EVENT_MEDIA (isolée)
+PRESTATAIRE (0,N) --- DEFINIT --- (1,1) PRESTATAIRE_DISPONIBILITE
+
+EVENT_MEDIA (isolee)
+NOTIFICATION (structure technique isolee)
 ```
 
 ---

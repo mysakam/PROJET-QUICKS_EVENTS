@@ -1,5 +1,7 @@
 # Docker QuickEvents
 
+Guide detaille pas a pas : [docker/DEPLOYMENT_STEPS.md](DEPLOYMENT_STEPS.md)
+
 1. Copier .env.docker.example vers .env.
 2. Lancer docker compose up -d --build.
 3. Front : http://localhost:8080

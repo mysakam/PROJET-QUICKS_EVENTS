@@ -10,8 +10,8 @@ $eventSlugs = ['mariage', 'anniversaire', 'soiree-theme', 'repas-seminaire'];
 
 <section class="banniere" id="banniere">
     <div class="contenu">
-        <h1><?= e(t('home.hero_title', $lang)) ?></h1>
-        <p><?= e(t('home.hero_text', $lang)) ?></p>
+        <h1 class="hero-glass-title"><?= e(t('home.hero_title', $lang)) ?></h1>
+        <p class="hero-glass-subtitle"><?= e(t('home.hero_text', $lang)) ?></p>
     </div>
 </section>
 <section class="apropos" id="apropos">
@@ -52,7 +52,7 @@ $eventSlugs = ['mariage', 'anniversaire', 'soiree-theme', 'repas-seminaire'];
     <?php endif; ?>
 </section>
 <section class="evenements" id="evenements">
-    <h2 class="titre-texte"><?= e(t('home.events_title', $lang)) ?></h2>
+    <h2 class="titre-texte events-title-glass"><?= e(t('home.events_title', $lang)) ?></h2>
     <div class="row">
         <?php
         $_imgHome = [
