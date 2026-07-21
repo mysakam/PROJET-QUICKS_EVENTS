@@ -123,6 +123,7 @@ $router = new Router();
 /* Pages */
 $router->get('/', ['HomeController', 'index'], [], 'home');
 $router->get('/cgu', ['HomeController', 'cgu'], [], 'cgu');
+$router->get('/rgpd', ['HomeController', 'rgpd'], [], 'rgpd');
 $router->get('/dashboard', ['DashboardController', 'index'], ['AuthMiddleware'], 'dashboard');
 $router->get('/mariage', ['EventPagesController', 'mariage'], [], 'event_mariage');
 $router->get('/anniversaire', ['EventPagesController', 'anniversaire'], [], 'event_anniversaire');
