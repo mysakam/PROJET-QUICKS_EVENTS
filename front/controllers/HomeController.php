@@ -22,7 +22,7 @@ class HomeController extends Controller
 
         $this->render('home/rgpd', [
             'lang' => $lang,
-            'pageTitle' => $lang === 'fr' ? 'Protection des données (RGPD)' : 'Data protection (GDPR)',
+            'pageTitle' => $lang === 'fr' ? 'Politique de confidentialité (RGPD)' : 'Privacy policy (GDPR)',
         ]);
     }
 }
