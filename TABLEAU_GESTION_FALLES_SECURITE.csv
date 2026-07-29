@@ -1,0 +1,6 @@
+Risque;Gestion dans le projet;References
+Controle d'acces defaillant;Acces protege par middleware et verification de session, avec controle admin separe.;front/middlewares/AuthMiddleware.php | back/middlewares/AdminMiddleware.php | back/core/Auth.php
+Mauvaise configuration de securite;Session configuree avec cookies HttpOnly, Secure, SameSite et en-tetes HTTP de protection.;front/public/index.php
+Defaillances cryptographiques;Mots de passe hashes avec password_hash et verifies avec password_verify, jamais stockes en clair.;front/models/ClientModel.php | front/controllers/AuthController.php | back/core/Auth.php
+Injections;Requetes PDO avec statements prepares pour limiter les injections SQL.;front/models/ClientModel.php | front/controllers/AuthController.php | autres modeles PDO du projet
+Defaillances d'identification et d'authentification;Connexion par email et mot de passe, avec regeneration de session apres login.;front/controllers/AuthController.php | front/public/index.php

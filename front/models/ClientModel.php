@@ -87,7 +87,7 @@ class ClientModel
             $data['nom'],
             $data['prenom'] ?? '',
             $data['email'],
-            password_hash($data['password'], PASSWORD_DEFAULT),
+            password_hash($data['password'], PASSWORD_BCRYPT),
             ($data['telephone'] ?? '') ?: null,
         ]);
 
@@ -120,6 +120,6 @@ class ClientModel
     public function updatePassword(int $idClient, string $plainPassword): void
     {
         $stmt = $this->pdo->prepare("UPDATE clients SET mot_de_passe = ? WHERE id_client = ?");
-        $stmt->execute([password_hash($plainPassword, PASSWORD_DEFAULT), $idClient]);
+        $stmt->execute([password_hash($plainPassword, PASSWORD_BCRYPT), $idClient]);
     }
 }
